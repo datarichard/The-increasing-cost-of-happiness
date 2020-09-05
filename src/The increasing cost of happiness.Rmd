@@ -4,7 +4,9 @@ author: "Dr Richard Morris"
 date: "Updated: `r Sys.Date()`"
 bibliography: references.bib
 csl: elsevier-harvard.csl
-output: github_document
+output: 
+  html_document:
+    keep_md: true
 ---
 
 ```{r setup, include=FALSE}
@@ -16,7 +18,7 @@ knitr::opts_chunk$set(eval = FALSE,
 ```
 
 ## Abstract
-Goes here.  
+A fundamental question for governments and people is how much happiness does a dollar buy? The accepted view among economists and psychologists is that money and happiness increase together up to a point, after which there is little further gain from increasing wealth. While the location of this _change point_ has been determined, and the cost of happiness reportedly ranges between USD\$60-95K, there has been no investigation as to whether the cost of happiness has increased or decreased over time.   
 
 <br>
 
@@ -24,7 +26,7 @@ Goes here.
 ***
 A fundamental question for the psychology and economics of wellbeing is just how much happiness does a dollar buy? Increasing wealth is commonly associated with increasing happiness, however a point at which wealth no longer increases happiness has also been [widely observed](https://www-sciencedirect-com.ezproxy2.library.usyd.edu.au/science/article/pii/S0167487007000694){target="_blank"} [@dolan2008we; @easterlin1974growth]. Given that a central goal of nations and governments is to improve wealth under the assumption that wealth always increases wellbeing, challenges to this notion have far reaching consequences [@frijters2020happy].   
 
-For instance, one [survey of 1,000 Americans](https://www.pnas.org/content/107/38/16489.full){target="_blank"}, conducted in 2010, concluded that money does make us happier – but only up to a certain point. The findings showed that self-reported levels of happiness increased with household wealth up to \$75,000 a year. But after that, increasing amounts of money had no further effect on happiness [@kahneman2010high]. Results such as these have reinforced the view among psychologists and economists that the relationship between income and measures of subjective wellbeing, such as happiness, increases linearly up to a point after which there is little gained by further increments in income [@clark2018four; @dolan2008we].  
+For instance, one [survey of 1,000 Americans](https://www.pnas.org/content/107/38/16489.full){target="_blank"}, conducted in 2010, concluded that money does make us happier – but only up to a certain point. The findings showed that self-reported levels of happiness increased with household wealth up to \$75,000 a year. But after that, increasing amounts of money had no further effect on happiness [@kahneman2010high]. Results such as these have reinforced the view among psychologists and economists that the relationship between wealth and measures of subjective wellbeing, such as happiness, increases linearly up to a point after which there is little gained by further increments in wealth [@clark2018four; @dolan2008we].  
 
 However a study reported in 2013 challenged the idea that the positive effect of money plateaus [@stevenson2013subjective]. After comparing life satisfaction levels in both rich and poor countries, and rich and poor people within a country – with “rich” being defined as an income greater than $15,000 per person – Stevenson & Wolfers concluded: “The relationship between wellbeing and income … does not diminish as income rises. If there is a satiation point, we are yet to reach it.”  
 
