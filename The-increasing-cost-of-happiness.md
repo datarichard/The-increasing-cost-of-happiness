@@ -10,9 +10,10 @@ output:
 ---
 
 
+***
 
 ## Abstract
-A fundamental question for governments and people is how much happiness does a dollar buy? The accepted view among economists and psychologists is that money and happiness increase together up to a point, after which there is little further gain from increasing wealth. While the location of this _change point_ has been determined, and the cost of happiness reportedly ranges between USD\$60-95K, there has been no investigation as to whether the cost of happiness has increased or decreased over time.   
+A fundamental question for governments and people is how much happiness does a dollar buy? The accepted view among economists and psychologists is that money and happiness increase together up to a point, after which there is little further gain from increasing wealth. While the location of this _change point_ has been determined, and the cost of happiness reportedly ranges between USD\$60-95K, there has been no investigation as to whether the cost of happiness has increased or decreased over time. We use household economic data from Australia between 2002-2016 to test the relationship with both happiness and life satisfaction. We discovered no change point existed for satisfaction, but the cost of happiness has increased over those 16 years faster than inflation (i.e., cost of living).     
 
 <br>
 
