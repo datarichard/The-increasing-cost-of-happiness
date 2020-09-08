@@ -2,8 +2,8 @@
 title: "The increasing cost of happiness"
 author: "Dr Richard Morris"
 date: "Updated: `r Sys.Date()`"
-bibliography: references.bib
-csl: elsevier-harvard.csl
+bibliography: ../src/references.bib
+csl: ../src/elsevier-harvard.csl
 output: github_document
 ---
 
