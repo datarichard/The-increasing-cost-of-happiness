@@ -1,7 +1,7 @@
 The increasing cost of happiness
 ================
 Dr Richard Morris
-Updated: 2020-09-05
+Updated: 2020-09-08
 
 -----
 
@@ -14,11 +14,14 @@ there is little further gain from increasing wealth. While the location
 of this *change point* has been determined, and the cost of happiness
 reportedly ranges between USD$60-95K, there has been no investigation as
 to whether the cost of happiness has increased or decreased over time.
-We use household economic data from Australia between 2002-2016 to test
-the relationship with both happiness and life satisfaction. We
-discovered no change point existed for satisfaction, but the cost of
-happiness has increased over those 16 years faster than inflation (i.e.,
-cost of living).
+We tested the relationship between money and both happiness and life
+satisfaction using household economic data from Australia between
+2002-2016. We discovered no change point with wealth existed for
+satisfaction, but the cost of happiness has increased over those 16
+years faster than inflation (i.e., cost of living). Results such as
+these suggest we need to understand why the cost of happiness has
+increased, and to consider whether policy-goals to improve wellbeing by
+increasing wealth are feasible.
 
 <br>
 
@@ -188,15 +191,17 @@ regression, and allowed us to determine the direction and location of
 the inflection point between wealth and wellbeing in each year.
 
 *Model selection*  
-We compared the fit of the “broken-stick” model with a simpler linear
-model (“unbroken”), adjusted for degrees of freedom by the Bayesian
-Information Criterion (BIC). BIC was chosen over AIC or LRT because it
-will penalize our more complex model (the broken stick) more heavily.
-Following Raftery, differences in BIC greater than 10 were taken as
-“very strong evidence”; greater than 5 were “strong evidence”; greater
-than 2 were “positive evidence”; and less than 2 (but greater than zero)
-were “weak evidence” for the model with the smallest BIC (
-[Raftery, 1995](https://www.sciencedirect.com/topics/pharmacology-toxicology-and-pharmaceutical-science/bayesian-information-criterion)).
+The [Widely Applicable Information Criterion (WAIC) was used for model
+selection](https://bookdown.org/ajkurz/Statistical_Rethinking_recoded/overfitting-regularization-and-information-criteria.html#the-problem-with-parameters).
+WAIC was defined as:
+
+WAIC = -2(lppd - *p*<sub>WAIC</sub>)
+
+Where lppd (log pointwise predictive density) is the total across
+observations of the log of the average likelihood of each observation,
+and *p*<sub>WAIC</sub> is the effective number of free parameters
+determined by the sum of the variance in log-likelihood for each
+observation (*i*).
 
 For visualization purposes only, due to the large number of individual
 data points in each year, we grouped individuals into 10 equal-sized
@@ -210,9 +215,8 @@ all individuals* is shown in overlay.
 
 #### Covariates
 
-Covariates included in subsequent sensitivity analyses were: age,
-age<sup>2</sup>, years of education, and dummy variables for partnered,
-single (never married), and unemployed.
+Age (and age<sup>2</sup>) and education were included as covariates, and
+students were removed.
 
 Years of education were determined from the [Australian Qualifications
 Framework
@@ -241,15 +245,19 @@ minimum value falling between the third and sixth decile.
 
 #### Household disposable income (adjusted for household size)
 
+##### Bayesian change point results
+
+Shaded areas to the right of the vertical dotted line are credibly (95%)
+larger than the base year (2002).
+
+![](../figures/happy_change_time-1.png)<!-- -->
+
+<br>
+
 **Key points**
 
-  - Cognitive wellbeing (satisfaction) had a relatively linear, positive
-    relationship wtih household disposable income. The inflection point
-    was equally positive and negative across years, without a uniform
-    pattern.
-  - By contrast, the relationship between affective wellbeing
-    (happiness) and disposable income tended to be a positive but
-    decreasing (“*broken*”) function with a uniform inflection point.
+  - The change point for happiness (affective wellbeing) shifts to the
+    right over time and requires greater household wealth.
 
 <br>
 
