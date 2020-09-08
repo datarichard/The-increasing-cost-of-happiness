@@ -34,10 +34,10 @@ just how much happiness does a dollar buy? Increasing wealth is commonly
 associated with increasing happiness, however a point at which wealth no
 longer increases happiness has also been [widely
 observed](https://www-sciencedirect-com.ezproxy2.library.usyd.edu.au/science/article/pii/S0167487007000694)
-(Dolan et al., 2008; Easterlin, 1974). Given that a central goal of
-nations and governments is to improve wealth under the assumption that
-wealth always increases wellbeing, challenges to this notion have far
-reaching consequences (Frijters et al., 2020).
+(Clark et al., 2008; Dolan et al., 2008; Easterlin, 1974). Given that a
+central goal of nations and governments is to improve wealth under the
+assumption that wealth always increases wellbeing, challenges to this
+notion have far reaching consequences (Frijters et al., 2020).
 
 For instance, one [survey of 1,000
 Americans](https://www.pnas.org/content/107/38/16489.full), conducted in
@@ -52,59 +52,51 @@ as happiness, increases linearly up to a point after which there is
 little gained by further increments in wealth (Clark, 2018; Dolan et
 al., 2008).
 
-However a study reported in 2013 challenged the idea that the positive
-effect of money plateaus (Stevenson and Wolfers, 2013). After comparing
-life satisfaction levels in both rich and poor countries, and rich and
-poor people within a country – with “rich” being defined as an income
-greater than $15,000 per person – Stevenson & Wolfers concluded: “The
-relationship between wellbeing and income … does not diminish as income
-rises. If there is a satiation point, we are yet to reach it.”
-
 Subjective wellbeing is not a unitary entity (Diener et al., 2017);
 studies typically distinguish between *life satisfaction*, the cognitive
 appraisal of one’s own accomplishments, and *happiness*, one’s
 prevailing affective state or emotional mood. Money can have different
 effects on each. For instance, we have recently reported that positive
 life events, such as a major financial windfall, can have a greater
-impact on a person’s satisfaction than their happiness (Kettlewell et
-al., 2020). And while Kahneman observed the association between
-household wealth and happiness plateaud after $75,000; he also reported
-the association between wealth and life satisfaction was consistentily
-positive. This raises the possibility that contradictory associations
-between wealth and wellbeing previously reported may be due to
-differences in the construct measured. It is easy to imagine a person
-who is satisfied (for example because they have a good job and healthy
-family) but is still unhappy on a day-to-day basis. And researchers
-studying the relationship between wealth and wellbeing tend to focus on
-surveys of *life satisfaction*, which reflects only one domain of
-wellbeing, and ignore other aspects of wellbeing such as happiness
-(e.g., Stevenson and Wolfers, 2013; Frijters et al., 2020).
+impact on an individual’s satisfaction than their happiness (Kettlewell
+et al., 2020). However these effects were observed as a change within
+individuals, and the change was transitory as both satisfaction and
+happiness returned to baseline after two years (see also Frijters et
+al., 2011). Evidence for a distinct relationship with happiness and
+satisfaction across individuals also exists: while Kahneman observed the
+association between household wealth and happiness plateaud after
+$75,000, he also reported the association between wealth and life
+satisfaction was consistently positive. Indeed, several researchers have
+observed a difference between two questions that are often used in
+surveys of subjective well-being: “How satisfied are you with your
+life?” and “How happy are you these days?” (Howell and Howell, 2008;
+Veenhoven and Hagerty, 2006). The common conclusion is that wealth is
+more strongly related to satisfaction than to happiness.
 
-Since 2013, a distinct effect of wealth and happiness has also been
-challenged. [A survey of 1.7 million people representing 164 countries
-over 12 years (2005-2016) in the Gallup World
-Poll](https://www-nature-com.ezproxy2.library.usyd.edu.au/articles/s41562-017-0277-0)
-reported money was associated with no further improvement in happiness
-after $60-75,000, *nor any improvement in satisfaction* after $95,000
-(Jebb et al., 2018). Thus while the location differed, money had
-inflected effects with both satisfaction and happiness. On the other
-hand, in a nationally representative sample of 44,000 adult Americans
-over 44 years in the General Social Survey (GSS) happiness continued to
-increase with money (Twenge and Cooper, 2020), implying no inflection
-point existed between money and happiness.
+The relationship between wealth and happiness and satisfaction are
+relevant for the growing popularity of using subjective well-being as a
+policy guide for government and agencies. If there are distinct effects
+of wealth on happiness and satisfaction then the question of which is
+better suited to assess human welfare and to guide policy seems
+critical. The observation that happiness plateaus with increasing wealth
+while satisfaction keeps rising acquires some importance in this
+context. Not everyone will agree that enhancing the happiness
+experienced by those who are already quite happy is a legitimate policy
+objective.
 
-Both these reports provide contradictory results regarding the nature of
-the relationship between wealth and wellbeing, and both are based on
-data spanning long periods of time (12-44 years). And while such
-research has revealed variations due to world region, gender, and
-education, there has been no investigation at to whether the
-relationship between wealth and wellbeing has changed over time. The
-value of money of course changes over time with inflation, however the
-distribution of wealth has also changed over the last 30 years in most
-OECD countries (as the rich got richer faster than the poor). Such
-changes in the distribution of wealth are also likely to change the
-relationship with wellbeing when it is governed by relative wealth
-rather than absolute wealth.
+And while research since 2010 has revealed variations in the plateau or
+*change point* due to [world region, gender, and
+education](https://www-nature-com.ezproxy2.library.usyd.edu.au/articles/s41562-017-0277-0)
+(Jebb et al., 2018), there has been no investigation as to whether the
+relationship between wealth and happiness is changing over time
+\[although see Fig. 4 in Clark et al. (2008); for a speculative
+mechanism\]. The value of money of course changes over time with
+inflation, however the distribution of wealth has also changed over the
+last 30 years in many OECD countries including Australia (as the rich
+got richer faster than the poor, ref needed). Such changes in the
+distribution of wealth are also likely to change the relationship with
+wellbeing when it is governed by relative wealth rather than absolute
+wealth (Clark et al., 2008).
 
 We used household economic panel data from Australia (HILDA) to provide
 the first investigation of whether changes in wealth and wellbeing have
@@ -285,6 +277,35 @@ The main conclusions of this report so far are:
     supplant traditional measures of economic success such as GDP with
     measures of wellbeing, such as “life satisfaction” surveys.
 
+<br>
+
+A study reported in 2013 challenged the idea that the positive effect of
+money plateaus (Stevenson and Wolfers, 2013). After comparing life
+satisfaction levels in both rich and poor countries, and rich and poor
+people within a country – with “rich” being defined as an income greater
+than $15,000 per person – Stevenson & Wolfers concluded: “The
+relationship between wellbeing and income … does not diminish as income
+rises. If there is a satiation point, we are yet to reach it.”
+
+Since 2013, the distinct effect of wealth and happiness has also been
+challenged. [A survey of 1.7 million people representing 164 countries
+over 12 years (2005-2016) in the Gallup World
+Poll](https://www-nature-com.ezproxy2.library.usyd.edu.au/articles/s41562-017-0277-0)
+reported money was associated with no further improvement in happiness
+after $60-75,000, *nor any improvement in satisfaction* after $95,000
+(Jebb et al., 2018). Thus while the location differed, money had
+inflected effects with both satisfaction and happiness. On the other
+hand, in a nationally representative sample of 44,000 adult Americans
+over 44 years in the General Social Survey (GSS) happiness continued to
+increase with money (Twenge and Cooper, 2020), implying no inflection
+point existed between money and happiness.
+
+Both these reports provide contradictory results regarding the nature of
+the relationship between wealth and wellbeing, and both are based on
+data spanning long periods of time (12-44 years). Perhaps the different
+results are due to differences in the constructs being measured, or
+perhaps it is due to different effects of time between studies.
+
 ### References
 
 <div id="refs" class="references">
@@ -293,6 +314,14 @@ The main conclusions of this report so far are:
 
 Clark, A.E., 2018. Four decades of the economics of happiness: Where
 next? Review of Income and Wealth 64, 245–269.
+
+</div>
+
+<div id="ref-clark2008relative">
+
+Clark, A.E., Frijters, P., Shields, M.A., 2008. Relative income,
+happiness, and utility: An explanation for the easterlin paradox and
+other puzzles. Journal of Economic literature 46, 95–144.
 
 </div>
 
@@ -326,6 +355,22 @@ Elsevier, pp. 89–125.
 Frijters, P., Clark, A.E., Krekel, C., Layard, R., 2020. A happy choice:
 Wellbeing as the goal of government. Behavioural Public Policy 4,
 126–165.
+
+</div>
+
+<div id="ref-frijters2011life">
+
+Frijters, P., Johnston, D.W., Shields, M.A., 2011. Life satisfaction
+dynamics with quarterly life event data. Scandinavian Journal of
+Economics 113, 190–211.
+
+</div>
+
+<div id="ref-howell2008relation">
+
+Howell, R.T., Howell, C.J., 2008. The relation of economic status to
+subjective well-being in developing countries: A meta-analysis.
+Psychological bulletin 134, 536.
 
 </div>
 
@@ -364,6 +409,13 @@ there any evidence of satiation? American Economic Review 103, 598–604.
 
 Twenge, J.M., Cooper, A.B., 2020. The expanding class divide in
 happiness in the united states, 1972–2016. Emotion.
+
+</div>
+
+<div id="ref-veenhoven2006rising">
+
+Veenhoven, R., Hagerty, M., 2006. Rising happiness in nations 1946–2004:
+A reply to easterlin. Social indicators research 79, 421–436.
 
 </div>
 
