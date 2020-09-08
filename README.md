@@ -1,5 +1,5 @@
 # The increasing cost of happiness
-The relationship between wealth and wellbeing has changed in the last 20 years. The "cost" of happiness has increased.  
+The relationship between wealth and wellbeing has changed in the last 20 years. The _cost_ of happiness has increased.  
 
 ***
 
