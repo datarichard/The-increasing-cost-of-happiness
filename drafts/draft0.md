@@ -1,7 +1,7 @@
 The increasing cost of happiness
 ================
 Dr Richard Morris
-Updated: 2020-09-08
+Updated: 2020-09-10
 
 -----
 
@@ -110,11 +110,11 @@ other major studies also used household after-tax income as the
 indicator of wealth and economic security, and so we follow the same
 standard here as well.
 
-After adjusting for age, relationship status, and education level, we
-find that satisfaction increases linearly with household wealth, but the
-same purchasing power has diminishing returns on happiness. We also
-discover that the location of the inflection point has increased in real
-dollar value since 2002.
+After adjusting for age, gender, and education level, we find that
+satisfaction increases linearly with household wealth, but the same
+purchasing power has diminishing returns on happiness. We also discover
+that the location of the inflection point has increased in real dollar
+value since 2002.
 
 <br>
 
@@ -122,32 +122,17 @@ dollar value since 2002.
 
 We have a variety of income & wealth information in HILDA, most of it
 collected annually. However the household net worth is collected every
-four years. In the present report we
-    use:
+four years. In the present report we use
+[hifdip](https://www.online.fbe.unimelb.edu.au/HILDAodd/KWCrossWaveCategoryDetails.aspx?varnt=hifdip)
+Household financial year disposable regular income ($). The sum across
+all household members of financial year gross regular income minus taxes
+on financial year gross regular income. Wealth variables were provided
+by the University of Melbourne as imputed, and with weighted topcodes to
+preserve anonymity. *Nb*. We also examined household and personal gross
+wages and disposable income (not shown).
 
-1.  [hwnwip](https://www.online.fbe.unimelb.edu.au/HILDAodd/KWCrossWaveCategoryDetails.aspx?varnt=hwnwip)
-    Household Net Worth ($) positive values \[imputed\] \[weighted
-    topcode\]. Calculated as assets minus debts for the
-    household.
-2.  [hifdip](https://www.online.fbe.unimelb.edu.au/HILDAodd/KWCrossWaveCategoryDetails.aspx?varnt=hifdip)
-    Household financial year disposable regular income ($) positive
-    values \[imputed\] \[weighted topcode\]. The sum across all
-    household members of financial year gross regular income minus taxes
-    on financial year gross regular
-    income.
-3.  [tifdip](https://www.online.fbe.unimelb.edu.au/HILDAodd/KWCrossWaveCategoryDetails.aspx?varnt=tifdip)
-    Personal disposable income ($) positive values \[weighted topcode\].
-    Financial year gross regular income minus taxes on financial year
-    gross regular income.
-
-*Note*. We also examined household and personal gross wages, and
-household and personal total disposable income.
-
-Income and wealth variables were provided by the University of Melbourne
-as imputed, and with weighted topcodes to preserve anonymity. We removed
-individuals with values above the threshold indicated for top-coding.
-
-Household wealth variables were adjusted for the number of people in
+We removed individuals with values above the threshold indicated for
+top-coding. Household wealth was adjusted for the number of people in
 each household in the same manner as Headey, Muffels & Wooden, 2004;
 i.e., income divided by the square root of household size (Buhmann et
 al, 1988; Coulter et al, 1992).
@@ -207,15 +192,8 @@ all individuals* is shown in overlay.
 
 #### Covariates
 
-Age (and age<sup>2</sup>) and education were included as covariates, and
-students were removed.
-
-Years of education were determined from the [Australian Qualifications
-Framework
-(AQF)](https://en.wikipedia.org/wiki/Australian_Qualifications_Framework#Certificates_I-IV)
-from the Department of Industry.
-
-Separate analyses for women are included in the Supplementary material.
+Age (and age<sup>2</sup>), gender, and education were included as
+covariates, and students were removed.
 
 <br>
 
@@ -223,19 +201,37 @@ Separate analyses for women are included in the Supplementary material.
 
 -----
 
-#### Demographics and sample characteristics
+#### Household wealth on satisfaction (cognitive wellbeing)
 
-After stratification by decile (personal disposable income) we see that
-age, proportion of males, couples, years of education and education
-levels all increase with decile. Conversely, proportion of females,
-single people (never married), unemployed, and fulltime students
-decreases with decile. Of particular interest is that wellbeing,
-household wealth and SEIFA index follow a U-shaped function with the
-minimum value falling between the third and sixth decile.
+![](../figures/losat_hwnwip-1.png)<!-- -->
 
 <br>
 
-#### Household disposable income (adjusted for household size)
+**Key points**
+
+  - Generally the relationship between satisfaction and household wealth
+    appears linear
+  - There is no satiety point (horizontal inflection) in satisfaction
+    before the highest decile
+  - Any inflection point in satisfaction is as likely to be convex as
+    concave
+
+<br>
+
+#### Household wealth on happiness (affective wellbeing)
+
+![](../figures/gh9_hwnwip-1.png)<!-- -->
+
+<br>
+
+**Key points**
+
+  - There is no happiness satiety point (horizontal inflection) before
+    the final decile
+  - A concave happiness inflection point is evident before or near the
+    median decile
+
+<br>
 
 ##### Bayesian change point results
 
@@ -249,9 +245,202 @@ larger than the base year (2002).
 **Key points**
 
   - The change point for happiness (affective wellbeing) shifts to the
-    right over time and requires greater household wealth.
+    right over time and occurs at greater household wealth levels.
 
 <br>
+
+#### Change points over time
+
+The mean change point location has moved further right (higher, faster)
+than the median household wealth over time:
+
+<table>
+
+<caption>
+
+Household wealth median, change point and percentile
+
+</caption>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+year
+
+</th>
+
+<th style="text-align:right;">
+
+median ($000s)
+
+</th>
+
+<th style="text-align:right;">
+
+change point ($000s)
+
+</th>
+
+<th style="text-align:right;">
+
+%
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+fy2002
+
+</td>
+
+<td style="text-align:right;">
+
+26.85600
+
+</td>
+
+<td style="text-align:right;">
+
+32.36907
+
+</td>
+
+<td style="text-align:right;">
+
+0.3701011
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+fy2006
+
+</td>
+
+<td style="text-align:right;">
+
+38.07104
+
+</td>
+
+<td style="text-align:right;">
+
+46.07907
+
+</td>
+
+<td style="text-align:right;">
+
+0.3555263
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+fy2010
+
+</td>
+
+<td style="text-align:right;">
+
+53.71883
+
+</td>
+
+<td style="text-align:right;">
+
+52.50081
+
+</td>
+
+<td style="text-align:right;">
+
+0.5158219
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+fy2014
+
+</td>
+
+<td style="text-align:right;">
+
+66.61731
+
+</td>
+
+<td style="text-align:right;">
+
+85.70495
+
+</td>
+
+<td style="text-align:right;">
+
+0.3247090
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+fy2018
+
+</td>
+
+<td style="text-align:right;">
+
+74.53719
+
+</td>
+
+<td style="text-align:right;">
+
+124.48233
+
+</td>
+
+<td style="text-align:right;">
+
+0.1727848
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+<br><br>
 
 ### Conclusions
 

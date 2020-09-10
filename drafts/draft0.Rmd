@@ -42,23 +42,15 @@ And while research since 2010 has revealed variations in the plateau or _change 
 
 We used household economic panel data from Australia (HILDA) to provide the first investigation of whether changes in wealth and wellbeing have changed over the last 16 years (2002-2018). We distinguished between satisfaction and happiness as different components of subjective wellbeing, and evaluated how each varies with household wealth. Economic security is better represented by household wealth, since members of the same household share expenses as well as risks; i.e., they can provide a direct and immediate support network when financial shocks occur. The other major studies also used household after-tax income as the indicator of wealth and economic security, and so we follow the same standard here as well.  
 
-After adjusting for age, relationship status, and education level, we find that satisfaction increases linearly with household wealth, but the same purchasing power has diminishing returns on happiness. We also discover that the location of the inflection point has increased in real dollar value since 2002.   
+After adjusting for age, gender, and education level, we find that satisfaction increases linearly with household wealth, but the same purchasing power has diminishing returns on happiness. We also discover that the location of the inflection point has increased in real dollar value since 2002.   
 
  
 <br>
 
 #### Wealth
-We have a variety of income & wealth information in HILDA, most of it collected annually. However the household net worth is collected every four years. In the present report we use:  
+We have a variety of income & wealth information in HILDA, most of it collected annually. However the household net worth is collected every four years. In the present report we use [hifdip](https://www.online.fbe.unimelb.edu.au/HILDAodd/KWCrossWaveCategoryDetails.aspx?varnt=hifdip){target="_blank"} Household financial year disposable regular income ($). The sum across all household members of financial year gross regular income minus taxes on financial year gross regular income. Wealth variables were provided by the University of Melbourne as imputed, and with weighted topcodes to preserve anonymity. _Nb_. We also examined household and personal gross wages and disposable income (not shown).  
 
-1. [hwnwip](https://www.online.fbe.unimelb.edu.au/HILDAodd/KWCrossWaveCategoryDetails.aspx?varnt=hwnwip){target="_blank"} Household Net Worth ($) positive values [imputed] [weighted topcode]. Calculated as assets minus debts for the household.
-2. [hifdip](https://www.online.fbe.unimelb.edu.au/HILDAodd/KWCrossWaveCategoryDetails.aspx?varnt=hifdip){target="_blank"} Household financial year disposable regular income ($) positive values [imputed] [weighted topcode]. The sum across all household members of financial year gross regular income minus taxes on financial year gross regular income.
-3. [tifdip](https://www.online.fbe.unimelb.edu.au/HILDAodd/KWCrossWaveCategoryDetails.aspx?varnt=tifdip){target="_blank"} Personal disposable income ($) positive values [weighted topcode]. Financial year gross regular income minus taxes on financial year gross regular income.  
-
-_Note_. We also examined household and personal gross wages, and household and personal total disposable income.  
-
-Income and wealth variables were provided by the University of Melbourne as imputed, and with weighted topcodes to preserve anonymity. We removed individuals with values above the threshold indicated for top-coding.  
-
-Household wealth variables were adjusted for the number of people in each household in the same manner as Headey, Muffels & Wooden, 2004; i.e., income divided by the square root of household size (Buhmann et al, 1988; Coulter et al, 1992).  
+We removed individuals with values above the threshold indicated for top-coding. Household wealth was adjusted for the number of people in each household in the same manner as Headey, Muffels & Wooden, 2004; i.e., income divided by the square root of household size (Buhmann et al, 1988; Coulter et al, 1992).  
 
 <br>
 
@@ -86,28 +78,78 @@ Where lppd (log pointwise predictive density) is the total across observations o
 
 For visualization purposes only, due to the large number of individual data points in each year, we grouped individuals into 10 equal-sized subgroups according to their wealth decile ($). Thus in each plot, the mean wealth and mean wellbeing score for each decile is presented, rather than each individual data point. Note that the line-of-best-fit and 95% confidence intervals from the broken stick regression model _of all individuals_ is shown in overlay.  
 
+```{r funtimes}
+source("../src/happyfun.r")
+```
+
 <br> 
 
 #### Covariates
 
-Age (and age^2^) and education were included as covariates, and students were removed.   
+Age (and age^2^), gender, and education were included as covariates, and students were removed.   
 
-Years of education were determined from the [Australian Qualifications Framework (AQF)](https://en.wikipedia.org/wiki/Australian_Qualifications_Framework#Certificates_I-IV){target="_blank"} from the Department of Industry.  
-
-Separate analyses for women are included in the Supplementary material.  
+```{r read_write_covs}
+happywealth_covs <- read_rds("../results/happywealth_covs.rds")
+```
 
 <br>
 
 ### Results
 ***
 
-#### Demographics and sample characteristics
+#### Household wealth on satisfaction (cognitive wellbeing)
+```{r losat_hwnwip, fig.height=11}
+library(patchwork)
 
-After stratification by decile (personal disposable income) we see that age, proportion of males, couples, years of education and education levels all increase with decile. Conversely, proportion of females, single people (never married), unemployed, and fulltime students decreases with decile. Of particular interest is that wellbeing, household wealth and SEIFA index follow a U-shaped function with the minimum value falling between the third and sixth decile.  
+p1 <- happywealth_covs %>%
+  plot_linear(losat, adj_hifdip)
+
+p2 <- happywealth_covs %>%
+  plot_inflection_cubic(losat, adj_hifdip)
+
+p3 <- happywealth_covs %>%
+  plot_inflection_piecewise(losat, adj_hifdip)
+
+(p1 + p2 + p3) +
+  plot_annotation(title = "Effect of wealth on satisfaction")
+```
 
 <br>
 
-#### Household disposable income (adjusted for household size)
+**Key points**  
+
+- Generally the relationship between satisfaction and household wealth appears linear
+- There is no satiety point (horizontal inflection) in satisfaction before the highest decile
+- Any inflection point in satisfaction is as likely to be convex as concave  
+
+<br>
+
+#### Household wealth on happiness (affective wellbeing)
+```{r gh9_hwnwip, fig.height=11}
+library(patchwork)
+
+p1 <- happywealth_covs %>%
+  plot_linear(gh9, adj_hifdip)
+
+p2 <- happywealth_covs %>%
+  plot_inflection_cubic(gh9, adj_hifdip)
+
+p3 <- happywealth_covs %>%
+  plot_inflection_piecewise(gh9, adj_hifdip)
+
+(p1 + p2 + p3) +
+  plot_annotation(title = "Effect of wealth on happiness")
+```
+
+<br>
+
+**Key points**  
+
+- There is no happiness satiety point (horizontal inflection) before the final decile
+- A concave happiness inflection point is evident before or near the median decile  
+
+<br>
+
 
 ##### Bayesian change point results  
 
@@ -126,18 +168,18 @@ as.data.frame(hifdip_gh9_fixed_fit) %>%
     fy2014 = mean(b_alpha_Intercept) + b_alpha_year2014,
     fy2018 = mean(b_alpha_Intercept) + b_alpha_year2018
   ) %>%
-  mutate_all(.funs = ~brms::inv_logit_scaled(., 0, 150)*10) -> d1
+  mutate_all(.funs = ~brms::inv_logit_scaled(., 0, 150)*10) -> posteriors
 
 color_scheme_set("red")
 mcmc_areas(
-  d1,
-  pars = rev(colnames(d1)),
+  posteriors,
+  pars = rev(colnames(posteriors)),
   prob = 0.95, # 80% intervals
   prob_outer = 1, # 99%
   point_est = "mean"
   ) +
   theme_test() +
-  geom_vline(aes(xintercept = mean(d1$fy2002)), color = "gray", linetype = 3) +
+  geom_vline(aes(xintercept = mean(posteriors$fy2002)), color = "gray", linetype = 3) +
   labs(
     subtitle = "Posterior change points (mean & 95% distribution)",
     x = "Household wealth ($000s)")
@@ -147,9 +189,36 @@ mcmc_areas(
 
 **Key points**  
 
-- The change point for happiness (affective wellbeing) shifts to the right over time and requires greater household wealth.   
+- The change point for happiness (affective wellbeing) shifts to the right over time and occurs at greater household wealth levels.   
 
 <br>
+
+#### Change points over time
+
+The mean change point location has moved further right (higher, faster) than the median household wealth over time:
+
+```{r, table1, ft.align="left"}
+library(knitr)
+
+happywealth_covs %>%
+  select(year, xwaveid, adj_hifdip) %>%
+  mutate(
+    year = paste0("fy", year),
+    adj_hifdip = adj_hifdip/1000) %>%
+  left_join(
+    gather(
+      summarise_all(posteriors, list(median)), year, change_point
+    )) %>%
+  group_by(year) %>%
+  summarise(
+    `median ($000s)` = median(adj_hifdip),
+    `change point ($000s)` = mean(change_point),
+    `%` = mean(adj_hifdip > mean(change_point))
+  ) %>%
+  kable(format = "html", caption = "Household wealth median, change point and percentile")
+```
+
+<br><br>
 
 ### Conclusions
 ***
