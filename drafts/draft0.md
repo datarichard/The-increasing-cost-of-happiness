@@ -62,10 +62,10 @@ impact on an individual’s satisfaction than their happiness (Kettlewell
 et al., 2020). However these effects were observed as a change within
 individuals, and the change was transitory as both satisfaction and
 happiness returned to baseline after two years (see also Frijters et
-al., 2011). Evidence for a distinct relationship with happiness and
-satisfaction across individuals also exists: while Kahneman observed the
-association between household wealth and happiness plateaud after
-$75,000, he also reported the association between wealth and life
+al., 2011). Across individuals, wealth also has a distinct relationship
+with happiness and satisfaction as well. While Kahneman et al observed
+the association between household wealth and happiness plateaud after
+$75,000, they also reported the association between wealth and life
 satisfaction was consistently positive. Indeed, several researchers have
 observed a difference between two questions that are often used in
 surveys of subjective well-being: “How satisfied are you with your
@@ -159,17 +159,64 @@ patterns were almost identical to our sum of 9a to 9i.
 #### Modelling and model-selection
 
 *Modelling*  
-To determine whether wellbeing was a decreasing function of wealth or a
-linear function of wealth, we modelled the relationship between
-individual wealth and wellbeing using a simple B-spline basis function
-with 2 degrees of freedom (i.e., 1 y-intercept and 1 inflection point or
-*knot*). This was equivalent to a “piecewise” or “broken-stick” linear
-regression, and allowed us to determine the direction and location of
-the inflection point between wealth and wellbeing in each year.
+To initially describe the relationship between wealth and wellbeing, we
+modelled the data from each year in three different ways: 1) a simple
+linear model of the form y<sub>*i*</sub> = *β*<sub>0</sub> +
+*β*<sub>1</sub>*x*<sub>*i*</sub> + *ε*<sub>*i*</sub>; 2) a cubic
+b-spline model of the form *B*(*x*) =
+*Σβ*<sub>*i*</sub>*B*<sub>*i,n*</sub>(*x*); and 3) a piecewise
+(broken-stick) model of the form y<sub>*i*</sub> = *β*<sub>0</sub> +
+*β*<sub>1</sub>(*x*<sub>*i*</sub> - ω)(*x*<sub>*i*</sub> ≤ ω) +
+*β*<sub>2</sub>(*x*<sub>*i*</sub> - ω)(*x*<sub>*i*</sub> ≤ ω).
+
+These three models were chosen to represent varying degrees of
+complexity. The linear model was obviously the simplest relationship
+that can exist between wealth and wellbeing. The cubic B-spline was a
+complex model (more degrees of freedom) and chosen because it has been
+recently used to describe the maximum point at which wealth no longer
+increases wellbeing (Jebb et al., 2018). Following Jebb et al, we
+restricted the model to 4, 5 and 6 knots and show each instantiation
+here. The piecewise model was chosen as the simplest extension of a
+linear model to identify the change point at which wellbeing no longer
+increases linearly with wealth.
+
+*Change point estimation*  
+To determine whether the relationship between wellbeing and wealth
+contained an inflection point (“change point”), we modelled the
+relationship between wealth and wellbeing across individuals using the
+piecewise model described above, and estimated the posterior probability
+of the changepoint location using a Bayesian approach:
+
+Let y<sub>*i*</sub> ~ *N*(*μ*<sub>*i*</sub>,
+*σ*<sup>2</sup><sub>*y*</sub>)
+
+*μ*<sub>i</sub> = *β*<sub>0</sub> + *β*<sub>1</sub>(*x*<sub>*i*</sub> -
+ω<sub>*t*</sub>)(*x*<sub>*i*</sub> ≤ ω<sub>*t*</sub>) +
+*β*<sub>2</sub>(*x*<sub>*i*</sub> - ω<sub>*t*</sub>)(*x*<sub>*i*</sub>
+\> ω<sub>*t*</sub>)                              (1)
+
+Where *x*<sub>i</sub> and *y*<sub>i</sub> was an individuals’ household
+wealth ($) and wellbeing, respectively; and ω<sub>*t*</sub> was the
+changepoint in $ for each year (*t*).
+
+The location of the changepoint was sampled randomly from a uniform
+prior over the resticted range of wealth values, and the posterior
+probability of the location for each year is presented.
+
+<br>
 
 *Model selection*  
-The [Widely Applicable Information Criterion (WAIC) was used for model
-selection](https://bookdown.org/ajkurz/Statistical_Rethinking_recoded/overfitting-regularization-and-information-criteria.html#the-problem-with-parameters).
+To determine whether wellbeing was a linear or non-linear (e.g.,
+piecewise) function of wealth, we compared the linear and piecewise
+model fits using the [Widely Applicable Information Criterion
+(WAIC)](https://bookdown.org/ajkurz/Statistical_Rethinking_recoded/overfitting-regularization-and-information-criteria.html#the-problem-with-parameters).
+The WAIC is the log-posterior predictive density plus a penalty
+proportional to the variance in the posterior distribution. Thus it
+provides an approximation of the out-of-sample deviance that converges
+to the cross-validation approximation in a large sample, with a penalty
+for the effective number of parameters (degrees of freedom). For this
+reason is it useful to compare two models of varying complexity.
+
 WAIC was defined as:
 
 WAIC = -2(lppd - *p*<sub>WAIC</sub>)
@@ -210,10 +257,12 @@ covariates, and students were removed.
 **Key points**
 
   - Generally the relationship between satisfaction and household wealth
-    appears linear
+    appeared linear
+  - The linear relationship between satisfaction and wealth became
+    weaker (less steep) over years
   - There is no satiety point (horizontal inflection) in satisfaction
-    before the highest decile
-  - Any inflection point in satisfaction is as likely to be convex as
+    before the highest decile in any year
+  - Any inflection point in satisfaction was as likely to be convex as
     concave
 
 <br>
@@ -226,10 +275,12 @@ covariates, and students were removed.
 
 **Key points**
 
-  - There is no happiness satiety point (horizontal inflection) before
-    the final decile
-  - A concave happiness inflection point is evident before or near the
-    median decile
+  - The linear relationship between happiness and wealth became weaker
+    (less steep) over years
+  - There was no happiness satiety point (horizontal inflection) before
+    the final decile in any year
+  - A concave inflection point with happiness occurred in each year, and
+    appeared to shift right with time.
 
 <br>
 
@@ -306,19 +357,19 @@ fy2002
 
 <td style="text-align:right;">
 
-26.85600
+26.86
 
 </td>
 
 <td style="text-align:right;">
 
-32.36907
+32.37
 
 </td>
 
 <td style="text-align:right;">
 
-0.3701011
+0.37
 
 </td>
 
@@ -334,19 +385,19 @@ fy2006
 
 <td style="text-align:right;">
 
-38.07104
+38.07
 
 </td>
 
 <td style="text-align:right;">
 
-46.07907
+46.08
 
 </td>
 
 <td style="text-align:right;">
 
-0.3555263
+0.36
 
 </td>
 
@@ -362,19 +413,19 @@ fy2010
 
 <td style="text-align:right;">
 
-53.71883
+53.72
 
 </td>
 
 <td style="text-align:right;">
 
-52.50081
+52.50
 
 </td>
 
 <td style="text-align:right;">
 
-0.5158219
+0.52
 
 </td>
 
@@ -390,19 +441,19 @@ fy2014
 
 <td style="text-align:right;">
 
-66.61731
+66.62
 
 </td>
 
 <td style="text-align:right;">
 
-85.70495
+85.70
 
 </td>
 
 <td style="text-align:right;">
 
-0.3247090
+0.32
 
 </td>
 
@@ -418,19 +469,19 @@ fy2018
 
 <td style="text-align:right;">
 
-74.53719
+74.54
 
 </td>
 
 <td style="text-align:right;">
 
-124.48233
+124.48
 
 </td>
 
 <td style="text-align:right;">
 
-0.1727848
+0.17
 
 </td>
 
