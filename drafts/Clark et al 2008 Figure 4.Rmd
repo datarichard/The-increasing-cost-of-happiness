@@ -1,0 +1,60 @@
+---
+title: "Clark et al 2008 Figure 4"
+author: "Dr Richard Morris"
+date: "Updated: `r Sys.Date()`"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE,
+                      fig.path = "../figures/")
+library(tidyverse)
+```
+
+```{r plot}
+happywealth <- read_rds("results/happywealth.rds")
+
+happywealth %>%
+  select(xwaveid, year, 
+         # swb = enexpr(swb_col), dollars = enexpr(dollars_col)) %>%
+         swb = gh9, dollars = hifdip) %>%
+  filter(swb >= 0) %>%
+  filter(dollars >= 0) %>%
+  filter(year %in% c(2002, 2010, 2018)) %>%
+  mutate(year = as.factor(year)) -> df
+
+df %>%
+  group_by(year) %>%
+  mutate(
+    dollar_bin = ntile(dollars, 10)
+  ) %>%
+  group_by(year, dollar_bin) %>%
+  summarize(
+    wellbeing = mean(swb, na.rm=T),
+    wealth = mean(dollars, na.rm=T)/1000,
+    n = n()
+  ) -> df.summary
+
+df.summary %>%
+  transmute(
+    wealth = mean(wealth),
+    wellbeing = mean(wellbeing)
+  ) %>%
+  distinct() -> df.summary.year
+
+# piecewise model
+ggplot(df.summary, aes(x = wealth, y = wellbeing)) +
+  geom_point(aes(color = year)) +
+  geom_smooth(aes(color = year), 
+              method = "lm", formula = y ~ splines::bs(x, df = 2, degree = 1),
+              # method = "lm", formula = y ~ log(1/(x+1)),
+              linetype = 2,
+              size = .5,
+              se=F) +
+  geom_smooth(data = df.summary.year, 
+              method = "lm", formula = y ~ log(1/(x+1)), 
+              color = "black",
+              se=F) + 
+  # scale_x_continuous(breaks = c(10, 30, 100, 300), trans = "log") +
+  theme_test()
+```

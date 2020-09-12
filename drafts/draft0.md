@@ -1,7 +1,7 @@
 The increasing cost of happiness
 ================
 Dr Richard Morris
-Updated: 2020-09-10
+Updated: 2020-09-11
 
 -----
 
@@ -25,7 +25,7 @@ increasing wealth are feasible.
 
 <br>
 
-### Introduction
+## Background
 
 -----
 
@@ -60,18 +60,38 @@ effects on each. For instance, we have recently reported that positive
 life events, such as a major financial windfall, can have a greater
 impact on an individual’s satisfaction than their happiness (Kettlewell
 et al., 2020). However these effects were observed as a change within
-individuals, and the change was transitory as both satisfaction and
+individuals, and the change was temporary as both satisfaction and
 happiness returned to baseline after two years (see also Frijters et
-al., 2011). Across individuals, wealth also has a distinct relationship
-with happiness and satisfaction as well. While Kahneman et al observed
-the association between household wealth and happiness plateaud after
-$75,000, they also reported the association between wealth and life
-satisfaction was consistently positive. Indeed, several researchers have
-observed a difference between two questions that are often used in
-surveys of subjective well-being: “How satisfied are you with your
-life?” and “How happy are you these days?” (Howell and Howell, 2008;
-Veenhoven and Hagerty, 2006). The common conclusion is that wealth is
-more strongly related to satisfaction than to happiness.
+al., 2011). Wealth also has a distinct relationship with happiness and
+satisfaction across individuals was well. As described above, Kahneman
+et al (2010) observed the association between household wealth and
+happiness plateaud after $75,000, but they also reported that life
+satisfaction continued to increase with wealth. Indeed, several
+researchers have observed a similar difference between two questions
+that are often used in surveys of subjective well-being: “How satisfied
+are you with your life?” and “How happy are you these days?” (Howell and
+Howell, 2008; Veenhoven and Hagerty, 2006). The common conclusion is
+that wealth is more strongly related to satisfaction than to happiness.
+
+Research since 2010 has revealed variations in the plateau or *change
+point* due to [world region, gender, and
+education](https://www-nature-com.ezproxy2.library.usyd.edu.au/articles/s41562-017-0277-0)
+(Jebb et al., 2018). However to date there has been no investigation as
+to whether the relationship between wealth and happiness changes over
+time. The value of money of course generally *decreases* over time with
+inflation and the cost of living and so this will *raise* the cost of
+happiness, however it will not change the cost of happiness over time in
+real dollar terms (i.e., adjusted for inflation). The distribution of
+wealth has also changed over the last 30 years in many OECD countries
+including Australia as the rich got richer while the poor stayed poor
+(ref needed). Such changes in the distribution of wealth may increase
+the cost of happiness if it is derived by relative wealth (e.g., Clarke
+et al 2008). That is, as the ceiling of wealth in dollar terms is raised
+over time, for any fixed income level at *t*<sub>0</sub> (i.e., the base
+year) there will be a greater disparity relative to the highest wealth
+percentile. This growing disparity may produce corresponding changes in
+the level of wealth at which people no longer judge their happiness to
+be increased relative to others.
 
 The relationship between wealth and happiness and satisfaction are
 relevant for the growing popularity of using subjective well-being as a
@@ -79,38 +99,21 @@ policy guide for government and agencies. If there are distinct effects
 of wealth on happiness and satisfaction then the question of which is
 better suited to assess human welfare and to guide policy seems
 critical. The observation that happiness plateaus with increasing wealth
-while satisfaction keeps rising acquires some importance in this
+while satisfaction keeps rising acquires substantial importance in this
 context. Not everyone will agree that enhancing the happiness
-experienced by those who are already quite happy is a legitimate policy
-objective.
-
-And while research since 2010 has revealed variations in the plateau or
-*change point* due to [world region, gender, and
-education](https://www-nature-com.ezproxy2.library.usyd.edu.au/articles/s41562-017-0277-0)
-(Jebb et al., 2018), there has been no investigation as to whether the
-relationship between wealth and happiness is changing over time
-\[although see Fig. 4 in Clark et al. (2008); for a speculative
-mechanism\]. The value of money of course changes over time with
-inflation, however the distribution of wealth has also changed over the
-last 30 years in many OECD countries including Australia (as the rich
-got richer faster than the poor, ref needed). Such changes in the
-distribution of wealth are also likely to change the relationship with
-wellbeing when it is governed by relative wealth rather than absolute
-wealth (Clark et al., 2008).
+experienced by those who are already very happy is a legitimate policy
+objective. Likewise, if the point at which wealth no longer increases
+happiness is increasing (or decreasing) over time, then policy
+objectives may need to change to reflect this.
+<span style="color: blue"> (This section needs a clearer statement on
+the importance of determining the increasing cost of happiness) </span>
 
 We used household economic panel data from Australia (HILDA) to provide
 the first investigation of whether changes in wealth and wellbeing have
 changed over the last 16 years (2002-2018). We distinguished between
 satisfaction and happiness as different components of subjective
-wellbeing, and evaluated how each varies with household wealth. Economic
-security is better represented by household wealth, since members of the
-same household share expenses as well as risks; i.e., they can provide a
-direct and immediate support network when financial shocks occur. The
-other major studies also used household after-tax income as the
-indicator of wealth and economic security, and so we follow the same
-standard here as well.
-
-After adjusting for age, gender, and education level, we find that
+wellbeing, and evaluated how each varies with household wealth. After
+adjusting for age, gender, and education level, we find that
 satisfaction increases linearly with household wealth, but the same
 purchasing power has diminishing returns on happiness. We also discover
 that the location of the inflection point has increased in real dollar
@@ -118,41 +121,53 @@ value since 2002.
 
 <br>
 
+## Methods
+
 #### Wealth
 
-We have a variety of income & wealth information in HILDA, most of it
-collected annually. However the household net worth is collected every
-four years. In the present report we use
-[hifdip](https://www.online.fbe.unimelb.edu.au/HILDAodd/KWCrossWaveCategoryDetails.aspx?varnt=hifdip)
-Household financial year disposable regular income ($). The sum across
-all household members of financial year gross regular income minus taxes
-on financial year gross regular income. Wealth variables were provided
-by the University of Melbourne as imputed, and with weighted topcodes to
-preserve anonymity. *Nb*. We also examined household and personal gross
-wages and disposable income (not shown).
+Our wealth variable was household after-tax income. Economic security is
+better represented by household wealth, since members of the same
+household share expenses as well as risks; i.e., they can provide a
+direct and immediate support network when financial shocks occur. The
+other major studies also used household after-tax income as the
+indicator of wealth and economic security (e..g, Kahneman and Deaton,
+2010; Jebb et al., 2018), and so we follow the same standard here as
+well. Household financial year disposable regular income
+[(hifdip)](https://www.online.fbe.unimelb.edu.au/HILDAodd/KWCrossWaveCategoryDetails.aspx?varnt=hifdip)
+from every four years of HILDA (2002, 2006, 2010, 2014, 2018) was used.
+This variable represents the sum across all household members of
+financial year gross regular income less taxes on financial year gross
+regular income.
 
-We removed individuals with values above the threshold indicated for
-top-coding. Household wealth was adjusted for the number of people in
-each household in the same manner as Headey, Muffels & Wooden, 2004;
-i.e., income divided by the square root of household size (Buhmann et
-al, 1988; Coulter et al, 1992).
+Household income was provided by the University of Melbourne as imputed,
+and with weighted topcodes to preserve anonymity. We removed individuals
+with values above the threshold indicated for top-coding. Household
+wealth was adjusted for the number of people in each household by
+dividing by the square root of household size \[headey2004effects;
+jebb2018happiness; kahneman2010high\].
 
 <br>
 
 #### Subjective Wellbeing
 
 There are a variety of variables related to subjective well-being
-collected annually, but the two we used here matched the variables we
-used in our previous paper:
-
-1.  `losat` Life satisfaction - How satisfied are you with your life (0
-    to 10)
-2.  `gh9a` to `gh9i` Affective wellbeing - Sum of SF-36 item 9 (mental
-    health and vitality)
-
-*Note*. We also examined `ghmh` (the 5-item subset of mental health
-questions, sometimes called the **MHi-5**, from the SF-36), and the
-patterns were almost identical to our sum of 9a to 9i.
+collected annually in HILDA, but the two we used here matched the
+variables we used in our previous paper (Kettlewell et al., 2020),
+namely 1) life satisfaction
+[(losat)](https://www.online.fbe.unimelb.edu.au/HILDAodd/KWCrossWaveCategoryDetails.aspx?varnt=losat),
+a single item question asked each survey “How satisfied are you with
+your life (0 to 10)”, and 2) happiness determined by the sum of SF-36
+item 9 on mental health and vitality [(gh9a to
+gh9i)](https://www.online.fbe.unimelb.edu.au/HILDAodd/KWCrossWaveCategoryDetails.aspx?varnt=gh9a).
+The SF-36 is a widely used self-completion measure of various aspects of
+physical, emotional and mental health (Ware Jr, 2000). We calculated a
+summed score based on nine questions (9a-9i), where five questions dealt
+with positive and negative aspects of mental health (e.g., “Felt so down
+in the dumps nothing could cheer me up”, “Been happy”), and four
+questions dealt with positive and negative aspects of vitality (e.g.,
+“feel full of life”, “felt worn out”). We reverse scored relevant
+items to ensure the summed score represented better wellbeing with
+higher scores.
 
 <br>
 
@@ -232,8 +247,8 @@ data points in each year, we grouped individuals into 10 equal-sized
 subgroups according to their wealth decile ($). Thus in each plot, the
 mean wealth and mean wellbeing score for each decile is presented,
 rather than each individual data point. Note that the line-of-best-fit
-and 95% confidence intervals from the broken stick regression model *of
-all individuals* is shown in overlay.
+and 95% confidence intervals from each regression model *of all
+individuals* is shown in overlay.
 
 <br>
 
@@ -244,7 +259,7 @@ covariates, and students were removed.
 
 <br>
 
-### Results
+## Results
 
 -----
 
@@ -295,15 +310,17 @@ larger than the base year (2002).
 
 **Key points**
 
-  - The change point for happiness (affective wellbeing) shifts to the
-    right over time and occurs at greater household wealth levels.
+  - The level of wealth at which happiness no longer increased at the
+    same rate (the *cost of happiness*) credibly increased between 2002
+    and 2018, and even as early as 2014.
 
 <br>
 
 #### Change points over time
 
-The mean change point location has moved further right (higher, faster)
-than the median household wealth over time:
+The cost of happiness increased faster than median household wealth. As
+a result, a smaller percentage of people achieved a level of wealth at
+which happiness no longer increased in 2018 than in 2002:
 
 <table>
 
@@ -493,7 +510,7 @@ fy2018
 
 <br><br>
 
-### Conclusions
+## Conclusions
 
 -----
 
@@ -546,7 +563,7 @@ data spanning long periods of time (12-44 years). Perhaps the different
 results are due to differences in the constructs being measured, or
 perhaps it is due to different effects of time between studies.
 
-### References
+## References
 
 <div id="refs" class="references">
 
@@ -656,6 +673,12 @@ happiness in the united states, 1972–2016. Emotion.
 
 Veenhoven, R., Hagerty, M., 2006. Rising happiness in nations 1946–2004:
 A reply to easterlin. Social indicators research 79, 421–436.
+
+</div>
+
+<div id="ref-ware2000sf">
+
+Ware Jr, J.E., 2000. SF-36 health survey update. Spine 25, 3130–3139.
 
 </div>
 
