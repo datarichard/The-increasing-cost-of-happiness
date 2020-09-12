@@ -32,18 +32,17 @@ A fundamental question for governments and people is how much happiness does a d
 
 
 ## Background
-***
 A fundamental question for the psychology and economics of wellbeing is just how much happiness does a dollar buy? Increasing wealth is commonly associated with increasing happiness, however a point at which wealth no longer increases happiness has also been [widely observed](https://www-sciencedirect-com.ezproxy2.library.usyd.edu.au/science/article/pii/S0167487007000694){target="_blank"} [@clark2008relative; @dolan2008we; @easterlin1974growth]. Given that a central goal of nations and governments is to improve wealth under the assumption that wealth always increases wellbeing, challenges to this notion have far reaching consequences [@frijters2020happy].   
 
-For instance, one [survey of 1,000 Americans](https://www.pnas.org/content/107/38/16489.full){target="_blank"}, conducted in 2010, concluded that money does make us happier – but only up to a certain point. The findings showed that self-reported levels of happiness increased with household wealth up to \$75,000 a year. But after that, increasing amounts of money had no further effect on happiness [@kahneman2010high]. Results such as these have reinforced the view among psychologists and economists that the relationship between wealth and measures of subjective wellbeing, such as happiness, increases linearly up to a point after which there is little gained by further increments in wealth [@clark2018four; @dolan2008we].  
+For instance, one [survey of 1,000 Americans](https://www.pnas.org/content/107/38/16489.full){target="_blank"}, conducted in 2010, concluded that money does make us happier – but only up to a certain point. The findings showed that self-reported levels of happiness increased with household wealth up to \$75,000 a year. But after that, increasing amounts of money had no further effect on happiness [@kahneman2010high]. Results such as these have reinforced the view among psychologists and economists that the relationship between wealth and measures of subjective wellbeing, such as happiness, increases linearly up to a point (i.e., a _change point_) after which there is little gained by further increments in wealth [@clark2018four; @dolan2008we]. We suggest that the point at which wealth produces no further increases in happiness might be described as the _cost_ of happiness.   
 
 Subjective wellbeing is not a unitary entity [@diener2017findings]; studies typically distinguish between _life satisfaction_, the cognitive appraisal of one's own accomplishments, and _happiness_, one's prevailing affective state or emotional mood. Money can have different effects on each. For instance, we have recently reported that positive life events, such as a major financial windfall, can have a greater impact on an individual's satisfaction than their happiness [@kettlewell2020differential]. However these effects were observed as a change within individuals, and the change was temporary as both satisfaction and happiness returned to baseline after two years [see also @frijters2011life]. Wealth also has a distinct relationship with happiness and satisfaction across individuals was well. As described above, Kahneman et al (2010) observed the association between household wealth and happiness plateaud after $75,000, but they also reported that life satisfaction continued to increase with wealth. Indeed, several researchers have observed a similar difference between two questions that are often used in surveys of subjective well-being: “How satisfied are you with your life?” and “How happy are you these days?” [@veenhoven2006rising; @howell2008relation]. The common conclusion is that wealth is more strongly related to satisfaction than to happiness.  
 
-Research since 2010 has revealed variations in the plateau or _change point_ due to [world region, gender, and education](https://www-nature-com.ezproxy2.library.usyd.edu.au/articles/s41562-017-0277-0){target="_blank"} [@jebb2018happiness]. However to date there has been no investigation as to whether the relationship between wealth and happiness changes over time. The value of money of course generally _decreases_ over time with inflation and the cost of living and so this will _raise_ the cost of happiness, however it will not change the cost of happiness over time in real dollar terms (i.e., adjusted for inflation). The distribution of wealth has also changed over the last 30 years in many OECD countries including Australia as the rich got richer while the poor stayed poor (ref needed). Such changes in the distribution of wealth may increase the cost of happiness if it is derived by relative wealth (e.g., Clarke et al 2008). That is, as the ceiling of wealth in dollar terms is raised over time, for any fixed income level at *t*<sub>0</sub> (i.e., the base year) there will be a greater disparity relative to the highest wealth percentile. This growing disparity may produce corresponding changes in the level of wealth at which people no longer judge their happiness to be increased relative to others.  
+Research since 2010 has revealed variations in the change point or cost of happiness due to [world region, gender, and education](https://www-nature-com.ezproxy2.library.usyd.edu.au/articles/s41562-017-0277-0){target="_blank"} [@jebb2018happiness]. However to date there has been no investigation as to whether the _change point_ varies over time. That is, has the point at which happiness no longer increases with wealth itself changed over time? The value of money of course generally _decreases_ over time with inflation and the cost of living and so this will _raise_ the cost of happiness, however it will not change the cost of happiness over time in real dollar terms (i.e., adjusted for inflation). The distribution of wealth has also changed over the last 30 years in many OECD countries including Australia as the rich got richer while the poor stayed poor (ref needed). Such changes in the distribution of wealth may increase the cost of happiness if it is derived by relative wealth (e.g., Clarke et al 2008). When the ceiling of wealth in real dollar terms is raised over time; for any fixed income level at *t*<sub>0</sub> (i.e., the base year) there will be a greater disparity relative to the highest wealth percentile at *t*<sub>n+1</sub>. If happiness is, even partly, determined by this relative disparity then increasing the disparity will reduce happiness amongst the poorest percentiles (while leaving happiness amongst the richest percentiles unchanged). This may increase the level of wealth at which happiness no longer increases. That is, as the rich get richer, the poor get unhappier due to the increasing relative wealth disparity and so the cost of happiness increases. <span style="color: blue"> (This section may need more clarity) </span>
 
-The relationship between wealth and happiness and satisfaction are relevant for the growing popularity of using subjective well-being as a policy guide for government and agencies. If there are distinct effects of wealth on happiness and satisfaction then the question of which is better suited to assess human welfare and to guide policy seems critical. The observation that happiness plateaus with increasing wealth while satisfaction keeps rising acquires substantial importance in this context. Not everyone will agree that enhancing the happiness experienced by those who are already very happy is a legitimate policy objective. Likewise, if the point at which wealth no longer increases happiness is increasing (or decreasing) over time, then policy objectives may need to change to reflect this. <span style="color: blue"> (This section needs a clearer statement on the importance of determining the increasing cost of happiness) </span>    
+The relationship between wealth and happiness and satisfaction are increasingly relevant to governments and policy-makers due to the growing recognition that increasing wealth does not necessarily lead to improvements in wellbeing [@clark2018four; @frijters2020happy]. If satisfaction but not happiness increases with wealth, then the pursuit of both may not be a feasible policy. Likewise, if happiness increases up to a point with wealth, or the cost of happiness changes over time, then not everyone will agree that enhancing the happiness of those who are already very happy is a legitimate policy objective. Conversely, it may emphasize that the relationship between wealth and happiness is malleable and thus amenable to policy objectives. <span style="color: blue"> (This section needs a clearer statement on the importance of determining the increasing cost of happiness) </span>    
 
-We used household economic panel data from Australia (HILDA) to provide the first investigation of whether changes in wealth and wellbeing have changed over the last 16 years (2002-2018). We distinguished between satisfaction and happiness as different components of subjective wellbeing, and evaluated how each varies with household wealth. After adjusting for age, gender, and education level, we find that satisfaction increases linearly with household wealth, but the same purchasing power has diminishing returns on happiness. We also discover that the location of the inflection point has increased in real dollar value since 2002.   
+We used household economic panel data from Australia (HILDA) to provide the first investigation of whether changes in wealth and wellbeing have changed over the last 16 years (2002-2018). We distinguished between satisfaction and happiness as different components of subjective wellbeing, and evaluated how each varies with household wealth. After adjusting for age, gender, and education level, we find that satisfaction increases linearly with household wealth, but the same purchasing power has diminishing returns on happiness. We also discover that the location of the change point (the _cost_ of happiness) has increased in real dollar terms since 2002.   
 
  
 <br>
@@ -51,39 +50,48 @@ We used household economic panel data from Australia (HILDA) to provide the firs
 ## Methods
 
 #### Wealth
-Our wealth variable was household after-tax income. Economic security is better represented by household wealth, since members of the same household share expenses as well as risks; i.e., they can provide a direct and immediate support network when financial shocks occur. The other major studies also used household after-tax income as the indicator of wealth and economic security [e..g, @kahneman2010high; @jebb2018happiness], and so we follow the same standard here as well. Household financial year disposable regular income [(hifdip)](https://www.online.fbe.unimelb.edu.au/HILDAodd/KWCrossWaveCategoryDetails.aspx?varnt=hifdip){target="_blank"} from every four years of HILDA (2002, 2006, 2010, 2014, 2018) was used. This variable represents the sum across all household members of financial year gross regular income less taxes on financial year gross regular income.  
+Our indicator of wealth and economic security was household after-tax income. Household income better represents economic security, since members of the same household share expenses as well as risks; i.e., they can provide a direct and immediate support network when financial shocks occur. The other major studies also used household after-tax income as the indicator of wealth and economic security [e..g, @kahneman2010high; @jebb2018happiness], and so we follow the same standard here as well. Household financial year disposable regular income [(hifdip)](https://www.online.fbe.unimelb.edu.au/HILDAodd/KWCrossWaveCategoryDetails.aspx?varnt=hifdip){target="_blank"} from the annual HILDA survey in 2002, 2006, 2010, 2014,and 2018 was selected. This variable in HILDA represents the sum across all household members of financial year gross regular income less taxes on financial year gross regular income.  
 
-Household income was provided by the University of Melbourne as imputed, and with weighted topcodes to preserve anonymity. We removed individuals with values above the threshold indicated for top-coding. Household wealth was adjusted for the number of people in each household by dividing by the square root of household size [headey2004effects; jebb2018happiness; kahneman2010high].  
+Household income was provided by the University of Melbourne as imputed, and with weighted topcodes to preserve anonymity. We removed individuals with values above the threshold indicated for top-coding. Household wealth was adjusted for the number of people in each household by dividing by the square root of household size [@headey2004effects; @jebb2018happiness; @kahneman2010high]. We converted dollar values to the base year (2002) according to CPI from the RBA, in order to adjust for inflation (https://www.rba.gov.au/calculator/annualDecimal.html). 
 
 <br>
 
 #### Subjective Wellbeing
-There are a variety of variables related to subjective well-being collected annually in HILDA, but the two we used here matched the variables we used in our previous paper [@kettlewell2020differential], namely 1) life satisfaction [(losat)](https://www.online.fbe.unimelb.edu.au/HILDAodd/KWCrossWaveCategoryDetails.aspx?varnt=losat){target="_blank"}, a single item question asked each survey "How satisfied are you with your life (0 to 10)", and 2) happiness determined by the sum of SF-36 item 9 on mental health and vitality [(gh9a to gh9i)](https://www.online.fbe.unimelb.edu.au/HILDAodd/KWCrossWaveCategoryDetails.aspx?varnt=gh9a){target="_blank"}. The SF-36 is a widely used self-completion measure of various aspects of physical, emotional and mental health [@ware2000sf]. We calculated a summed score based on nine questions (9a-9i), where five questions dealt with positive and negative aspects of mental health (e.g., "Felt so down in the dumps nothing could cheer me up", "Been happy"), and four questions dealt with positive and negative aspects of vitality (e.g., "feel full of life", "felt worn out"). We reverse scored relevant items to ensure the summed score represented better wellbeing with higher scores.  
+There are a variety of variables related to subjective well-being collected annually in HILDA, but the two we used here matched the variables we used in our previous paper [@kettlewell2020differential]. Namely, 1) life satisfaction [(losat)](https://www.online.fbe.unimelb.edu.au/HILDAodd/KWCrossWaveCategoryDetails.aspx?varnt=losat){target="_blank"}, a single item question asked each survey "How satisfied are you with your life (0 to 10)", and 2) happiness determined by item 9 in the SF-36 [(gh9a to gh9i)](https://www.online.fbe.unimelb.edu.au/HILDAodd/KWCrossWaveCategoryDetails.aspx?varnt=gh9a){target="_blank"}. The SF-36 is a widely used self-completion measure of various aspects of physical, emotional and mental health [@ware2000sf]. Item 9 consists of nine questions relating to mental health and vitality, where five questions deal with positive and negative aspects of mental health (e.g., "Felt so down in the dumps nothing could cheer me up", "Been happy"), and four questions deal with positive and negative aspects of vitality (e.g., "feel full of life", "felt worn out"). We reverse scored the relevant responses and calculated a summed score so that better wellbeing was represented by higher scores.  
 
 <br>
 
-#### Modelling and model-selection
+#### Modelling
 
-_Modelling_  
-To initially describe the relationship between wealth and wellbeing, we modelled the data from each year in three different ways: 1) a simple linear model of the form y<sub>*i*</sub> = *&beta;*<sub>0</sub> + *&beta;*<sub>1</sub>*x*<sub>*i*</sub> + *&epsilon;*<sub>*i*</sub>; 2) a cubic b-spline model of the form *B*(*x*) = *&Sigma;&beta;*<sub>*i*</sub>*B*<sub>*i,n*</sub>(*x*); and 3) a piecewise (broken-stick) model of the form y<sub>*i*</sub> = *&beta;*<sub>0</sub> + *&beta;*<sub>1</sub>(*x*<sub>*i*</sub> - &omega;)(*x*<sub>*i*</sub> ≤ &omega;) + *&beta;*<sub>2</sub>(*x*<sub>*i*</sub> - &omega;)(*x*<sub>*i*</sub> ≤ &omega;).  
+We initially describe the relationship between wealth and each wellbeing variable (happiness and satisfaction) using three different models: 1) a simple **linear model**; 2) a cubic **B-spline model**; and 3) a **piecewise model** (broken-stick). These three models were chosen to represent varying degrees of complexity in the relationship between wealth and wellbeing. The linear model was the simplest relationship while the cubic B-spline was the most complex model (more degrees of freedom), and chosen because it has been recently used to describe the maximum point at which wellbeing no longer increases with wealth [i.e., "satiety", @jebb2018happiness]. Following Jebb et al, we restricted the cubic B-spline model to *n* = 4, 5 and 6 knots and show each instantiation here. The piecewise model was chosen as the simplest extension of a linear model which can identify a change point (inflection) between wellbeing and wealth. The location of the change point was a free parameter which revealed where wellbeing no longer increased linearly with wealth.   
 
-These three models were chosen to represent varying degrees of complexity. The linear model was obviously the simplest relationship that can exist between wealth and wellbeing. The cubic B-spline was a complex model (more degrees of freedom) and chosen because it has been recently used to describe the maximum point at which wealth no longer increases wellbeing [@jebb2018happiness]. Following Jebb et al, we restricted the model to 4, 5 and 6 knots and show each instantiation here. The piecewise model was chosen as the simplest extension of a linear model to identify the change point at which wellbeing no longer increases linearly with wealth.
+We then compared the linear model against the piecewise model to determine if a change point existed in each or any year between wealth and each wellbeing variable (model selection). Finally, where a change point existed, we determined the location of the change point for that year (change point estimation).  
 
-_Change point estimation_  
-To determine whether the relationship between wellbeing and wealth contained an inflection point ("change point"), we modelled the relationship between wealth and wellbeing across individuals using the piecewise model described above, and estimated the posterior probability of the changepoint location using a Bayesian approach:  
+
+_Model estimation_  
+We adopted a Bayesian approach for estimating the linear and piecewise model in the software Stan [@burkner2017; @rstan2019]. In each case,  
 
 Let y<sub>*i*</sub> ~ *N*(*&mu;*<sub>*i*</sub>, *&sigma;*<sup>2</sup><sub>*y*</sub>)  
 
-*&mu;*<sub>i</sub> = *&beta;*<sub>0</sub> + *&beta;*<sub>1</sub>(*x*<sub>*i*</sub> - &omega;<sub>*t*</sub>)(*x*<sub>*i*</sub> ≤ &omega;<sub>*t*</sub>) + *&beta;*<sub>2</sub>(*x*<sub>*i*</sub> - &omega;<sub>*t*</sub>)(*x*<sub>*i*</sub> > &omega;<sub>*t*</sub>)  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  (1)
+The linear model was estimated as:  
 
-Where *x*<sub>i</sub> and *y*<sub>i</sub> was an individuals' household wealth (\$) and wellbeing, respectively; and &omega;<sub>*t*</sub> was the changepoint in $ for each year (*t*).  
+*&mu;*<sub>i</sub> = *&beta;*<sub>0</sub> + *&beta;*<sub>1</sub>*X*<sub>*i*</sub>   \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  (1)  
 
-The location of the changepoint was sampled randomly from a uniform prior over the resticted range of wealth values, and the posterior probability of the location for each year is presented.  
+Where *X*<sub>i</sub> was an individual's household wealth (\$) as well as other covariates (age, age^2^, gender, education), and *y*<sub>i</sub> was an individual's wellbeing.    
 
 <br>
 
+The piecewise model was a simple extension of this to include a free parameter to represent the changepoint in wealth (&omega;) as well as the slope after the change point (*&beta;*<sub>2</sub>):  
+
+*&mu;*<sub>i</sub> = *&beta;*<sub>0</sub> + *&beta;*<sub>1</sub>(*x*<sub>*i*</sub> - &omega;<sub>*t*</sub>)(*x*<sub>*i*</sub> ≤ &omega;<sub>*t*</sub>) + *&beta;*<sub>2</sub>(*x*<sub>*i*</sub> - &omega;<sub>*t*</sub>)(*x*<sub>*i*</sub> > &omega;<sub>*t*</sub>)  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  (2)  
+
+<br>
+
+The above models estimated population-level (fixed) effects for each year in the data (*t* = 2002, 2006, 2010, 2014 and 2018). Because we were interested in the location of the change point between wealth and wellbeing that existed across individuals within each year, we ignored the panel design of HILDA because the dependency between observations of the same person across years was orthogonal to our effects of interest. We assumed an unstructured variance-covariance matrix between years, and specified weakly informed priors for each *&beta;*, and a uniform prior over the restricted range of wealth values for *&omega;*.   
+
+
 _Model selection_  
-To determine whether wellbeing was a linear or non-linear (e.g., piecewise) function of wealth, we compared the linear and piecewise model fits using the [Widely Applicable Information Criterion (WAIC)](https://bookdown.org/ajkurz/Statistical_Rethinking_recoded/overfitting-regularization-and-information-criteria.html#the-problem-with-parameters){target="_blank"}. The WAIC is the log-posterior predictive density plus a penalty proportional to the variance in the posterior distribution. Thus it provides an approximation of the out-of-sample deviance that converges to the cross-validation approximation in a large sample, with a penalty for the effective number of parameters (degrees of freedom). For this reason is it useful to compare two models of varying complexity.   
+To determine whether wellbeing was a linear or non-linear (e.g., piecewise) function of wealth, we compared the linear and piecewise model posterior probabilities using the [Widely Applicable Information Criterion (WAIC)](https://bookdown.org/ajkurz/Statistical_Rethinking_recoded/overfitting-regularization-and-information-criteria.html#the-problem-with-parameters){target="_blank"}. The WAIC is the log-posterior predictive density plus a penalty proportional to the variance in the posterior distribution. Thus it provides an approximation of the out-of-sample deviance that converges to the cross-validation approximation in a large sample, with a penalty for the effective number of parameters (degrees of freedom). For this reason is it useful to compare two models of varying complexity, such as our linear and piecewise model.   
   
 WAIC was defined as:  
 
@@ -91,11 +99,9 @@ WAIC = -2(lppd - *p*~WAIC~)
 
 Where lppd (log pointwise predictive density) is the total across observations of the log of the average likelihood of each observation, and *p*~WAIC~ is the effective number of free parameters determined by the sum of the variance in log-likelihood for each observation (*i*).   
 
-For visualization purposes only, due to the large number of individual data points in each year, we grouped individuals into 10 equal-sized subgroups according to their wealth decile ($). Thus in each plot, the mean wealth and mean wellbeing score for each decile is presented, rather than each individual data point. Note that the line-of-best-fit and 95% confidence intervals from each regression model _of all individuals_ is shown in overlay.  
 
-```{r funtimes}
-source("../src/happyfun.r")
-```
+_Change point estimation_  
+To determine the location of the change point between wellbeing and wealth, we modelled the relationship between wealth and wellbeing across individuals using the piecewise model described above, and estimated the posterior probability of the changepoint location. The posterior distribution of the change point location for each year is presented.  
 
 <br> 
 
@@ -110,9 +116,14 @@ happywealth_covs <- read_rds("../results/happywealth_covs.rds")
 <br>
 
 ## Results
-***
 
-#### Household wealth on satisfaction (cognitive wellbeing)
+```{r funtimes}
+source("../src/happyfun.r")
+```
+
+For visualization purposes only, due to the large number of individual data points in each year, we grouped individuals into 10 equal-sized subgroups according to their wealth decile ($). Thus in each plot, the mean wealth and mean wellbeing score for each decile is presented, rather than each individual data point. Note that the line-of-best-fit and 95% confidence intervals from each regression model _of all individuals_ is shown in overlay.  
+
+#### Household wealth and satisfaction (cognitive wellbeing)
 ```{r losat_hwnwip, fig.height=8, fig.width=9}
 library(patchwork)
 
@@ -133,14 +144,14 @@ p3 <- happywealth_covs %>%
 
 **Key points**  
 
-- Generally the relationship between satisfaction and household wealth appeared linear
-- The linear relationship between satisfaction and wealth became weaker (less steep) over years
-- There is no satiety point (horizontal inflection) in satisfaction before the highest decile in any year
-- Any inflection point in satisfaction was as likely to be convex as concave  
+- The relationship between satisfaction and household wealth appeared linear
+- The linear relationship between satisfaction and wealth became slightly weaker (less steep) over years
+- The cubic B-spline models indicated no satiety point (horizontal inflection) in satisfaction before the highest decile in any year
+- Any change point in satisfaction was as likely to be convex as concave  
 
 <br>
 
-#### Household wealth on happiness (affective wellbeing)
+#### Household wealth and happiness (affective wellbeing)
 ```{r gh9_hwnwip, fig.height=8, fig.width=9}
 library(patchwork)
 
@@ -161,19 +172,115 @@ p3 <- happywealth_covs %>%
 
 **Key points**  
 
-- The linear relationship between happiness and wealth became weaker (less steep) over years
-- There was no happiness satiety point (horizontal inflection) before the final decile in any year
-- A concave inflection point with happiness occurred in each year, and appeared to shift right with time.  
+- A change point is evident in each year where the linear relationship between happiness and wealth became abruptly weaker (less steep)
+- The overall linear relationship between happiness and wealth, as well as the pre-inflection slope, became weak (less steep) over years
+- The cubic B-spline model indicated there was no happiness satiety point (horizontal inflection) before the final decile in any year
+- The change point between happiness and wealth appeared to shift right with time.  
 
 <br>
 
+#### Model selection
+
+We compared the posterior evidence for a linear relationship between wellbeing and wealth with the posterior evidence of a nonlinear (piecewise) relationship (WAIC~linear~ — WAIC~piecewise~). Thus a WAIC difference greater than zero indicates evidence for a linear relationship. A WAIC difference less than zero indicates evidence for a nonlinear (piecewise) relationship.    
+
+##### Model evidence for linear satisfaction
+
+```{r plot_waic_losat}
+waic_result <- read_rds("../results/waic_losat.RDS")
+
+d1 <- data.frame(fy2018 = rnorm(n = 1e5, 
+                                     mean = waic_result[2, 1] * -2, 
+                                     sd   = waic_result[2, 2] *  2)/10,
+                 fy2014 = rnorm(n = 1e5, 
+                                     mean = waic_result[4, 1] * -2, 
+                                     sd   = waic_result[4, 2] *  2)/10,
+                 fy2010 = rnorm(n = 1e5, 
+                                     mean = waic_result[6, 1] * -2, 
+                                     sd   = waic_result[6, 2] *  2)/10,
+                 fy2006 = rnorm(n = 1e5, 
+                                     mean = waic_result[8, 1] * -2, 
+                                     sd   = waic_result[8, 2] *  2)/10,
+                 fy2002 = rnorm(n = 1e5, 
+                                     mean = waic_result[10, 1] * -2, 
+                                     sd   = waic_result[10, 2] *  2)/10
+                )
+
+color_scheme_set("blue")
+mcmc_areas(x = d1,
+  pars = colnames(d1),
+  prob = 0.90,
+  prob_outer = 1
+  ) +
+  scale_x_continuous(
+    labels = function(x) {x*10}) +
+  geom_vline(aes(xintercept = 0), color = "grey90") +
+  theme_test() +
+  labs(
+    subtitle = "Nonlinear over linear fit for satisfaction (mean difference and 90% distribution)",
+    x = "WAIC difference (90% shaded)")
+```
+
+<br>
+
+- A linear fit between household wealth and satisfaction was credibly superior to a nonlinear fit in each year  
+<br>
+
+##### Model evidence for nonlinear happiness
+```{r plot_waic_gh9}
+waic_result <- read_rds("../results/waic_comparisons_gh9_percentiles.RDS")
+
+d1 <- data.frame(fy2018 = rnorm(n = 1e5, 
+                                mean = waic_result[10, 1] * 2, 
+                                sd   = waic_result[10, 2] *  2)/10,
+                 fy2014 = rnorm(n = 1e5, 
+                                mean = waic_result[8, 1] * 2, 
+                                sd   = waic_result[8, 2] *  2)/10,
+                 fy2010 = rnorm(n = 1e5, 
+                                mean = waic_result[6, 1] * 2, 
+                                sd   = waic_result[6, 2] *  2)/10,
+                 fy2006 = rnorm(n = 1e5, 
+                                mean = waic_result[4, 1] * 2, 
+                                sd   = waic_result[4, 2] *  2)/10,
+                 fy2002 = rnorm(n = 1e5, 
+                                mean = waic_result[2, 1] * 2, 
+                                sd   = waic_result[2, 2] *  2)/10
+)
+
+color_scheme_set("red")
+mcmc_areas(x = d1,
+           pars = colnames(d1),
+           prob = 0.90,
+           prob_outer = 1
+) +
+  scale_x_continuous(
+    labels = function(x) {x*10}) +
+  geom_vline(aes(xintercept = 0), color = "grey90") +
+  theme_test() +
+  labs(
+    subtitle = "Nonlinear over linear fit for happiness (mean difference and 90% distribution)",
+    x = "WAIC difference (90% shaded)")
+```
+
+<br>
+
+- A nonlinear fit between household wealth and happiness was superior to a linear fit in each year 
+- The nonlinear fit was credibly superior to a linear fit at 90% for each of three years (2018, 2014, 2006)  
+
+<br>
+
+**Key points**  
+
+- The posterior evidence indicates a linear model with no inflection point explains the relationship between satisfaction and household wealth in each year
+- However a nonlinear fit with at least one inflection point better explained the relationship between happiness and household wealth  
+
+<br>
 
 ##### Bayesian change point results  
 
 Shaded areas to the right of the vertical dotted line are credibly (95%) larger than the base year (2002).  
 
 ```{r happy_change_time, fig.width = 4.9, fig.height = 9}
-hifdip_gh9_fixed_fit <- read_rds("../results/hifdip_gh9_fixed_full.RDS")
+hifdip_gh9_fixed_fit <- read_rds("../results/hifdip_gh9_fixed_full_covs.RDS")
 
 as.data.frame(hifdip_gh9_fixed_fit) %>%
   select(b_alpha_Intercept, b_alpha_year2006, b_alpha_year2010, 
@@ -192,7 +299,7 @@ mcmc_areas(
   posteriors,
   pars = rev(colnames(posteriors)),
   prob = 0.95, # 80% intervals
-  prob_outer = 1, # 99%
+  prob_outer = .99, # 99%
   point_est = "mean"
   ) +
   theme_test() +
@@ -206,7 +313,7 @@ mcmc_areas(
 
 **Key points**  
 
-- The level of wealth at which happiness no longer increased at the same rate (the _cost of happiness_) credibly increased between 2002 and 2018, and even as early as 2014.   
+- The level of wealth at which happiness no longer increased with wealth (the _cost of happiness_) credibly increased between 2002 and 2018.   
 
 <br>
 
@@ -239,21 +346,23 @@ happywealth_covs %>%
 <br><br>
 
 ## Conclusions
-***
 
-The main conclusions of this report so far are:  
+We observed the relationship between subjective wellbeing and wealth was positive, but happiness and satisfaction have different (positive) relationships. Satisfaction increased linearly with wealth while happiness increased rapidly up to a point, after which further increments in wealth produced less change - we referred to this as the **cost** of happiness. So household wealth, and the economic security it represents, buys happiness up to a point after which happiness and wealth are rarely related. Satisfaction on the other hand always increased with household wealth. The difference likely reflects the importance of a numerical dollar value (e.g., bank balance) when cognitively appraising one's life achievements, versus the relevance of that number to our everyday experience of joy or our prevailing mood.  
 
-- The relationship between subjective wellbeing and wealth is positive but happiness and satisfaction have different (positive) relationships. Satisfaction increases linearly with wealth while happiness increases rapidly up to a point, after which further increments in wealth produce less change - this is the **cost point** of happiness. So money buys happiness when economic security is scarce, but not so much once the cost point is reached.
-- The cost point after which money provides decreasing returns in happiness is increasing over time. In 2002, the cost point of happiness represented a 13% increase over median wealth, while in 2018 it represented a 67% increase over median wealth.
-- According to @frijters2020happy, coming up with a consensus estimate for income to translate into welbeing features high on the wellbeing research agenda. However evidence of a linear relationship between wellbeing and wealth calls into question the need to supplant traditional measures of economic success such as GDP with measures of wellbeing, such as "life satisfaction" surveys.  
+Previous studies have challenged the notion that the positive effect of money plateaus [@stevenson2013subjective]. After comparing life satisfaction levels in both rich and poor countries, and rich and poor people within a country – with “rich” being defined as an income greater than $15,000 per person – Stevenson & Wolfers concluded: “The relationship between wellbeing and income … does not diminish as income rises. If there is a satiation point, we are yet to reach it.”  
+
+Since 2013, the distinct effect of wealth and happiness has also been challenged. [A survey of 1.7 million people representing 164 countries over 12 years (2005-2016) in the Gallup World Poll](https://www-nature-com.ezproxy2.library.usyd.edu.au/articles/s41562-017-0277-0){target="_blank"} reported money was associated with no further improvement in happiness after \$60-75,000, _nor any improvement in satisfaction_ after $95,000 [@jebb2018happiness]. Thus while the location differed, money had inflected effects with both satisfaction and happiness. On the other hand, in a nationally representative sample of 44,000 adult Americans over 44 years in the General Social Survey (GSS) happiness continued to increase with money [@twenge2020expanding], implying no inflection point existed between money and happiness. Both these most recent reports provide contradictory results regarding the nature of the relationship between wealth and wellbeing, and both are based on data spanning long periods of time (12-44 years). Perhaps the different results are due to differences in the constructs being measured, or perhaps they are due to the different effects of time between studies.  
+
+We report here for the first time that the cost of happiness increased over time, faster than inflation or the median household income. In 2002, the cost point of happiness represented a `r round((29.41/26.86 - 1)*100)`% increase over median wealth, while in 2018 it represented a `r round((105.85/74.54 - 1)*100)`% increase over median wealth. This also represents a reduction from 44% to 26% in the proportion of people who have achieved a level of household wealth beyond which their happiness no longer depends.  
+
+
+According to @frijters2020happy, coming up with a consensus estimate for income to translate into welbeing features high on the wellbeing research agenda. However evidence of a linear relationship between wellbeing and wealth calls into question the need to supplant traditional measures of economic success such as GDP with measures of wellbeing, such as "life satisfaction" surveys.  
 
 <br>
 
-A study reported in 2013 challenged the idea that the positive effect of money plateaus [@stevenson2013subjective]. After comparing life satisfaction levels in both rich and poor countries, and rich and poor people within a country – with “rich” being defined as an income greater than $15,000 per person – Stevenson & Wolfers concluded: “The relationship between wellbeing and income … does not diminish as income rises. If there is a satiation point, we are yet to reach it.”  
 
-Since 2013, the distinct effect of wealth and happiness has also been challenged. [A survey of 1.7 million people representing 164 countries over 12 years (2005-2016) in the Gallup World Poll](https://www-nature-com.ezproxy2.library.usyd.edu.au/articles/s41562-017-0277-0){target="_blank"} reported money was associated with no further improvement in happiness after \$60-75,000, _nor any improvement in satisfaction_ after $95,000 [@jebb2018happiness]. Thus while the location differed, money had inflected effects with both satisfaction and happiness. On the other hand, in a nationally representative sample of 44,000 adult Americans over 44 years in the General Social Survey (GSS) happiness continued to increase with money [@twenge2020expanding], implying no inflection point existed between money and happiness.  
 
-Both these reports provide contradictory results regarding the nature of the relationship between wealth and wellbeing, and both are based on data spanning long periods of time (12-44 years). Perhaps the different results are due to differences in the constructs being measured, or perhaps it is due to different effects of time between studies.  
+
 
 
 ## References
