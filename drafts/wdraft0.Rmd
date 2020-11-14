@@ -5,7 +5,7 @@ bibliography: ../src/references.bib
 csl: ../src/elsevier-harvard.csl
 output:  
   word_document:
-    reference_docx: ../src/academic_style.docx
+    reference_docx: ../src/Rmarkdown-for-Word-styles.docx
 always_allow_html: yes
 editor_options: 
   chunk_output_type: console
@@ -393,7 +393,7 @@ Table 1 shows the cost of happiness increased faster than median household wealt
 
 <br><br>
 
-## Conclusions
+## Conclusions  
 
 We found the relationship between subjective wellbeing and wealth was positive, but happiness and satisfaction had different (positive) relationships: Satisfaction increased linearly with wealth, while happiness increased rapidly up to a point after which further increments in wealth produced less change – this confirms the distinct effects of wealth in previous research [e.g., @howell2008relation; @kahneman2010high], and contributes rare evidence from the same sample. Furthermore, we report here for the first time that the change point between wealth and happiness increased over time between 2002 and 2018, faster than inflation or the median household income.
 
