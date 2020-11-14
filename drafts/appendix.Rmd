@@ -1,0 +1,110 @@
+---
+title: "Supplementary material: The increasing cost of happiness"
+bibliography: ../src/references.bib
+csl: ../src/elsevier-harvard.csl
+output:  
+  word_document:
+    reference_docx: ../src/academic_style.docx
+always_allow_html: yes
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(flextable)
+library(bayesplot)
+
+knitr::opts_chunk$set(eval = TRUE,
+                      echo = FALSE,
+                      warning = FALSE,
+                      message = FALSE,
+                      fig.path = "../figures/")
+
+#### To do ####
+# https://www.psychologytoday.com/au/blog/how-happiness/201409/does-money-really-buy-happiness
+# https://www.pc.gov.au/research/completed/rising-inequality/rising-inequality-highlights.pdf
+# https://www.pc.gov.au/research/completed/rising-inequality/3_HILDA_variables.R
+# more people could a achieve a level of wealth at which happiness no longer increased
+```
+\  
+\  
+
+R.W. Morris^1, 2^, N. Kettlewell^2,3,4^  & N.Glozier^1,5^
+
+1. Central Clinical School, Faculty of Medicine and Health, University of Sydney, NSW, Australia
+2. ARC Centre of Excellence for Children and Families over the Life Course, University of Queensland, QLD, Australia
+3. School of Economics, University of Technology, NSW, Australia
+4. Institute of Labor Economics (IZA), Bonn, Germany
+5. Brain and Mind Centre, University of Sydney, NSW, Australia 
+
+\  
+
+**Corresponding author:**  
+Professor Nick Glozier  
+Faculty of Medicine and Health,   
+University of Sydney,  
+NSW 2050,  
+Australia  
+email: nick.glozier@sydney.edu.au  
+
+\  
+
+Draft: `r format(Sys.time(), '%d %B, %Y')`  
+Word count:  3760 (max 4000)  
+Tables:      1  
+Figures:     5  
+  
+**keywords:** Subjective wellbeing, household wealth, HILDA  
+
+\  
+
+***
+
+
+## Supplementary Material
+
+#### Modelling
+
+We tested the relationship between wealth and each wellbeing variable (happiness and satisfaction) using a cubic **B-spline model**. A cubic B-spline was the most complex model (more degrees of freedom), and chosen because it has been recently used to describe the maximum point at which wellbeing no longer increases with wealth [i.e., "satiety", @jebb2018happiness]. Following Jebb et al, we restricted the cubic B-spline model to *n* = 4, 5 and 6 knots and show each instantiation here.    
+
+
+_Model estimation_  
+
+<br>
+
+
+## Results
+
+```{r funtimes}
+source("../src/happyfun.r")
+```
+
+For visualization purposes only, due to the large number of individual data points in each year, we grouped individuals into 10 equal-sized subgroups according to their wealth decile ($). Thus in each plot, the mean wealth and mean wellbeing score for each decile is presented, rather than each individual data point. Note that the line-of-best-fit and 95% confidence intervals from each regression model _of all individuals_ is shown in overlay.  
+
+#### Household wealth and wellbeing (satisfaction and happiness)
+```{r losat_hwnwip, fig.height=9, fig.width=11}
+library(patchwork)
+
+p1 <- happywealth_covs %>%
+  plot_inflection_cubic(losat, adj_hifdip)
+
+p2 <- happywealth_covs %>%
+  plot_inflection_cubic(gh9, adj_hifdip)
+
+(p1 / p2) +
+  plot_annotation(title = "Effect of wealth on satisfaction and happiness")
+```
+
+<br>
+
+**Key points**  
+
+- The relationship between satisfaction and household wealth appeared linear
+- The linear relationship between satisfaction and wealth became slightly weaker (less steep) over years
+- The cubic B-spline models indicated no satiety point (horizontal inflection) in satisfaction before the highest decile in any year
+- Any change point in satisfaction was as likely to be convex as concave  
+
+<br>
+
+
+## References
+
