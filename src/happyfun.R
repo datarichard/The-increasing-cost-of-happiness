@@ -248,10 +248,10 @@ plot_inflection_cubic <- function(.data, swb_col, dollars_col) {
                 colour = "navy",
                 size = 0.5,
                 se = FALSE) +
-    coord_cartesian(xlim = c(0, max(df.summary$wealth)),
-                    ylim = c(min(df.summary$wellbeing), max(df.summary$wellbeing))) +
+    # coord_cartesian(xlim = c(0, max(df.summary$wealth)),
+    #                 ylim = c(min(df.summary$wellbeing), max(df.summary$wellbeing))) +
     facet_wrap(~year, nrow = 1) +
-    labs(subtitle = paste(rlang::as_name(swb_colname), "(b-spline)"),
+    labs(subtitle = paste(rlang::as_name(swb_colname), "(b-spline with knots = 4, 5, 6)"),
          x = paste(rlang::as_name(dollars_colname), "($000s)"),
          y = "") +
     theme_test()
