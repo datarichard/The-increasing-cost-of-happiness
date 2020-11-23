@@ -1,5 +1,11 @@
-#### Preprocessing ####
-
+#### The Increasing Cost of Happiness ####
+# RW Morris, N Kettlewell, N Glozier
+# 
+# Preprocessing 
+# Nov 21st 2020
+# 
+# Libraries
+library(tidyverse)
 library(haven)
 
 #### Load data ####
@@ -19,7 +25,7 @@ for (pathtofile in path_to_hilda) {
 # Helper function
 source('../../src/gather_hilda.R')
 
-# demographic data 
+# DEMOGRAPHIC VARIABLES 
 gather_hilda(hilda, c(
   "esbrd",   # employment status (broad)
   "hhda10",  # SEIFA 2001 Decile of socio-economic advantage (higher is better)
@@ -35,22 +41,15 @@ gather_hilda(hilda, c(
   spread(code, val) %>%
   mutate_if(is.double, ~ ifelse(. < 0, NA_real_, .)) -> demographic_items
 
-# financial data
+# MODEL VARIABLES (household wealth, satisfaction, happiness):
+# Note that regular HILDA income variables were used (not total income, which 
+# include irregular income) to match with the ABS, and because more consistent
+# prior to 2012. See Appendix in Wilkins (2014) 'Derived income variables in the
+# HILDA survey' for explanation
+# 
 gather_hilda(hilda, c(
-  "wsfei",   # financial year gross
-  "tifdip",  # Disposable regular income
-  "tifeftp", # Gross total income (including benefits, pensions, foreign, etc)
-  "hiwsfei", # household financial year gross
-  "hwnwip",  # household net worth
-  "hifdip",  # household disposable regular income
-  "hifditp"  # household disposable total income
-)) %>%
-  spread(code, val) %>%
-  mutate_if(is.double, ~ ifelse(. < 0, NA_real_, .)) -> wealth_items
-
-# Affective wellbeing:
-gather_hilda(hilda, c(
-  'losat',
+  "hifdip", # household disposable regular income
+  'losat', # Life satisfaction
   'gh9a', # Vitality: feel full of life (lower is better)*
   'gh9b', # Mental H: Been a nervous person (higher is better)
   'gh9c', # Mental H: Felt so down in the dumps (higher is better)
@@ -63,11 +62,11 @@ gather_hilda(hilda, c(
 )) %>%
   # Recode missing to NA
   spread(code, val) %>%
-  mutate_if(is.double, ~ ifelse(. < 0, NA_real_, .)) -> happiness_items
+  mutate_if(is.double, ~ ifelse(. < 0, NA_real_, .)) -> model_items
 
 reversed_items <- c('gh9a', 'gh9d', 'gh9e', 'gh9h')
 
-happiness_items %>%
+model_items %>%
   select(xwaveid, wave, starts_with("gh9")) %>%
   # Reverse score
   mutate_at(reversed_items, list(~ 7 - .)) %>%
@@ -86,12 +85,9 @@ happiness_items %>%
   ungroup() -> gh9_imputed
 
 # Join all the data sources
-happiness_items %>%
-  select(xwaveid, wave, losat) %>%
+model_items %>%
+  select(xwaveid, wave, hifdip, losat) %>%
   left_join(gh9_imputed, by = c("xwaveid", "wave")) %>%
-  left_join(
-    select(wealth_items, xwaveid, wave, tifdip, tifeftp, hifdip, hwnwip),
-    by = c("xwaveid", "wave")) %>%
   left_join(demographic_items, by = c("xwaveid", "wave")) %>%
   group_by(wave) %>%
   mutate(year = which(letters == wave[1]) + 2000) %>%
@@ -99,7 +95,7 @@ happiness_items %>%
   select(xwaveid, year, everything(), -wave) -> happywealth
 
 thresholds <- read_csv("../../docs/Frequencies 180c/HILDA-thresholds-by-wave-180.csv") %>%
-  filter(variable %in% c("hwnwip", "hifdip", "tifdip")) %>%
+  filter(variable %in% c("hifdip")) %>%
   gather("wave", "threshold", -variable, -label) %>%
   separate(wave, into = c("wave", "year"), sep = "e") %>%
   mutate(
@@ -111,33 +107,44 @@ thresholds <- read_csv("../../docs/Frequencies 180c/HILDA-thresholds-by-wave-180
 happywealth <- happywealth %>%
   left_join(thresholds, by = "year")
 
-write_rds(happywealth, "../results/happywealth.rds")
+# write_rds(happywealth, "../results/happywealth.rds")
 
 #### Covariates ####
+#
+# CPI values from https://www.pc.gov.au/research/completed/rising-inequality
+CPI = data.frame(
+  year = 2002:2018,
+  deflator = c(1.48590604,
+               1.445169713,
+               1.408396947,
+               1.373449132,
+               1.340193705,
+               1.2887078,
+               1.262257697,
+               1.208515284,
+               1.191603875,
+               1.155532359,
+               1.115927419,
+               1.102589641,
+               1.076848249,
+               1.045325779,
+               1.029767442,
+               1.019337017,
+               1)) %>% mutate(inflator = rev(deflator))
+
 # Dollar values converted to base year 2002:
 # https://www.rba.gov.au/calculator/annualDecimal.html
 happywealth %>%
-  filter(year %in% c(2002, 2006, 2010, 2014, 2018)) %>%
-  mutate_at(vars("tifdip", "hifdip", "hwnwip"),
-            ~ case_when(
-              year == 2018 ~ .x*1.45,
-              year == 2014 ~ .x*1.38,
-              year == 2010 ~ .x*1.25,
-              year == 2006 ~ .x*1.12,
-              TRUE ~ .x)
-  ) %>%
+  filter(year %in% c(2002:2018)) %>%
+  left_join(CPI, by = "year") %>% 
   transmute(
     year,
     xwaveid,
     losat,
     gh9,
-    tifdip,
     hhsize = as.numeric(hhpers),
-    adj_hwnwip = hwnwip / sqrt(hhsize),
-    adj_hifdip = hifdip / sqrt(hhsize),
-    top_hwnwip = hwnwip > hwnwip_thld,
+    adj_hifdip = (hifdip * deflator) / sqrt(hhsize),
     top_hifdip = hifdip > hifdip_thld,
-    top_tifdip = tifdip > tifdip_thld,
     male = hgsex == 1,
     age = as.numeric(hgage),
     decade = floor(age/10),
@@ -154,19 +161,12 @@ happywealth %>%
       age <= 17 ~  "In school",
       edhigh1 < 0 ~   NA_character_            # recode missing values
     ),
-    edu = ordered(edu, levels = c("None", "In school", "Highschool", "Trade", "Grad", "Postgrad")),
-    edu_years = case_when( 
-      edhigh1 == 10 ~ 0,        # recode undetermined 
-      edhigh1 == 1 ~  7,        # PhD
-      edhigh1 == 2 ~  4,        # Grad diploma
-      edhigh1 == 3 ~  3,        # Bachelors
-      edhigh1 == 4 ~  1,        # Diploma
-      edhigh1 == 5 ~  0,        # Certificate
-      edhigh1 == 8 ~  0,        # Year 12
-      edhigh1 == 9 ~ -1,        # Year 11 or less
-      age <= 17 ~ -1,
-      edhigh1 < 0 ~ NA_real_,   # recode missing values as NA
-    ),
+    edu = ordered(edu, levels = c("None", 
+                                  "In school", 
+                                  "Highschool", 
+                                  "Trade", 
+                                  "Grad", 
+                                  "Postgrad")),
     workforce = if_else(esbrd %in% 1:2, TRUE, FALSE, missing = FALSE),
     unemployed = if_else(esbrd == 2, TRUE, FALSE, missing = FALSE),
     chronic = if_else(helth == 1, TRUE, FALSE, missing = FALSE),

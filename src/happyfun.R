@@ -49,8 +49,6 @@ plot_linear <- function(.data, swb_col, dollars_col) {
          y = "") +
     theme_test() +
     theme(
-      legend.background = element_blank(),
-      legend.title = element_blank(),
       legend.position = "none") -> p1
   
   p1 +
@@ -256,3 +254,6 @@ plot_inflection_cubic <- function(.data, swb_col, dollars_col) {
          y = "") +
     theme_test()
 }
+
+
+

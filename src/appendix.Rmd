@@ -103,6 +103,8 @@ The cubic B-spline models failed to reveal a complete satiety point (horizontal 
 
 There were _df_ = 59,876 total observations. 4000 samples (post-warmup) were drawn using sampling(NUTS). For each parameter, Bulk_ESS and Tail_ESS are effective sample size measures, and Rhat is the potential scale reduction factor on split chains (at convergence, Rhat = 1).  
 
+The Bayes R^2^ = 0.03964581 ±0.001497172 (0.03672371-0.04262236)  
+
 <br>
 
 _Coefficient definitions_:  
@@ -147,7 +149,7 @@ fit_summary$fixed %>%
   bg(i = ~Coef %in% c("sigma"), bg = "#b3cde0", part = "body") %>%
   colformat_num(j = 3:6, digits= 3) %>%
   colformat_num(j = 7, digits= 1) %>%
-  set_caption("Table S1. Complete list of model parameter estimates") %>%
+  set_caption("Table S1. Population-level parameter estimates") %>%
   autofit()
 ```
 
