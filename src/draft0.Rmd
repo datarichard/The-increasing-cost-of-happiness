@@ -58,9 +58,9 @@ email: nick.glozier@sydney.edu.au
 |            |                                     |
 |------------|-------------------------------------|
 | Draft      | `r format(Sys.time(), '%d %B, %Y')` |
-| Word count | 3061                                |
-| Tables     | 2                                   |
-| Figures    | 3                                   |  
+| Word count | 3767                                |
+| Tables     | 1                                   |
+| Figures    | 5                                   |  
 
 \ 
 \ 
