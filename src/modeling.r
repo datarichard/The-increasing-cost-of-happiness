@@ -11,14 +11,14 @@ library(brms)
 options(mc.cores = 4)
 
 #### Import ####
-happywealth_covs <- readRDS("../data/happywealth_covs.rds")
+happywealth <- readRDS("../data/happywealth.rds")
 
 #### Preprocessing ####
-happywealth_covs %>%
-  filter(!student, year == 2002) %>%
+happywealth %>%
+  filter(!student, year == 2001) %>%
   transmute(
-    y = as.vector(scale(losat)), # gh9
-    dollars = adj_hifdip/10000, 
+    y = as.vector(scale(gh9)), # gh9
+    dollars = hifdip_adj/10000, 
     male = as.numeric(male),
     age = as.vector(scale(age)),
     age_sq = age^2,
@@ -76,7 +76,7 @@ bprior <- prior(normal(0, 3), nlpar = "b0") + # normal(0, 1) did not converge Se
   prior(normal(0, 3), nlpar = "b5") +  
   prior(normal(0, 3), nlpar = "b6") +
   prior(normal(0, 3), nlpar = "alpha")      # normal(0, 3) with init = "0" 12/09/2020
-                                            # normal(0, sqrt(3)) with default init did not converge
+                                            # normal(0, sqrt(3)) with default init didn't converge
 
 # e.g., plot prior for alpha
 hist(inv_logit_scaled(rnorm(1000, mean = 0, sd = 3), 0, 100))
@@ -174,7 +174,7 @@ posteriors %>%
 # omega             $54.5K 6.22  45.9   70.5   2014
 # omega             $72.6K 4.83  62.9   82.1   2018
 
-# saveRDS(fit, "../results/hifdip_gh9_fixed_cov_2002.RDS")
+saveRDS(fit, "../results/fit_cp_hifdip_gh9_cov_2001.RDS")
 
 #### Piece-wise fits ####
 for (i in c(2018:2010)) {

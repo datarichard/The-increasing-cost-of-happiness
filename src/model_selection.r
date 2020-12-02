@@ -59,16 +59,17 @@ for (i in c(2002:2018)) {
 }
 
 saveRDS(waic_results, "../results/model_comparisons_waic_R2_losat.RDS")
-waic_results <- readRDS("../results/model_comparisons_waic_R2_losat.RDS")
+waic_results_losat <- readRDS("../results/model_comparisons_waic_R2_losat.RDS")
+waic_results_gh9 <- readRDS("../results/model_comparisons_waic_R2_gh9.RDS")
 
 #### Plot results ####
-waic_results %>%
+waic_results_gh9 %>%
   select(model, year, elpd_diff, se_diff) %>%
   filter(elpd_diff != 0) %>%
-  filter(year %in% c(2002, 2006, 2010, 2014, 2018)) %>%
+  # filter(year %in% c(2002, 2006, 2010, 2014, 2018)) %>%
   rowwise() %>%
   mutate(samples = list(rnorm(n = 1e5, 
-                              mean = elpd_diff * -2, 
+                              mean = elpd_diff * 2, 
                               sd   = se_diff *  2)),
          year = paste0("AD", year)
          ) %>%
@@ -87,5 +88,5 @@ mcmc_intervals(x = d1,
   geom_vline(aes(xintercept = 0), color = "grey90") +
   theme_test() +
   labs(
-    subtitle = "Happiness",
+    subtitle = "Happiness (linear deviance over piecewise deviance)",
     x = "WAIC difference (95% interval)")
