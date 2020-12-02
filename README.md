@@ -28,10 +28,10 @@ N.Glozier<sup>1,5</sup>
 
 |            |                   |
 | ---------- | ----------------- |
-| Draft      | 15 November, 2020 |
-| Word count | 3760 (max 4000)   |
+| Draft      | 02 December, 2020 |
+| Word count | 3676              |
 | Tables     | 1                 |
-| Figures    | 3                 |
+| Figures    | 5                 |
 
    
 
@@ -50,13 +50,14 @@ there is little further gain from increasing wealth. While the location
 of this change point has been determined, and the cost of happiness
 reportedly ranges between USD$60 to $95K, there has been no
 investigation as to whether the cost of happiness has increased or
-decreased over time. We tested the relationship between household wealth
-and both happiness and life satisfaction using household economic data
-from Australia between 2002-2016. We discovered the cost of happiness
-has increased over those 16 years faster than inflation (i.e., cost of
+decreased over time. We tested the relationship between wealth and both
+happiness and life satisfaction using household economic data from
+Australia between 2002-2018. We discovered the cost of happiness has
+increased over those 17 years faster than inflation (i.e., cost of
 living). This result shows that inequalities in wealth may be driving
 inequities in happiness and wellbeing, with implications for health and
-recent government policy-goals to monitor and improve wellbeing.
+recent government policy-goals to monitor and improve wellbeing. (150
+words)
 
 <br><br>
 
@@ -70,7 +71,9 @@ recent government policy-goals to monitor and improve wellbeing.
 
 <br><br>
 
------
+<br><br>
+
+<br><br>
 
 ## Background
 
@@ -132,7 +135,7 @@ decades?
 
 We used household economic panel data from Australia (HILDA) to provide
 the first investigation of whether changes in wealth and wellbeing have
-changed the cost of happiness over the last 16 years (2002-2018). HILDA
+changed the cost of happiness over the last 17 years (2002-2018). HILDA
 provides a representative sample of households in Australia with
 detailed measurements of wealth and subjective wellbeing in the same
 sample, which makes it an excellent data source to investigate the
@@ -151,29 +154,36 @@ has increased in real dollar terms since 2002.
 
 #### Wealth
 
-Our indicator of wealth and economic security was household after-tax
-income. Household income better represents economic security, since
-members of the same household share expenses as well as risks; i.e.,
-they can provide a direct and immediate support network when financial
-shocks occur. The other major studies also used household after-tax
-income as the indicator of wealth and economic security (e..g, Kahneman
-and Deaton, 2010; Jebb et al., 2018), and so we follow the same standard
-here as well. Household financial year disposable regular income
-[(hifdip)](https://www.online.fbe.unimelb.edu.au/HILDAodd/KWCrossWaveCategoryDetails.aspx?varnt=hifdip)
-from the annual HILDA survey in 2002, 2006, 2010, 2014,and 2018 was
-selected. This variable in HILDA represents the sum across all household
-members of financial year gross regular income less taxes on financial
-year gross regular income.
+Our indicator of wealth and economic security was household income.
+Household income better represents economic security, since members of
+the same household share expenses as well as risks; i.e., they can
+provide a direct and immediate support network when financial shocks
+occur. The other major studies also used household after-tax income as
+the indicator of wealth and economic security (e..g, Kahneman and
+Deaton, 2010; Jebb et al., 2018), and so we follow the same standard
+here as well. The ‘real household annual disposable income’ was
+calculated from the combined income of all household members after
+receipt of government pensions and benefits and deduction of income
+taxes in the financial year ended 30th June of the year of the wave
+(e.g., 2002 in wave 2). This was then adjusted for inflation - the rise
+in the general price level of the economy - using the Australian Bureau
+of Statistics (ABS) Consumer Price Index, so that income in all waves is
+expressed in FY 2017/18 prices, to give real income.
 
-Household income was provided by the University of Melbourne as imputed,
-and with weighted topcodes to preserve anonymity. We removed individuals
-with values above the threshold indicated for top-coding. Household
-wealth was adjusted for the number of people in each household by
-dividing by the square root of household size (Headey and Wooden, 2004;
-Jebb et al., 2018; Kahneman and Deaton, 2010). We converted dollar
-values to the base year (2002) according to CPI from the RBA, in order
-to adjust for inflation
-(<https://www.rba.gov.au/calculator/annualDecimal.html>).
+The *equivalised* household income was obtained by adjusting for
+household size (the number of adult and child household members). In
+this instance, we have used the ‘modified OECD’ scale (Hagenaars et al.,
+1994), which divides household income by 1 for the first household
+member plus 0.5 for each other household member aged 15 or over, plus
+0.3 for each child under 15. A family comprising two adults and two
+children under 15 years of age would therefore have an equivalence scale
+of 2.1 (1 + 0.5 + 0.3 + 0.3), meaning that the family would need to have
+an income 2.1 times that of a single-person household in order to
+achieve the same standard of living. This scale recognises that larger
+households require more income, but it also recognises that there are
+economies of scale in consumption and that children require less than
+adults. The equivalised income calculated for a household is then
+assigned to each member of the household.
 
 <br>
 
@@ -183,12 +193,14 @@ There are a variety of variables related to subjective well-being
 collected annually in HILDA, but the two we used here matched the
 variables we used in our previous paper (Kettlewell et al., 2020),
 namely, life satisfaction as a measure of cognitive wellbeing, and the
-SF-36 as a measure of affective wellbeing or happiness. Life
-satisfaction
+SF-36 as a measure of affective wellbeing or happiness.
+
+Life satisfaction
 [(losat)](https://www.online.fbe.unimelb.edu.au/HILDAodd/KWCrossWaveCategoryDetails.aspx?varnt=losat)
-was assessed by a single item question asked each survey: “How satisfied
-are you with your life (0 to 10)”. Happiness was determined by item 9 in
-the SF-36 [(gh9a to
+was assessed by a single item question asked each survey: “All things
+considered, how satisfied are you with your life (0 to 10)”.
+
+Happiness was determined by item 9 in the SF-36 [(gh9a to
 gh9i)](https://www.online.fbe.unimelb.edu.au/HILDAodd/KWCrossWaveCategoryDetails.aspx?varnt=gh9a).
 The SF-36 is a widely used self-completion measure of various aspects of
 physical, emotional and mental health (Ware Jr, 2000). Item 9 consists
@@ -200,7 +212,11 @@ vitality (e.g., “feel full of life”, “felt worn out”). Each question
 referred to the past four weeks and agreement was indicated on a
 six-point scale. We reverse scored the relevant responses and calculated
 the sum of the nine questions so that higher scores represented better
-wellbeing.
+wellbeing. To aid interpretability, we rescaled the final sum to a score
+between 1-100, where 100 represents the maximum happiness achievable.
+
+For modelling, both dependent variables were rescaled with a mean of
+zero and a SD of 1 (z-scores) for each year.
 
 <br>
 
@@ -208,19 +224,18 @@ wellbeing.
 
 We modelled the relationship between wealth and each wellbeing variable
 (happiness and satisfaction) using a simple **linear model** and a
-**piecewise model** (broken-stick). The linear model was the simplest
-relationship while the piecewise model was chosen as the simplest
-extension of a linear model which can identify a change point
-(inflection) between wellbeing and wealth. The location of the change
-point was a free parameter which revealed where wellbeing no longer
-increased linearly with wealth. We then compared the linear model
-against the piecewise model to determine if a change point existed in
-each or any year between wealth and each wellbeing variable (see model
-selection). Finally, where a change point existed, we determined the
-location of the change point for that year (see change point
-estimation).
+**piecewise model** (broken-stick). The piecewise model was chosen as
+the simplest extension of a linear model which can identify a change
+point (inflection) between wellbeing and wealth. The location of the
+change point was a free parameter which revealed where wellbeing no
+longer increased at a uniform rate with wealth. We then compared the
+linear model against the piecewise model to determine if a change point
+existed in any year between household wealth and each wellbeing variable
+(see Model Selection). Finally, where a change point existed, we
+determined the location of the change point for that year (see Parameter
+Estimation).
 
-*Model estimation*  
+*Model Estimation*  
 We adopted a Bayesian approach for estimating the linear and piecewise
 model in the software Stan (Bürkner, 2017; Stan Development Team, 2019).
 In each case,
@@ -234,30 +249,35 @@ The linear model was estimated as:
 \]
 
 Where \(X_i\) was an individual’s household wealth ($) as well as other
-covariates (age, age<sup>2</sup>, gender, education), and \(y_i\) was an
+covariates (age, age<sup>2</sup>, sex, education), and \(y_i\) was an
 individual’s wellbeing.
 
 <br>
 
 The piecewise model was a simple extension of this to include a free
 parameter to represent the changepoint in wealth (\(\omega\)) as well as
-the slope after the change point (\(\beta_2\)):
+the slope before the change point (\(\beta_1\)) and after the change
+point (\(\beta_2\)):
 
 \[
-\mu_i = \beta_0 + \beta_1 (x_i - \omega_t) (x_i ≤ \omega_t) + \beta_2 (x_i - \omega_t) (x_i > \omega_t)
-\] <br>
+\mu_i = \beta_0 + \beta_1 (x_i - \omega) (x_i ≤ \omega) + \beta_2 (x_i - \omega) (x_i > \omega) + \beta_3 X_i
+\]
 
-The above models estimated population-level (fixed) effects for each
-year in the data (*t* = 2002, 2006, 2010, 2014 and 2018). Because we
-were interested in the location of the change point between wealth and
-wellbeing that existed across individuals within each year, we ignored
-the panel design of HILDA because the dependency between observations of
-the same person across years was orthogonal to our effects of interest.
-We assumed an unstructured variance-covariance matrix between years, and
-specified weakly informed priors for each *β*, and a uniform prior over
-the restricted range of wealth values for *ω*.
+Where \(x_i\) was an individual’s household wealth, and \(X_i\) were
+covariates for age, age<sup>2</sup>, sex and education.
 
-*Model selection*  
+<br>
+
+The above models estimated population-level effects separately for each
+year (*t* = 2002, 2006, 2010, 2014 and 2018). Because we were interested
+in the location of the change point between wealth and wellbeing that
+existed across individuals within each year, we ignored the panel design
+of HILDA because the dependency between observations of the same person
+across years was orthogonal to our effects of interest. We specified
+weakly informed priors for each *β*, and a uniform prior over the
+restricted range of wealth values for *ω*.
+
+*Model Selection*  
 To determine whether wellbeing was a linear or non-linear (e.g.,
 piecewise) function of wealth, we compared the linear and piecewise
 model posterior probabilities using the [Widely Applicable Information
@@ -279,7 +299,7 @@ and *p*<sub>WAIC</sub> is the effective number of free parameters
 determined by the sum of the variance in log-likelihood for each
 observation (*i*).
 
-*Parameter estimation*  
+*Parameter Estimation*  
 To determine the location of the change point (*ω*) between wellbeing
 and wealth, we modelled the relationship between wealth and wellbeing
 across individuals using the piecewise model described above, and
@@ -291,112 +311,26 @@ with the expected value (mean).
 
 *Covariates*  
 Age (and age<sup>2</sup>), gender, and education were included as
-covariates, and fulltime students were removed. Gender was included as a
-binary variable, and education was coded from the highest level of
-education achieved (“less than highschool”, “highschool”, “university
-graduate”, “postgraduate”).
+covariates. Full-time students were removed, as well as individuals with
+an annual household disposable income that was indicated as *topcoded*
+by the University of Melbourne (topcoding occurs to ensure privacy of
+high wealth individuals). Gender was included as a binary variable (Male
+= 1), and education was a binary variable coded from the highest level
+of education achieved (university/college graduate = 1).
 
 <br>
 
 ## Results
 
-For visualization purposes only, due to the large number of individual
-data points in each year, we grouped individuals into 10 equal-sized
-subgroups according to their wealth decile ($). Thus in each plot, the
-mean wealth and mean wellbeing score for each decile is presented,
-rather than each individual data point. Note that the line-of-best-fit
-and 95% confidence intervals from each regression model *of all
-individuals* is shown in
-overlay.
+The broad demographic characteristics of the sample over the time period
+are presented below in Table 1 (at four year
+intervals).
 
-<br>
-
-##### Figure 1. Household wealth and satisfaction (blue) and happiness (red)
-
-![](figures/figure_1-1.png)<!-- -->
-
-    Figure 1 legend: Line-of-best-fit and 95% confidence interval (shaded) from regressions of  wellbeing on household wealth, with age, gender and education included as covariates. Wellbeing was measured as life satisfaction (blue) or happiness (red). The total number of individuals in each model are shown (n). Points represent the mean value of each wealth decile.
-
-<br>
-
-Figure 1 shows the relationship between household wealth and
-satisfaction appeared relatively linear, as the results of the piecewise
-regression indicated the inflection of the change point could be
-increasing (e.g., 2002, 2006) as well as decreasing (e.g., 2010, 2014,
-2018). By contrast, a decreasing change point was evident in each year
-of happiness on wealth. The results of a formal comparison between
-linear and piecewise models is provided in Model Selection below.
-However note that the change point between wealth and happiness appeared
-to shift rightwards over time (bottom row). (We can also see the linear
-relationship between household wealth and each wellbeing variable became
-slightly weaker over time, i.e., less steep)
-
-<br>
-
-#### Model Selection
-
-We compared the posterior evidence for a linear relationship between
-wellbeing and wealth with the posterior evidence of a nonlinear
-(piecewise) relationship (i.e., WAIC<sub>linear</sub> —
-WAIC<sub>piecewise</sub>). Thus a WAIC difference greater than zero
-indicated evidence for a linear relationship. A WAIC difference less
-than zero indicated evidence for a nonlinear (piecewise)
-relationship.
-
-<br>
-
-##### Figure 2. Model evidence (mean difference of WAIC<sub>linear</sub> — WAIC<sub>piecewise</sub>)
-
-![](figures/figure_2-1.png)<!-- -->
-
-    Figure 2 legend: Differences in posterior evidence for a linear fit over a piecewise fit (WAIC) for satisfaction (blue) and happiness (red). The filled circle indicates the mean of the distribution and the horizontal bars represents the 90% credible interval. A difference greater than zero is support for the linear model and below zero is support for the piecewise model.
-
-<br><br>
-
-Model selection revealed the posterior evidence for the linear fit of
-satisfaction on wealth was credibly superior to the nonlinear
-(piecewise) fit - Figure 2 shows the 90% credible interval of the fit
-for each year of satisfaction was above zero with no overlap. By
-contrast, a nonlinear fit of happiness on wealth was generally superior,
-and the nonlinear fit was credibly superior at 90% for each of three
-years (2006, 2014, 2018). Thus, the posterior evidence indicates
-happiness and satisfaction have distinct relationships with household
-wealth; satisfaction tends to increase linearly with wealth, while a
-change point exists in the relationship between happiness wealth.
-
-<br>
-
-#### Parameter Estimation
-
-We present the complete posterior distribution of ω over 4000 samples
-for each year, representing the location of the change point between
-happiness and wealth. Shaded areas to the right of the vertical grey
-dotted line are credibly (90%) larger than the base year
-    (2002).
-
-<br>
-
-##### Figure 3. Posterior distributions of ω (mean & 90% distribution)
-
-![](figures/figure_3-1.png)<!-- -->
-
-    Figure 3 legend: Posterior distribution of the change point parameter representing the location in household wealth ($) for each year. Shaded area represents the 90% credible region.
-
-<br>
-
-Figure 3 shows the change point between happiness and household wealth
-(the *cost of happiness*) credibly increased between 2002 and 2018.
-Table 2 below compares the change in median and mean wealth for each
-year with the cost of happiness. It also present the percentage of
-people in each year whose household wealth exceeded the cost point.
-
-<br>
-
-<table>
+<table class="table table-striped" style="margin-left: auto; margin-right: auto;">
 
 <caption>
 
-Table 1. Household wealth, change points and percentile
+Table 1. Demographic characteristics
 
 </caption>
 
@@ -406,31 +340,37 @@ Table 1. Household wealth, change points and percentile
 
 <th style="text-align:left;">
 
-year
+Characteristic
 
 </th>
 
-<th style="text-align:right;">
+<th style="text-align:left;">
 
-median ($000s)
-
-</th>
-
-<th style="text-align:right;">
-
-mean ($000s)
+2002 N = 11,635
 
 </th>
 
-<th style="text-align:right;">
+<th style="text-align:left;">
 
-change point ($000s)
+2006 N = 11,474
 
 </th>
 
-<th style="text-align:right;">
+<th style="text-align:left;">
 
-%
+2010 N = 11,993
+
+</th>
+
+<th style="text-align:left;">
+
+2014 N = 15,496
+
+</th>
+
+<th style="text-align:left;">
+
+2018 N = 15,721
 
 </th>
 
@@ -444,31 +384,37 @@ change point ($000s)
 
 <td style="text-align:left;">
 
-fy2002
+Life satisfaction
 
 </td>
 
-<td style="text-align:right;">
+<td style="text-align:left;">
 
-26.86
-
-</td>
-
-<td style="text-align:right;">
-
-30.93
+7.9 (±1.6)
 
 </td>
 
-<td style="text-align:right;">
+<td style="text-align:left;">
 
-29.41
+7.9 (±1.5)
 
 </td>
 
-<td style="text-align:right;">
+<td style="text-align:left;">
 
-43.7
+7.8 (±1.5)
+
+</td>
+
+<td style="text-align:left;">
+
+7.9 (±1.5)
+
+</td>
+
+<td style="text-align:left;">
+
+7.9 (±1.5)
 
 </td>
 
@@ -478,31 +424,37 @@ fy2002
 
 <td style="text-align:left;">
 
-fy2006
+Happiness
 
 </td>
 
-<td style="text-align:right;">
+<td style="text-align:left;">
 
-38.07
-
-</td>
-
-<td style="text-align:right;">
-
-43.77
+68.3 (±16.8)
 
 </td>
 
-<td style="text-align:right;">
+<td style="text-align:left;">
 
-41.13
+68.3 (±16.7)
 
 </td>
 
-<td style="text-align:right;">
+<td style="text-align:left;">
 
-44.0
+67.9 (±16.6)
+
+</td>
+
+<td style="text-align:left;">
+
+67.6 (±17.1)
+
+</td>
+
+<td style="text-align:left;">
+
+66.5 (±17.3)
 
 </td>
 
@@ -512,31 +464,107 @@ fy2006
 
 <td style="text-align:left;">
 
-fy2010
+Sex
 
 </td>
 
-<td style="text-align:right;">
-
-53.72
+<td style="text-align:left;">
 
 </td>
 
-<td style="text-align:right;">
-
-61.24
+<td style="text-align:left;">
 
 </td>
 
-<td style="text-align:right;">
-
-49.43
+<td style="text-align:left;">
 
 </td>
 
-<td style="text-align:right;">
+<td style="text-align:left;">
 
-55.8
+</td>
+
+<td style="text-align:left;">
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left; padding-left: 2em;" indentlevel="1">
+
+Female
+
+</td>
+
+<td style="text-align:left;">
+
+6,088 (52%)
+
+</td>
+
+<td style="text-align:left;">
+
+6,069 (53%)
+
+</td>
+
+<td style="text-align:left;">
+
+6,296 (52%)
+
+</td>
+
+<td style="text-align:left;">
+
+8,100 (52%)
+
+</td>
+
+<td style="text-align:left;">
+
+8,241 (52%)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left; padding-left: 2em;" indentlevel="1">
+
+Male
+
+</td>
+
+<td style="text-align:left;">
+
+5,547 (48%)
+
+</td>
+
+<td style="text-align:left;">
+
+5,405 (47%)
+
+</td>
+
+<td style="text-align:left;">
+
+5,697 (48%)
+
+</td>
+
+<td style="text-align:left;">
+
+7,396 (48%)
+
+</td>
+
+<td style="text-align:left;">
+
+7,480 (48%)
 
 </td>
 
@@ -546,31 +574,37 @@ fy2010
 
 <td style="text-align:left;">
 
-fy2014
+Age (years)
 
 </td>
 
-<td style="text-align:right;">
+<td style="text-align:left;">
 
-66.62
-
-</td>
-
-<td style="text-align:right;">
-
-76.81
+46.4 (±16.6)
 
 </td>
 
-<td style="text-align:right;">
+<td style="text-align:left;">
 
-68.85
+46.8 (±17.3)
 
 </td>
 
-<td style="text-align:right;">
+<td style="text-align:left;">
 
-47.7
+46.9 (±17.7)
+
+</td>
+
+<td style="text-align:left;">
+
+47.7 (±17.8)
+
+</td>
+
+<td style="text-align:left;">
+
+48.2 (±18.2)
 
 </td>
 
@@ -580,31 +614,527 @@ fy2014
 
 <td style="text-align:left;">
 
-fy2018
+Education
 
 </td>
 
-<td style="text-align:right;">
-
-74.54
+<td style="text-align:left;">
 
 </td>
 
-<td style="text-align:right;">
-
-86.99
+<td style="text-align:left;">
 
 </td>
 
-<td style="text-align:right;">
-
-105.85
+<td style="text-align:left;">
 
 </td>
 
-<td style="text-align:right;">
+<td style="text-align:left;">
 
-26.0
+</td>
+
+<td style="text-align:left;">
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left; padding-left: 2em;" indentlevel="1">
+
+High school or less
+
+</td>
+
+<td style="text-align:left;">
+
+9,348 (80%)
+
+</td>
+
+<td style="text-align:left;">
+
+8,943 (78%)
+
+</td>
+
+<td style="text-align:left;">
+
+9,186 (77%)
+
+</td>
+
+<td style="text-align:left;">
+
+11,408 (74%)
+
+</td>
+
+<td style="text-align:left;">
+
+11,268 (72%)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left; padding-left: 2em;" indentlevel="1">
+
+Graduate
+
+</td>
+
+<td style="text-align:left;">
+
+2,281 (20%)
+
+</td>
+
+<td style="text-align:left;">
+
+2,526 (22%)
+
+</td>
+
+<td style="text-align:left;">
+
+2,800 (23%)
+
+</td>
+
+<td style="text-align:left;">
+
+4,077 (26%)
+
+</td>
+
+<td style="text-align:left;">
+
+4,445 (28%)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Workforce
+
+</td>
+
+<td style="text-align:left;">
+
+</td>
+
+<td style="text-align:left;">
+
+</td>
+
+<td style="text-align:left;">
+
+</td>
+
+<td style="text-align:left;">
+
+</td>
+
+<td style="text-align:left;">
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left; padding-left: 2em;" indentlevel="1">
+
+Employed
+
+</td>
+
+<td style="text-align:left;">
+
+7,323 (63%)
+
+</td>
+
+<td style="text-align:left;">
+
+7,568 (66%)
+
+</td>
+
+<td style="text-align:left;">
+
+7,861 (66%)
+
+</td>
+
+<td style="text-align:left;">
+
+9,916 (64%)
+
+</td>
+
+<td style="text-align:left;">
+
+10,141 (65%)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left; padding-left: 2em;" indentlevel="1">
+
+Unemployed
+
+</td>
+
+<td style="text-align:left;">
+
+389 (3.3%)
+
+</td>
+
+<td style="text-align:left;">
+
+290 (2.5%)
+
+</td>
+
+<td style="text-align:left;">
+
+384 (3.2%)
+
+</td>
+
+<td style="text-align:left;">
+
+550 (3.5%)
+
+</td>
+
+<td style="text-align:left;">
+
+500 (3.2%)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left; padding-left: 2em;" indentlevel="1">
+
+Not in labour force
+
+</td>
+
+<td style="text-align:left;">
+
+3,923 (34%)
+
+</td>
+
+<td style="text-align:left;">
+
+3,616 (32%)
+
+</td>
+
+<td style="text-align:left;">
+
+3,748 (31%)
+
+</td>
+
+<td style="text-align:left;">
+
+5,030 (32%)
+
+</td>
+
+<td style="text-align:left;">
+
+5,080 (32%)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Relationship status
+
+</td>
+
+<td style="text-align:left;">
+
+</td>
+
+<td style="text-align:left;">
+
+</td>
+
+<td style="text-align:left;">
+
+</td>
+
+<td style="text-align:left;">
+
+</td>
+
+<td style="text-align:left;">
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left; padding-left: 2em;" indentlevel="1">
+
+Single
+
+</td>
+
+<td style="text-align:left;">
+
+1,847 (16%)
+
+</td>
+
+<td style="text-align:left;">
+
+1,913 (17%)
+
+</td>
+
+<td style="text-align:left;">
+
+2,063 (17%)
+
+</td>
+
+<td style="text-align:left;">
+
+2,669 (17%)
+
+</td>
+
+<td style="text-align:left;">
+
+2,782 (18%)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left; padding-left: 2em;" indentlevel="1">
+
+Married
+
+</td>
+
+<td style="text-align:left;">
+
+7,956 (68%)
+
+</td>
+
+<td style="text-align:left;">
+
+7,737 (67%)
+
+</td>
+
+<td style="text-align:left;">
+
+8,106 (68%)
+
+</td>
+
+<td style="text-align:left;">
+
+10,558 (68%)
+
+</td>
+
+<td style="text-align:left;">
+
+10,630 (68%)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left; padding-left: 2em;" indentlevel="1">
+
+Divorced/Widow
+
+</td>
+
+<td style="text-align:left;">
+
+1,832 (16%)
+
+</td>
+
+<td style="text-align:left;">
+
+1,824 (16%)
+
+</td>
+
+<td style="text-align:left;">
+
+1,824 (15%)
+
+</td>
+
+<td style="text-align:left;">
+
+2,269 (15%)
+
+</td>
+
+<td style="text-align:left;">
+
+2,309 (15%)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Chronic illness
+
+</td>
+
+<td style="text-align:left;">
+
+2,735 (24%)
+
+</td>
+
+<td style="text-align:left;">
+
+3,278 (29%)
+
+</td>
+
+<td style="text-align:left;">
+
+3,467 (29%)
+
+</td>
+
+<td style="text-align:left;">
+
+4,757 (31%)
+
+</td>
+
+<td style="text-align:left;">
+
+4,849 (31%)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+SEIFA
+
+</td>
+
+<td style="text-align:left;">
+
+5.5 (±2.9)
+
+</td>
+
+<td style="text-align:left;">
+
+5.6 (±2.8)
+
+</td>
+
+<td style="text-align:left;">
+
+5.6 (±2.8)
+
+</td>
+
+<td style="text-align:left;">
+
+5.5 (±2.8)
+
+</td>
+
+<td style="text-align:left;">
+
+5.6 (±2.8)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Household size
+
+</td>
+
+<td style="text-align:left;">
+
+2.8 (±1.4)
+
+</td>
+
+<td style="text-align:left;">
+
+2.8 (±1.4)
+
+</td>
+
+<td style="text-align:left;">
+
+2.8 (±1.4)
+
+</td>
+
+<td style="text-align:left;">
+
+2.8 (±1.5)
+
+</td>
+
+<td style="text-align:left;">
+
+2.8 (±1.4)
 
 </td>
 
@@ -612,48 +1142,185 @@ fy2018
 
 </tbody>
 
+<tfoot>
+
+<tr>
+
+<td style="padding: 0; border: 0;" colspan="100%">
+
+<sup>1</sup> Statistics presented: Mean (±SD); n (%)
+
+</td>
+
+</tr>
+
+</tfoot>
+
 </table>
 
 <br>
 
-Table 1 shows the cost of happiness increased faster than median
-household wealth. As a result, a smaller percentage of people achieved a
-level of wealth at which happiness no longer increased in 2018 than in
-2002.
+Average life satisfaction levels were very steady between 2002-2018,
+while average happiness score decreased slightly over the 17 years. The
+proportions of each sex and relationship status were stable over time,
+as were the average household size and SEIFA index. However age and
+chronic health conditions tended to increase over time, as expected in
+an aging sample. Education levels (i.e., graduate percentage) also
+tended to increase over time, while changes in the workforce varied both
+up and down.
+
+<br>
+
+Below we show the relationship between household income and wellbeing
+(Figure 1). For visualization purposes only, due to the large numbers of
+individual data in each year, we display the mean levels of income and
+wellbeing for each (equal-sized) income decile rather than every
+individual data point. Note that the line-of-best-fit and 95% credible
+intervals (shaded) from each regression model *of all individuals* is
+shown in
+overlay.
+
+<br>
+
+##### Figure 1. Household income and satisfaction (blue) and happiness (red)
+
+![](figures/figure_1-1.png)<!-- -->
+
+    Figure 1 legend: Posterior predictive distributions (95% credible intervals) showing the model fit from regressions of wellbeing on household income, overlaid on summary data points (income deciles). Wellbeing was measured as life satisfaction (blue) or happiness (red). The total number of individuals contributing to each year are shown (n).
+
+<br>
+
+Figure 1 shows the relationship between household income and
+satisfaction appeared relatively linear, as the results of the piecewise
+regression indicated the inflection of the change point could be
+increasing (e.g., 2002, 2006) as well as decreasing (e.g., 2010, 2014,
+2018). By contrast, a decreasing change point was evident in each year
+of happiness on income. The results of a formal comparison between
+linear and piecewise models is provided in Model Selection below.
+However note that the change point between income and happiness appeared
+to shift rightwards over time (bottom row). (We can also see the linear
+relationship between household income and each wellbeing variable became
+slightly weaker over time, i.e., less steep)
+
+<br>
+
+#### Model Selection
+
+We compared the posterior evidence for a linear relationship between
+wellbeing and income with the posterior evidence of a nonlinear
+(piecewise) relationship (i.e., WAIC<sub>linear</sub> —
+WAIC<sub>piecewise</sub>). Thus a WAIC difference greater than zero
+indicated evidence for a linear relationship. A WAIC difference less
+than zero indicated evidence for a nonlinear (piecewise)
+relationship.
+
+<br>
+
+##### Figure 2. Linear model evidence (WAIC<sub>linear</sub> — WAIC<sub>piecewise</sub>)
+
+![](figures/figure_2-1.png)<!-- -->
+
+    Figure 2 legend: Differences in posterior evidence for a linear fit over a piecewise fit (WAIC) for satisfaction (blue) and happiness (red). The filled circle indicates the mean of the distribution and the horizontal bars represents the 95% credible interval. A difference greater than zero is support for the linear model and a difference below zero is support for the piecewise model.
+
+<br><br>
+
+Model selection revealed the posterior evidence for the linear fit of
+satisfaction on income was credibly superior to the nonlinear
+(piecewise) fit - Figure 2 shows the 90% credible interval of the fit
+for each year of satisfaction was above zero with no overlap. By
+contrast, a nonlinear fit of happiness on income was generally superior,
+and the nonlinear fit was credibly superior at 90% for each of three
+years (2006, 2014, 2018). Thus, the posterior evidence indicates
+happiness and satisfaction have distinct relationships with household
+income; satisfaction tends to increase linearly with income, while a
+change point exists in the relationship between happiness and income.
+
+<br>
+
+#### Parameter Estimation
+
+Figure 3 below presents the complete posterior distribution of ω over
+4000 samples drawn from the piecewise model, representing the location
+of the change point between happiness and household income in four
+separate years. Shaded areas to the right of the vertical grey dotted
+line are credibly (95%) larger than 2002. The figure shows the change
+point between happiness and household income (the *cost of happiness*)
+credibly increased between 2002 and
+    2018.
+
+<br>
+
+##### Figure 3. Posterior distributions of ω (95% distribution)
+
+![](figures/figure_3-1.png)<!-- -->
+
+    Figure 3 legend: Posterior distribution of the change point parameter representing the location in household income ($) for each year. Shaded area represents the 90% credible region.
+
+<br>
+
+#### Wealth and happiness
+
+##### Figure 4. Estimated happiness (SD units) at $50K/yr and $80K/yr from 2002-2018
+
+![](figures/figure_4-1.png)<!-- -->
+
+    Figure 4 legend: The difference (∆) in happiness between individuals with a household income of $50K per year and a household income of $80K per year has increased since 2009.
+
+<br>
+
+Figure 5 presents house income levels weighted for the Australian
+population (by age, sex, marital status, labour force participation and
+region). It shows the cost of happiness increased faster than household
+income between 2002 and 2018. As a result, a smaller percentage of the
+Australian population in 2018 achieved a level of financial security on
+which their happiness was no longer dependent on their income, relative
+to
+    2002.
+
+<br>
+
+##### Figure 5.
+
+![](figures/figure_5-1.png)<!-- -->
+
+    Figure 5 legend: Real household income has stagnated in Australia since 2009 (post GFC) while the cost of happiness has increased. Consequently fewer Australians have a household income exceeding the cost of happiness in 2018.
 
 <br><br>
 
 ## Conclusions
 
-We found the relationship between subjective wellbeing and wealth was
-positive, but happiness and satisfaction had different (positive)
-relationships: Satisfaction increased linearly with wealth, while
-happiness increased rapidly up to a point after which further increments
-in wealth produced less change – this confirms the distinct effects of
-wealth in previous research (e.g., Howell and Howell, 2008; Kahneman and
-Deaton, 2010), and contributes rare evidence from the same sample.
-Furthermore, we report here for the first time that the change point
-between wealth and happiness increased over time between 2002 and 2018,
-faster than inflation or the median household income.
+We found the relationship between subjective wellbeing and household
+income was positive, but happiness and satisfaction had different
+(positive) relationships: Satisfaction increased linearly with income,
+while happiness increased rapidly up to a point after which further
+increments in income produced less change – this confirms the distinct
+effects of wealth in previous research (e.g., Howell and Howell, 2008;
+Kahneman and Deaton, 2010), and contributes rare evidence from the same
+sample. Furthermore, we report here for the first time that the change
+point between household income and happiness increased over time between
+2002 and 2018, faster than inflation or the median household income.
 
 We refer to the change point after which increases in wealth no longer
-produce similar increases in happiness as the cost of happiness. So
-household wealth, and the economic security it represents, buys
-happiness up to a point after which happiness and wealth are rarely
-related. Satisfaction on the other hand always increased with household
-wealth. The difference likely reflects the importance of a numerical
-dollar value (e.g., bank balance) when cognitively appraising one’s life
-achievements, versus the relevance of that number to our everyday
-experience of joy and prevailing mood. However an implication of the
-increasing cost of happiness over the last sixteen years is that wealth
-inequality is driving increasing *inequities* in wellbeing. In 2002, the
-cost point of happiness represented a 9% increase over median wealth,
-while in 2018 it represented a 42% increase over median wealth. This
-also represents a reduction from 44% to 26% in the proportion of people
-who have achieved a level of household wealth beyond which their
-happiness no longer depends. Thus over time the happiness of more
-people, i.e., their everyday experience of joy and their prevailing
-mood, has depended on their material wealth.
+produce similar increases in happiness as the cost of happiness. After
+this point, happiness is no longer as dependent on household income, and
+the economic security it represents. Presumably after this point further
+increases in happiness depend on other life factors (e.g., social
+connections). Life satisfaction on the other hand always increased with
+household income. The difference likely reflects the importance of a
+numerical dollar value (e.g., bank balance, house value) when
+cognitively appraising one’s life achievements, versus the relevance of
+that number to our everyday experience of joy and prevailing mood.
+
+An implication of the increasing cost of happiness over the last sixteen
+years is that wealth inequality is driving increasing *inequities* in
+wellbeing. In 2002, the cost point of happiness represented a 9%
+increase over median wealth, while in 2018 it represented a 42% increase
+over median wealth. This also represents a reduction from 44% to 26% in
+the proportion of people who have achieved a level of financial security
+beyond which their happiness no longer depends. Thus we can see that
+over time in the last sixteen years the happiness of more people, i.e.,
+their everyday experience of joy and their prevailing mood, has depended
+on their material wealth.
 
 Australia has low levels of wealth disparity relative to other OECD
 countries, and the Gini coefficient has not changed a great deal between
@@ -664,16 +1331,16 @@ Rather what we are revealing is the effect of income inequality on
 happiness has increased over the same time period. So while income
 inequality has remained steady, it’s impact on wellbeing inequity has
 increased. We think this highlights the issue that while traditional
-measures of wealth and income inequality may not change, their impact on
-wellbeing and health can still vary. As focus shifts from traditional
-wealth indicators towards wellbeing measures, findings such as this may
-become more prevalent.
+measures of wealth and income inequality may be relatively stable and
+exhibit little change, their impact on wellbeing and health can still
+vary. As focus shifts from traditional wealth indicators towards
+wellbeing measures, findings such as this may become more prevalent.
 
 Some recent studies have challenged either the notion that the positive
-effect of money plateaus, or that the effect on happiness and
+effect of household income plateaus, or that the effect on happiness and
 satisfaction are distinct. In a nationally representative sample of
 44,000 adult Americans in the General Social Survey (GSS), happiness
-continued to increase with household wealth, implying no change point
+continued to increase with household income, implying no change point
 existed between money and happiness (Twenge and Cooper, 2020). The GSS
 asks a single item on happiness: “Taken all together, how would you say
 things are these days – would you say that you are very happy, pretty
@@ -682,13 +1349,13 @@ the single item “life satisfaction” question in HILDA, as both request
 the respondent to cognitively evaluate their circumstances. By contrast,
 the nine items we selected to measure happiness covered a range of
 affect and focused on current feelings: e.g., “How much of the time
-during the past 4 weeks have you been a happy person?” Critical
+during the past 4 weeks have you been a happy person?”. Critical
 differences in the operational definition of happiness seem likely to
-explain the results observed here.
+explain the distinct results observed here.
 
 A second recent report from a survey of 1.7 million people representing
 164 countries in the Gallup World Poll reported increases in household
-wealth were associated with change points in happiness and satisfaction
+income were associated with change points in happiness and satisfaction
 (Jebb et al., 2018), rather than distinct effects as we found. It may be
 that differences in the sparsity of the high income data in HILDA (for
 which extremely high income households are masked) explain the
@@ -701,11 +1368,11 @@ satisfaction is consistent with the majority of earlier literature
 
 As governments and policy-makers begin to focus on wellbeing, it will be
 critical to understand how traditional economic indicators such as
-household wealth, income inequality, and consumption interact with
+household income, wealth inequality, and consumption interact with
 wellbeing and health. According to Frijters et al. (2020), coming up
 with a consensus to translate income into wellbeing features high on the
-wider wellbeing research agenda. Establishing the links between income,
-household wealth, wellbeing and health, and how inequalities in one
+wider wellbeing research agenda. Establishing the links between wealth,
+household income, wellbeing and health, and how inequalities in one
 drives inequities in the other, will be a critical step in that agenda.
 
 <br>
@@ -774,13 +1441,6 @@ Elsevier, pp. 89–125.
 Frijters, P., Clark, A.E., Krekel, C., Layard, R., 2020. A happy choice:
 Wellbeing as the goal of government. Behavioural Public Policy 4,
 126–165.
-
-</div>
-
-<div id="ref-headey2004effects">
-
-Headey, B., Wooden, M., 2004. The effects of wealth and income on
-subjective well-being and ill-being. Economic record 80, S24–S33.
 
 </div>
 

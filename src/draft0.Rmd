@@ -73,7 +73,7 @@ email: nick.glozier@sydney.edu.au
 
 # Abstract  
 
-A fundamental question for governments and people is how much happiness does a dollar buy? The accepted view among economists and psychologists is that money and happiness increase together up to a point, after which there is little further gain from increasing wealth. While the location of this change point has been determined, and the cost of happiness reportedly ranges between USD\$60 to $95K, there has been no investigation as to whether the cost of happiness has increased or decreased over time. We tested the relationship between wealth and both happiness and life satisfaction using household economic data from Australia between 2002-2018. We discovered the cost of happiness has increased over those 18 years faster than inflation (i.e., cost of living). This result shows that inequalities in wealth may be driving inequities in happiness and wellbeing, with implications for health and recent government policy-goals to monitor and improve wellbeing. (150 words)  
+A fundamental question for governments and people is how much happiness does a dollar buy? The accepted view among economists and psychologists is that money and happiness increase together up to a point, after which there is little further gain from increasing wealth. While the location of this change point has been determined, and the cost of happiness reportedly ranges between USD\$60 to $95K, there has been no investigation as to whether the cost of happiness has increased or decreased over time. We tested the relationship between wealth and both happiness and life satisfaction using household economic data from Australia between 2002-2018. We discovered the cost of happiness has increased over those 17 years faster than inflation (i.e., cost of living). This result shows that inequalities in wealth may be driving inequities in happiness and wellbeing, with implications for health and recent government policy-goals to monitor and improve wellbeing. (150 words)  
 
 <br><br>
 
@@ -101,7 +101,7 @@ Subjective wellbeing is not a unitary entity [@diener2017findings]; studies typi
 
 The distinction between satisfaction and happiness are increasingly relevant to governments and policy-makers due to the growing recognition that increasing wealth does not necessarily lead to improvements in wellbeing [@clark2018four; @frijters2020happy]. If wealth no longer improves wellbeing, then the maximization of wealth may no longer be a legitimate goal of government. Fundamentally, the existence of a change point between wealth and happiness reveals an unacknowledged inequality in the distribution of wellbeing in the economy. Of concern is the point at which wealth produces no further increases in happiness – that is, the change point, or cost of happiness. The cost of happiness represents the point at which material wealth stops driving inequalities in the distribution of happiness in the economy, where lower cost-points represent more equitable distributions of happiness. For instance, Kahneman estimated the cost of happiness among US survey respondents in 2008 to be approximately USD75,000 per year, substantially more than the US median income (USD52,000) in that year. Research since then has revealed variations in the cost of happiness due to world region, gender, and education [@jebb2018happiness], consistent with financial inequality driving inequities in wellbeing and happiness.  However, to date there has been no investigation of whether the cost of happiness has changed over time. In particular has the cost, and therefore the distribution, of happiness become more or less equitable in the last few decades?  
 
-We used household economic panel data from Australia (HILDA) to provide the first investigation of whether changes in wealth and wellbeing have changed the cost of happiness over the last 18 years (2002-2018). HILDA provides a representative sample of households in Australia with detailed measurements of wealth and subjective wellbeing in the same sample, which makes it an excellent data source to investigate the present question. We distinguished between satisfaction and happiness as different components of subjective wellbeing, and evaluated how each varies with household wealth. After adjusting for age, gender, and education level, we confirmed that happiness and satisfaction have distinct relationships with increasing wealth, but the cost of happiness has increased in real dollar terms since 2002.  
+We used household economic panel data from Australia (HILDA) to provide the first investigation of whether changes in wealth and wellbeing have changed the cost of happiness over the last 17 years (2002-2018). HILDA provides a representative sample of households in Australia with detailed measurements of wealth and subjective wellbeing in the same sample, which makes it an excellent data source to investigate the present question. We distinguished between satisfaction and happiness as different components of subjective wellbeing, and evaluated how each varies with household wealth. After adjusting for age, gender, and education level, we confirmed that happiness and satisfaction have distinct relationships with increasing wealth, but the cost of happiness has increased in real dollar terms since 2002.  
 
 <br>
 
@@ -240,7 +240,7 @@ happywealth %>%
 
 <br>
 
-Average life satisfaction levels were very steady between 2002-2018, while average happiness score decreased slightly over the 18 years. The proportions of each sex and relationship status were stable over time, as were the average household size and SEIFA index. However age and chronic health conditions tended to increase over time, as expected in an aging sample. Education levels (i.e., graduate percentage) also tended to increase over time, while changes in the workforce varied both up and down.  
+Average life satisfaction levels were very steady between 2002-2018, while average happiness score decreased slightly over the 17 years. The proportions of each sex and relationship status were stable over time, as were the average household size and SEIFA index. However age and chronic health conditions tended to increase over time, as expected in an aging sample. Education levels (i.e., graduate percentage) also tended to increase over time, while changes in the workforce varied both up and down.  
 
 <br>
 
@@ -285,7 +285,7 @@ p4 <- happywealth %>%
   scale_fill_manual(values = "#C79999") +
   scale_color_manual(values = "#8F2727")
 ```
-```{r figure_1, fig.height=10, fig.width=9}
+```{r figure_1, fig.height=10, fig.width=9, dpi=300}
 p1 / p2 / p3 / p4
 ```
 
@@ -461,8 +461,8 @@ Figure 3 legend: Posterior distribution of the change point parameter representi
 
 
 
-##### Figure 4. Estimated happiness (SD units) at $50K and $80K from 2002-2018 
-```{r figure_4}
+##### Figure 4. Estimated happiness (SD units) at $50K/yr and $80K/yr from 2002-2018 
+```{r figure_4, fig.width=7, fig.height=5, dpi=300}
 predicted_fits <- list()
 for (pathtofile in path_to_fits) {
   fit <- read_rds(pathtofile) 
@@ -498,7 +498,8 @@ predicted_fits %>%
   geom_point(size = 4, alpha = 0.25) +
   geom_smooth(method = "loess", se = F, span = 3) +
   facet_wrap(~income) +
-  labs(caption = "Source: Household disposable income, HILDA, Melbourne University", 
+  labs(caption = "Source:     HILDA, University of Melbourne
+                 Predicted happiness scores (SD unit) from piecewise regression on real household income", 
        x = "", y = "") -> p
 
 source("ft_themes.r")
@@ -512,17 +513,17 @@ p +
 ```
 
 ```
-Figure 4 legend: The difference (∆) in happiness between a household earning $50K per year and a household earning $80K per year has increased since 2009.
+Figure 4 legend: The difference (∆) in happiness between individuals with a household income of $50K per year and a household income of $80K per year has increased since 2009.
 ```  
 
 <br>
 
-Figure 5 presents house income levels adjusted for the Australian population (by age, sex, marital status, labour force participation and region). It shows the cost of happiness increased faster than household income between 2002 and 2018. As a result, a smaller percentage of the Australian population in 2018 achieved a level of financial security on which their happiness was no longer dependent on their income, relative to 2002.  
+Figure 5 presents house income levels weighted for the Australian population (by age, sex, marital status, labour force participation and region). It shows the cost of happiness increased faster than household income between 2002 and 2018. As a result, a smaller percentage of the Australian population in 2018 achieved a level of financial security on which their happiness was no longer dependent on their income, relative to 2002.  
 
 <br>
 
 ##### Figure 5.  
-```{r figure_5, fig.width=7, fig.height=6}
+```{r figure_5, fig.width=7, fig.height=6, dpi=300}
 # Tabulate against median income
 happywealth %>%
   filter(!student) %>%
@@ -577,13 +578,12 @@ ggplot(df.plot, aes(x = year, y = value, color = key)) +
   geom_line(aes(group = key), size = 2, alpha = 0.5) +
   # geom_smooth(aes(group = key), se = F, span = .5) +
   labs(title = "Wealth & happiness in Australia between 2002-2018",
-       caption = "Source: HILDA sample weighted for Australian population
-                  Household equivalised income per person (modified OECD scale)
-                  Excluding full-time students and topcoded individuals",
+       caption = "Source: HILDA sample, University of Melbourne
+                  Real household income (modified OECD scale) weighted for the Australian population",
        x = "  ", y = "") +
-  geom_vline(aes(xintercept = 2009), color = "red", linetype = 3) +
-  geom_text(data = gfc.note, aes(x = 2009.5, y = 57, label = string),
-            colour = "red", size = 3, hjust = "left") +
+  # geom_vline(aes(xintercept = 2009), color = "red", linetype = 3) +
+  # geom_text(data = gfc.note, aes(x = 2009.5, y = 57, label = string),
+  #           colour = "red", size = 3, hjust = "left") +
   geom_text(data = df.label,
             aes(label = val, vjust = vpos, hjust = hpos)) +
   expand_limits(y = c(22, 73)) +
@@ -600,7 +600,7 @@ p.econ
 ```
 
 ```
-Figure 5 legend: Household income has stagnated in Australia since the GFC while the cost of happiness has increased. Consequently fewer Australians have a household income exceeding the cost of happiness in 2018.
+Figure 5 legend: Real household income has stagnated in Australia since 2009 (post GFC) while the cost of happiness has increased. Consequently fewer Australians have a household income exceeding the cost of happiness in 2018.
 ```  
 
 <br><br>
