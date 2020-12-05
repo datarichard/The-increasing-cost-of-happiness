@@ -156,7 +156,7 @@ p <- dat %>%
     key = fct_relevel(key, "Median household income \n($000s)\n")) %>%
   ggplot(aes(x = year, y = value, color = key)) +
   geom_line(aes(group = key), size = 2, alpha = 0.5) +
-  labs(title = "Wealth & wellbeing in Australia between 2001-2018",
+  labs(title = "Income & wellbeing in Australia between 2001-2018",
        caption = "Source: HILDA, Melbourne University
                   Household equivalised income per person (modified OECD scale)",
        x = "  ", y = "") +
