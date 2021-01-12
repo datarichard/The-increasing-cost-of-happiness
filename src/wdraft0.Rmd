@@ -56,7 +56,7 @@ email: nick.glozier@sydney.edu.au
 |            |                                     |
 |------------|-------------------------------------|
 | Draft      | `r format(Sys.time(), '%d %B, %Y')` |
-| Word count | 3767                                |
+| Words      | 4460                                |
 | Tables     | 1                                   |
 | Figures    | 5                                   |  
 
@@ -71,7 +71,7 @@ email: nick.glozier@sydney.edu.au
 
 # Abstract  
 
-A fundamental question for governments and people is how much happiness does a dollar buy? The accepted view among economists and psychologists is that money and happiness increase together up to a point, after which there is little further gain from increasing wealth. While the location of this change point has been determined, and the cost of happiness reportedly ranges between USD\$60 to $95K, there has been no investigation as to whether the cost of happiness has increased or decreased over time. We tested the relationship between income and both happiness and life satisfaction using household economic data from Australia between 2002-2018. We discovered the cost of happiness has increased over those 17 years faster than inflation (i.e., cost of living). This result shows that inequalities in wealth may be driving inequities in happiness and wellbeing, with implications for health and recent government policy-goals to monitor and improve wellbeing. (150 words)  
+A fundamental question for governments and people is how much happiness does a dollar buy? The accepted view among economists and psychologists is that money and happiness increase together up to a point, after which there is little further gain from increasing wealth. While the location of this change point has been determined, and the cost of happiness reportedly ranges between USD\$60K to $95K, there has been no investigation as to whether the cost of happiness has increased or decreased over time. We tested the relationship between income and both happiness and life satisfaction using household economic data from Australia between 2002-2018. We discovered the cost of happiness has increased over those 17 years faster than inflation (i.e., cost of living). This result shows that inequalities in income may be driving inequities in happiness and wellbeing, with implications for health and recent government policy-goals to monitor and improve wellbeing. (150 words)  
 
 <br><br>
 
@@ -93,11 +93,11 @@ A fundamental question for governments and people is how much happiness does a d
 
 
 ## Background
-A fundamental question for psychology and economics is just how much wellbeing does a dollar buy? Increasing income is commonly associated with increasing wellbeing, however a point at which income no longer increases subjective wellbeing has also been widely observed [@clark2008relative; @dolan2008we; @easterlin1974growth]. Given that a central goal of nations and governments is to improve wealth under the assumption that wealth always increases wellbeing, challenges to this notion have far reaching consequences [@frijters2020happy].   
+A fundamental question for psychology and economics is just how much wellbeing does a dollar buy? Increasing income is commonly associated with increasing wellbeing, however a point at which income no longer increases subjective wellbeing has also been widely observed [@clark2008relative; @dolan2008we; @easterlin1974growth]. Given that a central goal of nations and governments is to improve income under the assumption that income always increases wellbeing, challenges to this notion have far reaching consequences [@frijters2020happy].   
 
 Subjective wellbeing is not a unitary entity [@diener2017findings]; studies typically distinguish between life satisfaction, the cognitive appraisal of one’s own accomplishments, and happiness, one’s prevailing affective state or emotional mood. Money can have different effects on each. For instance, we have recently reported that positive life events, such as a major financial windfall, have a greater impact on an individual’s satisfaction than their happiness [@kettlewell2020differential]. While the distinct effect of money on satisfaction and happiness was observed within individuals, the distinct effects of money have also been observed across individuals. For instance, Kahneman & Deaton [-@kahneman2010high] showed that self-reported levels of happiness increased with household income up to a point (\$75,000). But after that, increasing amounts of money had no further effect on happiness. They also reported that life satisfaction continued to increase with income beyond \$75,000. Indeed, the difference between the two questions: “How satisfied are you with your life?” and “How happy are you these days?” has been identified as a crucial mediating factor in a meta-analysis of 111 studies on money and wellbeing [@howell2008relation; also @veenhoven2006rising]. Results such as these have provided a more nuanced view among psychologists and (some!) economists about the relationship between money and wellbeing; namely that money is more strongly related to satisfaction than to happiness.  
 
-The distinction between satisfaction and happiness are increasingly relevant to governments and policy-makers due to the growing recognition that increasing wealth does not necessarily lead to improvements in wellbeing [@clark2018four; @frijters2020happy]. If money no longer improves wellbeing, then the maximization of wealth may no longer be a legitimate goal of government. Fundamentally, the existence of a change point between income and happiness reveals an unacknowledged inequality in the distribution of wellbeing in the economy. Of concern is the point at which income produces no further increases in happiness – that is, the change point, or cost of happiness. The cost of happiness represents the point at which material wealth stops driving inequalities in the distribution of happiness in the economy, where lower cost-points represent more equitable distributions of happiness. For instance, Kahneman estimated the cost of happiness among US survey respondents in 2008 to be approximately USD75,000 per year, substantially more than the US median income (USD52,000) in that year. Research since then has revealed variations in the cost of happiness due to world region, gender, and education [@jebb2018happiness], consistent with financial inequality driving inequities in wellbeing and happiness.  However, to date there has been no investigation of whether the cost of happiness has changed over time. In particular has the cost, and therefore the distribution, of happiness become more or less equitable in the last few decades?  
+The distinction between satisfaction and happiness are increasingly relevant to governments and policy-makers due to the growing recognition that increasing income does not necessarily lead to improvements in wellbeing [@clark2018four; @frijters2020happy]. If money no longer improves wellbeing, then the maximization of wealth may no longer be a legitimate goal of government. Fundamentally, the existence of a change point between income and happiness reveals an unacknowledged inequality in the distribution of wellbeing in the economy. Of concern is the point at which income produces no further increases in happiness – that is, the change point, or cost of happiness. The cost of happiness represents the point at which material wealth stops driving inequalities in the distribution of happiness in the economy, where lower cost-points represent more equitable distributions of happiness. For instance, Kahneman estimated the cost of happiness among US survey respondents in 2008 to be approximately USD75,000 per year, substantially more than the US median income (USD52,000) in that year. Research since then has revealed variations in the cost of happiness due to world region, gender, and education [@jebb2018happiness], consistent with financial inequality driving inequities in wellbeing and happiness.  However, to date there has been no investigation of whether the cost of happiness has changed over time. In particular has the cost, and therefore the distribution, of happiness become more or less equitable in the last few decades?  
 
 We used household economic panel data from Australia (HILDA) to provide the first investigation of whether changes in income and wellbeing have changed the cost of happiness over the last 17 years (2002-2018). HILDA provides a representative sample of households in Australia with detailed measurements of income and subjective wellbeing in the same sample, which makes it an excellent data source to investigate the present question. We distinguished between satisfaction and happiness as different components of subjective wellbeing, and evaluated how each varies with household income. After adjusting for age, gender, and education level, we confirmed that happiness and satisfaction have distinct relationships with increasing income, but the cost of happiness has increased in real dollar terms since 2002.  
 
@@ -108,7 +108,7 @@ We used household economic panel data from Australia (HILDA) to provide the firs
 <br>
 
 #### Income
-Our indicator of income and economic security was household income. Household income better represents economic security than personal income, since members of the same household share expenses as well as risks; i.e., they can provide a direct and immediate support network when financial shocks occur. The other major studies also used household after-tax income as the indicator of wealth and economic security [e..g, @kahneman2010high; @jebb2018happiness], and so we follow the same standard here as well. The ‘real household annual disposable income’ was calculated from the combined income of all household members after receipt of government pensions and benefits and deduction of income taxes in the financial year ended 30th June of the year of the wave (e.g., 2002 in wave 2). This was then adjusted for inflation - the rise in the general price level of the economy - using the Australian Bureau of Statistics (ABS) Consumer Price Index, so that income in all waves is expressed in FY 2017/18 prices, to give real income. 
+Our indicator of income and economic security was household income. Household income better represents economic security than personal income, since members of the same household share expenses as well as risks; i.e., they can provide a direct and immediate support network when financial shocks occur. The other major studies also used household after-tax income as the indicator of income and economic security [e..g, @kahneman2010high; @jebb2018happiness], and so we follow the same standard here as well. The ‘real household annual disposable income’ was calculated from the combined income of all household members after receipt of government pensions and benefits and deduction of income taxes in the financial year ended 30th June of the year of the wave (e.g., 2002 in wave 2). This was then adjusted for inflation - the rise in the general price level of the economy - using the Australian Bureau of Statistics (ABS) Consumer Price Index, so that income in all waves is expressed in FY 2017/18 prices, to give real income. 
 
 The _equivalised_ household income was obtained by adjusting for household size (the number of adult and child household members). In this instance, we have used the 'modified OECD' scale (Hagenaars et al., 1994), which divides household income by 1 for the first household member plus 0.5 for each other household member aged 15 or over, plus 0.3 for each child under 15. A family comprising two adults and two children under 15 years of age would therefore have an equivalence scale of 2.1 (1 + 0.5 + 0.3 + 0.3), meaning that the family would need to have an income 2.1 times that of a single-person household in order to achieve the same standard of living. This scale recognises that larger households require more income, but it also recognises that there are economies of scale in consumption and that children require less than adults. The equivalised income calculated for a household is then assigned to each member of the household.  
 
@@ -172,7 +172,7 @@ To determine the location of the change point (*&omega;*) between wellbeing and 
 <br> 
 
 _Covariates_  
-Age (and age^2^), gender, and education were included as covariates. Full-time students were removed, as well as individuals with an annual household disposable income that was indicated as _topcoded_ by the University of Melbourne (topcoding occurs to ensure privacy of high wealth individuals). Gender was included as a binary variable (Male = 1), and education was a binary variable coded from the highest level of education achieved (university/college graduate = 1).  
+Age (and age^2^), gender, and university graduate education were included as covariates. Cross-sectional population weights for Australia provided by the University of Melbourne in each year were also included as a covariate to adjust for differences in the sample representativeness according to sex by broad age, marital status, region, and labour force status. Full-time students were removed, as well as individuals with an annual household disposable income that was indicated as _topcoded_ by the University of Melbourne (topcoding occurs to ensure privacy of high wealth individuals). Gender was included as a binary variable (Male = 1), and education was a binary variable coded from the highest level of education achieved (university/college graduate = 1).  
 
 ```{r read_write_covs}
 happywealth <- read_rds("../data/happywealth.rds")
@@ -250,7 +250,7 @@ Below we show the relationship between household income and wellbeing (Figure 1)
 
 <br>
 
-##### Figure 1. Household income and satisfaction (blue) and happiness (red)
+##### Figure 1. Household income and happiness (red) and satisfaction (blue)  
 ```{r losat_gh9_hifdip}
 library(patchwork)
 
@@ -284,22 +284,22 @@ p4 <- happywealth %>%
   scale_color_manual(values = "#8F2727")
 ```
 ```{r figure_1, fig.height=10, fig.width=9, dpi=300}
-p1 / p2 / p3 / p4
+p3 / p4 / p1 / p2
 ```
 
 ```
-Figure 1 legend: Posterior predictive distributions (95% credible intervals) showing the model fit from regressions of wellbeing on household income, overlaid on summary data points (income deciles). Wellbeing was measured as life satisfaction (blue) or happiness (red). The total number of individuals contributing to each year are shown (n).
+Figure 1 legend: Posterior predictive distributions (95% credible intervals) showing the model fit from regressions of wellbeing on household income, overlaid on summary data points (income deciles). Wellbeing was measured as happiness (red) or life satisfaction (blue). The total number of individuals contributing to each year are shown (n).
 ```  
 
 <br>
 
-Figure 1 shows the relationship between household income and satisfaction appeared relatively linear, as the results of the piecewise regression indicated the inflection of the change point could be increasing (e.g., 2002, 2006) as well as decreasing (e.g., 2010, 2014, 2018). By contrast, a decreasing change point was evident in each year of happiness on income. The results of a formal comparison between linear and piecewise models is provided in Model Selection below. However note that the change point between income and happiness appeared to shift rightwards over time (bottom row). (We can also see the linear relationship between household income and each wellbeing variable became slightly weaker over time, i.e., less steep)  
+Figure 1 shows the relationship between household income and happiness (red) and satisfaction (blue). A linear fit is shown in the 1st and 3rd row for happiness and satisfaction respectively. The nonlinear relationship between happiness and income is shown in the 2nd row and it was negatively inflected, with a consistently decreasing change point in each year. By contrast the nonlinear relationship between satisfaction and income shown in the 4th row appeared to be positively inflected in 2002 and 2006, and negatively inflected 2014 and 2018. The relationship between satisfaction and income was relatively linear (no apparent change point) in 2014.  
 
-<br>
+<br><br>
 
 #### Model Selection  
 
-We compared the posterior evidence for a linear relationship between wellbeing and income with the posterior evidence of a nonlinear (piecewise) relationship (i.e., WAIC~linear~ — WAIC~piecewise~). Thus a WAIC difference greater than zero indicated evidence for a linear relationship. A WAIC difference less than zero indicated evidence for a nonlinear (piecewise) relationship.   
+We compared the posterior evidence for a linear relationship between each wellbeing variable and income with the posterior evidence of a nonlinear (piecewise) relationship (i.e., WAIC~linear~ — WAIC~piecewise~). Thus a WAIC difference greater than zero indicated evidence for a linear relationship. A WAIC difference less than zero indicated evidence for a nonlinear (piecewise) relationship.   
 
 <br>
 
@@ -387,27 +387,27 @@ p5 / p6
 ```
 
 ```
-Figure 2 legend: Differences in posterior evidence for a linear fit over a piecewise fit (WAIC) for satisfaction (blue) and happiness (red). The filled circle indicates the mean of the distribution and the horizontal bars represents the 95% credible interval. A difference greater than zero is support for the linear model and a difference below zero is support for the piecewise model.
+Figure 2 legend: Differences in posterior evidence for a linear fit over a piecewise fit (WAIC) for happiness (red) and satisfaction (blue). The filled circle indicates the mean of the distribution and the horizontal bars represents the 95% credible interval. A difference greater than zero is support for the linear model and a difference below zero is support for the piecewise model.
 ```  
 
 
-<br><br>
-
-Model selection revealed the posterior evidence for the linear fit of satisfaction on income was credibly superior to the nonlinear (piecewise) fit - Figure 2 shows the 90% credible interval of the fit for each year of satisfaction was above zero with no overlap. By contrast, a nonlinear fit of happiness on income was generally superior, and the nonlinear fit was credibly superior at 90% for each of three years (2006, 2014, 2018). Thus, the posterior evidence indicates happiness and satisfaction have distinct relationships with household income; satisfaction tends to increase linearly with income, while a change point exists in the relationship between happiness and income.     
-
 <br>
+
+The posterior evidence from model selection revealed the nonlinear (piecewise) fit of _happiness_, but not _satisfaction_, was credibly superior to a linear fit. Figure 2 shows the 95% credible interval of the difference in WAIC values for the linear over nonlinear fits for happiness was below zero with no overlap for each year, indicating consistent support for the nonlinear model. By contrast, the WAIC differences for the satisfaction models were generally positive, indicating the superiority of the linear fit for this variable. The linear fit for satisfaction was credibly superior (95%) for 2002, 2006, 2010 and 2018, and above but near zero for 2014. Overall the posterior evidence suggests that happiness and satisfaction have distinct relationships with household income; satisfaction tends to increase linearly with income, while a change point exists in the relationship between happiness and household income.     
+
+<br><br>
 
 #### Parameter Estimation  
 
-Figure 3 below presents the complete posterior distribution of &omega; over 4000 samples drawn from the piecewise model, representing the location of the change point between happiness and household income in four separate years. Shaded areas to the right of the vertical grey dotted line are credibly (95%) larger than 2002. The figure shows the change point between happiness and household income (the _cost of happiness_) credibly increased between 2002 and 2018.  
+Figure 3 below presents the complete posterior distribution of &omega; over 12,000 samples were drawn from each piecewise model, representing the location of the change point between happiness and household income in four separate years. Shaded areas to the right of the vertical grey dotted line are credibly (95%) higher than 2002. The figure shows the change point between happiness and household income was credibly higher in the two most recent years (2014 and 2018) relative to 2002.  
 
 <br>
 
 ##### Figure 3. Posterior distributions of &omega; (95% distribution)  
 ```{r figure_3, fig.width = 6, fig.height = 4.5, dpi=300}
 path_to_fits <- list.files(
-  path = "../results",
-  pattern = '^fit_cp_hifdip_gh9_cov_.*.RDS$',
+  path = "../results/incl_topcodes/with_pweights/",
+  pattern = "^fit_nl_hifdip_gh9_4cov_pwt_.*.RDS$",
   full.names = TRUE
 )
 
@@ -417,7 +417,10 @@ for (pathtofile in path_to_fits) {
     as.data.frame() %>%
     select(b_alpha_Intercept) 
   
-  colnames(df) <- paste0("param_", substring(pathtofile, 34, 37))
+  colnames(df) <- paste0(
+    "param_", 
+    substring(pathtofile, nchar(pathtofile)-7, nchar(pathtofile)-4)
+    )
   
   posterior_alphas <- bind_cols(posterior_alphas, df)
 }
@@ -431,16 +434,17 @@ posteriors_trim <- posterior_omegas %>%
     param_2003 = (param_2002 + param_2004)/2)
 
 # select posteriors for plotting
-posteriors_select <- posterior_omegas %>%
+posteriors_select <- posteriors_trim %>%
   select(param_2002, param_2006, param_2010, param_2014, param_2018)
 
 color_scheme_set("red")
 
-mcmc_areas_ridges(
+mcmc_areas(
   posteriors_select,
   pars = rev(colnames(posteriors_select)),
   prob = 0.95, 
-  prob_outer = .99 
+  prob_outer = .99,
+  point_est = "median",
   ) +
   theme_test() +
   geom_vline(aes(xintercept = median(posteriors_select$param_2002)), 
@@ -450,14 +454,14 @@ mcmc_areas_ridges(
 ```
 
 ```
-Figure 3 legend: Posterior distribution of the change point parameter representing the location in household income ($) for each year. Shaded area represents the 90% credible region.
+Figure 3 legend: Posterior distribution of the change point parameter representing the location in real household income (2018 dollars) for each year. Shaded area represents the 95% credible region and the solid vertical line indicates the expected value (median) of each distribution. Dotted line indicates the 2002 change point parameter (median) for comparison.
 ```  
 
-<br>
+<br><br>
 
-#### Income and happiness  
+#### Income and the cost of happiness  
 
-
+The posterior estimates of the change point between happiness and household income indicates that the relationship between happiness and income has changed between 2002 and 2018. One  implication of such a change is the disparity in happiness between income groups has increased. This will occur as more people fall below the change point over time and so are subject to the steep region of the function where income and happiness are strongly related. However the relationship between income and happiness depends on all the parameters of the function such as the intercept, pre-change slope and the post-change slope rather than solely the change point location. So to directly examine the implications of our model for the distribution of happiness, we used the model to estimate the happiness levels for two different income groups: one group for whom the change point increased above their household income over the time period (\$50K/yr); and another group which always remained safely above the change point over the same period ($80K/yr). Figure 4 below presents the standardized happiness levels for each (hypothetical) group as well as the difference in happiness between them.  
 
 ##### Figure 4. Estimated happiness (SD units) at $50K/yr and $80K/yr from 2002-2018 
 ```{r figure_4, fig.width=7, fig.height=5, dpi=300}
@@ -472,15 +476,19 @@ for (pathtofile in path_to_fits) {
     dollars = c(5, ans[, "dollars"], 8),
     age = rep(ans[, "age"], 3),
     age_sq = rep(ans[, "age_sq"], 3),
-    male = rep(ans[, "male"], 3), 
-    grad = rep(ans[, "grad"], 3)
+    male = as.logical(rep(ans[, "male"], 3)), 
+    grad = as.logical(rep(ans[, "grad"], 3)),
+    pweights = rep(ans[, "pweights"], 3)
   )
   
   df <- fitted(fit, newdata = newdat) %>% 
     as_tibble() %>%
     mutate(
       Dollars = c("$50K", "\u03bc", "$80K"),
-      year = as.numeric(substring(pathtofile, 34, 37)))
+      year = as.numeric(
+        substring(pathtofile, nchar(pathtofile)-7, nchar(pathtofile)-4)
+        )
+      )
   
   predicted_fits <- bind_rows(predicted_fits, df)
 }
@@ -509,6 +517,60 @@ p +
         plot.title = element_text(size = 19),
         strip.text = element_text(size = 12))
 ```
+  
+  
+  
+##### Alt Figure 4. Observed happiness (SD units) at $50K/yr and $80K/yr from 2002-2018 
+```{r alt_figure_4, fig.width=7, fig.height=5, dpi = 300}
+happywealth %>%
+  filter(!student) %>%
+  filter(!top_hifdip) %>%
+  select(year, xwaveid, gh9, income = hh_disp_inc_eq, weights) %>%
+  filter(year %in% 2002:2018) %>%
+  mutate(
+    year = paste0("param_", year),
+    income = income/1000) %>%
+  left_join(
+    gather(
+      summarise_all(posteriors_trim, list(median)), 
+      year, 
+      change_point
+    )) %>%
+  mutate(
+    year = extract_numeric(year),
+    income_group = case_when(
+      income > 35 & income < 45 ~ "$50K",
+      income > 65 & income < 75 ~ "$80K"
+    )) %>%
+  group_by(year) %>%
+  mutate(
+    happiness = as.vector(scale(gh9)),
+    ) %>%
+  filter(!is.na(income_group)) %>%
+  group_by(year, income_group) %>%
+  summarise(
+    Happiness = mean(happiness, na.rm = T)
+    ) %>% 
+  ungroup() %>%
+  spread(income_group, Happiness) %>%
+  mutate(`$80K - $50K (∆)` = `$80K` - `$50K`) %>%
+  gather(key, val, `$50K`:`$80K - $50K (∆)`) %>%
+  mutate(key = fct_relevel(key, c("$50K", "$80K"))) %>%
+  ggplot(aes(x = year, y = val, color = key)) +
+    geom_point(size = 4, alpha = 0.25) +
+    geom_smooth(span = 3, se = F) +
+    facet_wrap(~key) +
+    labs(caption = "Source:     HILDA, University of Melbourne
+                 Observed happiness scores (SD unit)", 
+     x = "", y = "") -> p
+
+p +
+  ft_theme() +
+  ggthemes::scale_colour_wsj() +
+  theme(legend.position = "none",
+        plot.title = element_text(size = 19),
+        strip.text = element_text(size = 12))
+```
 
 ```
 Figure 4 legend: The difference (∆) in happiness between individuals with a household income of $50K per year and a household income of $80K per year has increased since 2009.
@@ -516,45 +578,50 @@ Figure 4 legend: The difference (∆) in happiness between individuals with a ho
 
 <br>
 
-Figure 5 presents house income levels weighted for the Australian population (by age, sex, marital status, labour force participation and region). It shows the cost of happiness increased faster than household income between 2002 and 2018. As a result, a smaller percentage of the Australian population in 2018 achieved a level of financial security on which their happiness was no longer dependent on their income, relative to 2002.  
+Figure 4 shows the estimated disparity in happiness between two fixed income levels (∆). From 2002 to 2009, a hypothetical person with a household income \$80K per year was approximately 0.1 SD units happier than a person with an income of $50K per year. However by 2018 the difference had doubled to 0.2 SD units. Interestingly this increase was not due to happiness levels increasing among \$80K/year households year-on-year, but rather both income groups had declining happiness levels between 2002-2009 and this decline was arrested and reversed among \$80K/year households after 2009, but not among \$50K/households. The increasing difference in happiness between our two income levels shown in the third panel confirms the model fully implies that happiness levels became more inequitable over the period.  
+
+A second implication of the increase in the change point between income and happiness is that over time fewer people will enjoy a level of financial security beyond which their happiness no longer depends on income. This occurs because the income of fewer people fall above the change point, where the flat (or gradual) region of the function indicates happiness is less strongly determined by income. Asuming median income is also not increasing at a faster rate, any increase in the change point should reduce the number of people who fall above it over time. Figure 5 below presents median household income levels weighted for the Australian population (by age, sex, marital status, labour force participation and geographical region). It also shows the change point between income and happiness increased faster than household income between 2002 and 2018. The third panel shows that as a result, a smaller percentage of the Australian population in 2018 had a household income above the changepoint than in 2002. This confirms that fewer Australians can afford a level of financial security beyond which their happiness no longer depends on income in 2018 (relative to 2002).  
 
 <br>
 
-##### Figure 5.  
+##### Figure 5. The increasing cost of happiness in Australia 2002-2018 
 ```{r figure_5, fig.width=7, fig.height=6, dpi=300}
 # Tabulate against median income
 happywealth %>%
   filter(!student) %>%
   filter(!top_hifdip) %>%
-  select(year, xwaveid, income = hh_disp_inc_eq) %>%
+  select(year, xwaveid, income = hh_disp_inc_eq, weights) %>%
   filter(year %in% 2002:2018) %>%
   mutate(
     year = paste0("param_", year),
     income = income/1000) %>%
   left_join(
     gather(
-      summarise_all(posteriors_trim, 
-                    list(median)), 
+      summarise_all(posteriors_trim, list(median)), 
       year, 
       change_point
     )) %>%
   mutate(
-    year = extract_numeric(year)
-    ) %>%
+    year = extract_numeric(year),
+    over_change = income > change_point,
+    weighted_over = over_change * weights
+  ) %>%
   group_by(year) %>%
   summarise(
-    `Median household income\n ($000s)` = round(median(income), 
-                                                2),
-    `Cost of happiness\n ($000s)` = round(mean(change_point), 
-                                          2),
-    `Individuals affording happiness\n (Population %)` = round(mean(income > mean(change_point))
-                                                           *100,
-                                                           1)
+    `Median household income\n ($000s)` = round(median(income), 2),
+    # `Median household income\n ($000s)` = round(matrixStats::weightedMedian(income, weights)),
+    
+    `Cost of happiness\n ($000s)` = round(mean(change_point), 2),
+    
+    `Proportion of Australians\n Afford (%)` = round(
+      sum(weighted_over) / sum(weights) *100)
+    
     ) %>%
   gather("key", "value", -year) %>%
   mutate(
     key = paste0(key, "\n"),
-    key = fct_relevel(key, "Median household income\n ($000s)\n")) -> df.plot
+    key = fct_relevel(key, "Median household income\n ($000s)\n")
+    ) -> df.plot
 
 df.plot %>%
   select(key) %>% distinct() %>%
@@ -564,41 +631,42 @@ df.plot %>%
   filter(year %in% c(min(year), 2018)) %>%
   mutate(
     val = as.character(
-      if_else(str_detect(key, "afford"),
+      if_else(str_detect(key, "Proportion"),
               paste0(round(value), "%"),
               paste0("$", round(value), "K"))),
-    vpos = if_else(val %in% c("$49K", "$72K", "41%"), -0.75, 1.65),
+    vpos = if_else(val %in% c("$49K", "$72K", "42%"), -0.75, 1.65),
     hpos = if_else(year == min(year), 0.3, 0.8)
     ) -> df.label
 
 ggplot(df.plot, aes(x = year, y = value, color = key)) +
-  # geom_point() +
   geom_line(aes(group = key), size = 2, alpha = 0.5) +
-  # geom_smooth(aes(group = key), se = F, span = .5) +
-  labs(title = "Income & happiness in Australia between 2002-2018",
-       caption = "Source: HILDA sample, University of Melbourne
+  labs(caption = "Source:     HILDA sample, University of Melbourne
                   Real household income (modified OECD scale) weighted for the Australian population",
        x = "  ", y = "") +
-  # geom_vline(aes(xintercept = 2009), color = "red", linetype = 3) +
-  # geom_text(data = gfc.note, aes(x = 2009.5, y = 57, label = string),
-  #           colour = "red", size = 3, hjust = "left") +
   geom_text(data = df.label,
             aes(label = val, vjust = vpos, hjust = hpos)) +
   expand_limits(y = c(22, 73)) +
   facet_wrap(~key) -> p
 
 p.econ <- p + 
-  labs(subtitle = "  ") +
+  labs(title = "Income & happiness in Australia between 2002-2018",
+       subtitle = " ") +
   ggthemes::scale_color_economist() +
   ggthemes::theme_economist(base_family="Verdana", base_size = 8) +
   theme(legend.position = "none",
         strip.text = element_text(size = 10)
         )
-p.econ
+
+p + 
+  ft_theme() +
+  ggthemes::scale_colour_wsj() +
+  theme(legend.position = "none",
+        plot.title = element_text(size = 19),
+        strip.text = element_text(size = 12))
 ```
 
 ```
-Figure 5 legend: Real household income has stagnated in Australia since 2009 (post GFC) while the cost of happiness has increased. Consequently fewer Australians have a household income exceeding the cost of happiness in 2018.
+Figure 5 legend: Real household income has stagnated in Australia since 2009 (post GFC) while the cost of happiness has increased. Consequently fewer Australians have a household income which affords them happiness not determined by financial security in 2018.
 ```  
 
 <br><br>
@@ -607,21 +675,22 @@ Figure 5 legend: Real household income has stagnated in Australia since 2009 (po
 
 We found the relationship between subjective wellbeing and household income was positive, but happiness and satisfaction had different (positive) relationships: Satisfaction increased linearly with income, while happiness increased rapidly up to a point after which further increments in income produced less change – this confirms the distinct effects of money in previous research [e.g., @howell2008relation; @kahneman2010high], and contributes rare evidence from the same sample. Furthermore, we report here for the first time that the change point between household income and happiness increased over time between 2002 and 2018, faster than inflation or the median household income.
 
-We refer to the change point after which increases in income no longer produce similar increases in happiness as the cost of happiness. After this point, happiness is no longer as dependent on household income, and the economic security it represents. Presumably after this point further increases in happiness depend on other life factors (e.g., social connections). Life satisfaction on the other hand always increased with household income. The difference likely reflects the importance of a numerical dollar value (e.g., bank balance, house value) when cognitively appraising one’s life achievements, versus the relevance of that number to our everyday experience of joy and prevailing mood. 
+We refer to the change point after which increases in income no longer produce similar increases in happiness as the cost of happiness. After this point, happiness is no longer as dependent on household income, and the economic security it represents. Presumably after this point further increases in happiness depend on other life factors (e.g., social connections). Life satisfaction on the other hand always increased with household income. The difference likely reflects the importance of a numerical dollar value (e.g., bank balance, house value) when cognitively appraising one’s life achievements, versus the relevance of that number to our everyday experience of joy and our prevailing mood. 
 
-An implication of the increasing cost of happiness over the last sixteen years is that wealth inequality is driving increasing _inequities_ in wellbeing. In 2002, the cost point of happiness represented a 9% increase over median income, while in 2018 it represented a 42% increase over median income. This also represents a reduction from 44% to 26% in the proportion of people who have achieved a level of financial security beyond which their happiness no longer depends. Thus we can see that over time in the last sixteen years the happiness of more people, i.e., their everyday experience of joy and their prevailing mood, has depended on their material wealth.  
+An implication of the changing relationship between happiness and income over the last sixteen years is that income inequality may be driving increasing _inequities_ in wellbeing. This is particularly clear in Figure 4, where the difference in happiness between \$50K and $80K households represented 0.1 SD units in happiness, however by 2018 the difference had doubled to 0.2 SD units. The inequity was also highlighted in Figure 5 where the change point of happiness represented a 9% increase over median income in 2002, while in 2018 it represented a 42% increase over median income. This increase relative to median income also represented a reduction from 42% to 24% in the proportion of people who have achieved a level of income beyond which their happiness no longer depends. Thus we can see that over the last sixteen years the difference in happiness between fixed income levels has increased, and the proportion of people whose happiness, i.e., their everyday experience of joy and their prevailing mood, no longer depends on their financial security has decreased.  
 
-Australia has low levels of income disparity relative to other OECD countries, and the Gini coefficient has not changed a great deal between 2002 and 2018 in the HILDA dataset [@australian2018rising]. A stable Gini coefficient shows income inequality has remained steady over the time period, and our results do not conflict with this conclusion. Rather what we are revealing is the effect of income inequality on happiness has increased over the same time period. So while income inequality has remained steady, it’s impact on wellbeing inequity has increased. We think this highlights the issue that while traditional measures of wealth and income inequality may be relatively stable and exhibit little change, their impact on wellbeing and health can still vary. As focus shifts from traditional wealth indicators towards wellbeing measures, findings such as this may become more prevalent.  
+Australia has low levels of income disparity relative to other OECD countries, and the Gini coefficient has not changed a great deal between 2002 and 2018 in the HILDA dataset [@australian2018rising]. A stable Gini coefficient shows income inequality has remained steady over the time period, and our results do not conflict with this conclusion. Rather what we are revealing is the effect of income inequality on happiness has increased over the same time period. So while income inequality has remained steady, it’s impact on wellbeing inequity has increased. We think this highlights the issue that while traditional measures of wealth and income inequality may be relatively stable and exhibit little change, their impact on wellbeing and health can still vary. As focus shifts from traditional financial indicators towards health and wellbeing measures, findings such as this may become more prevalent.  
 
 Some recent studies have challenged either the notion that the positive effect of household income plateaus, or that the effect on happiness and satisfaction are distinct. In a nationally representative sample of 44,000 adult Americans in the General Social Survey (GSS), happiness continued to increase with household income, implying no change point existed between money and happiness [@twenge2020expanding]. The GSS asks a single item on happiness: “Taken all together, how would you say things are these days – would you say that you are very happy, pretty happy, or not too happy?” The form of this question is quite similar to the single item “life satisfaction” question in HILDA, as both request the respondent to cognitively evaluate their circumstances. By contrast, the nine items we selected to measure happiness covered a range of affect and focused on current feelings: e.g., “How much of the time during the past 4 weeks have you been a happy person?”. Critical differences in the operational definition of happiness seem likely to explain the distinct results observed here.   
 
 A second recent report from a survey of 1.7 million people representing 164 countries in the Gallup World Poll reported increases in household income were associated with change points in happiness and satisfaction [@jebb2018happiness], rather than distinct effects as we found. It may be that differences in the sparsity of the high income data in HILDA (for which extremely high income households are masked) explain the differences here. However including these individuals in our analysis did not change the linear effect between income and satisfaction observed here, and the weighted topcodes should have biased the result towards a change point. We also note a linear effect between income and satisfaction is consistent with the majority of earlier literature [@howell2008relation; @stevenson2013subjective].  
 
-As governments and policy-makers begin to focus on wellbeing, it will be critical to understand how traditional economic indicators such as household income, wealth inequality, and consumption interact with wellbeing and health. According to @frijters2020happy, coming up with a consensus to translate income into wellbeing features high on the wider wellbeing research agenda. Establishing the links between wealth, household income, wellbeing and health, and how inequalities in one drives inequities in the other, will be a critical step in that agenda.  
+It is worth noting that other models will of course provide better fits to this data. For instance, log-normal models are typically used to model income effects. But such models will not provide a clear or distinct change point. One implication of this weakness is that the inflection point we identify may be much smoother than implied by our analysis. We concede this point but would still contend the location of the inflection point in such models will display a comparable shift over time, if it can be detected with certainty.  
+
+As governments and policy-makers begin to focus on wellbeing, it will be critical to understand how traditional economic indicators such as household income, wealth inequality, and consumption interact with wellbeing and health. According to @frijters2020happy, coming up with a consensus to translate income into wellbeing features high on the wider wellbeing research agenda. Establishing the links between wealth, household income, wellbeing and health, and how inequalities in one drives inequities in the other, will be a critical step in the success of that agenda.  
 
 <br>
 
 
 ## References  
-
 

@@ -242,47 +242,9 @@ Figure S2 legend: Posterior distribution of the change point parameter represent
 
 <br>
 
-#### Non-linear fits
-
-We tested the relationship between wealth and each wellbeing variable (happiness and satisfaction) using cubic **B-spline models**. A cubic B-spline was the most complex model (more degrees of freedom), and included here because it has been recently used to describe the maximum point at which wellbeing no longer increases with wealth [i.e., "satiety", @jebb2018happiness]. Following Jebb et al [-@jebb2018happiness], we restricted the cubic B-spline model to *n* = 4, 5 and 6 knots and display wealth on a log scale.  
-
-<br>
-
-
-##### Figure S3. Cubic spline of household wealth on satisfaction and happiness
-```{r losat_gh9_hwnwip}
-source("../src/happyfun.r")
-happywealth <- read_rds("../data/happywealth.rds")
-
-p1 <- happywealth %>%
-  filter(hifdip_adj > 0) %>%
-  rename(Satisfaction = losat, `Household wealth` = hifdip_adj) %>% 
-  plot_inflection_cubic(Satisfaction, `Household wealth`) +
-  scale_x_continuous(trans = "log", 
-                     breaks = c(5, 10, 20, 40, 80, 160),
-                     limits = c(2.5, 170))
-
-p2 <- happywealth %>%
-  filter(hifdip_adj > 0) %>%
-  rename(Happiness = gh9, `Household wealth` = hifdip_adj) %>% 
-  plot_inflection_cubic(Happiness, `Household wealth`) +
-  scale_x_continuous(trans = "log", 
-                     breaks = c(5, 10, 20, 40, 80, 160),
-                     limits = c(2.5, 170))
-```
-```{r cubic_plot, fig.height=9, fig.width=11}
-p1 / p2
-```
-
-<br>
-
-The cubic B-spline models failed to reveal a complete satiety point (horizontal inflection) in satisfaction before the highest decile in any year. Also note that despite using a log scale, we do not observe a clear, regular logarithmic function with either wellbeing measure. Other researchers have argued that wealth represents a quantitative dimension subject to Weber's Law of perception [@kahneman2010high]. Under this view, similar proportional changes in income or wealth produce similar evaluations of satisfaction or happiness, rather than the absolute change. That is, a \$100 increase in wealth will produce a greater impact on someone earning a minimum wage than someone earning many orders of magnitude of that amount. However while it is true that wealth clearly represents a quantitative dimension, the effects of wealth observed here represent cross-sectional differences in the population rather than changes experienced by an individual over time. It is not clear the extent to which Weber's Law applies to cross-sectional or between-subject differences in quantitative dimensions such as wealth.     
-
-<br>
-
 #### Change point model parameter estimates  
 
-There were _df_ = 59,876 total observations. 4000 samples (post-warmup) were drawn using sampling(NUTS). For each parameter, Bulk_ESS and Tail_ESS are effective sample size measures, and Rhat is the potential scale reduction factor on split chains (at convergence, Rhat = 1).  
+There were _df_ = 59,876 total observations. 4000 samples (post-warmup) were drawn using sampling(NUTS). For each parameter, Bulk_ESS and Tail_ESS are effective sample size (ESS) measures, and Rhat is the potential scale reduction factor on split chains. In each case the Rhat apprached 1, indicating convergance. The smallest ESS was _n_ = 472, which is greater than a conservative estimate of the sufficient _n_ for estimation (*n* > 300).  
 
 The Bayes R^2^ = 0.03964581 ±0.001497172 (0.03672371-0.04262236)  
 
@@ -477,29 +439,200 @@ population_summary %>%
 
 <br><br>
 
-##### Figure S5. Posterior predictive distribution of marginal effect of wealth by year (95% CI)  
-(not run)
+
+##### Figure S3. Residual plots for piecewise happiness models
+```{r figure_s3, fig.height=9, fig.width=9}
+# https://www.flutterbys.com.au/stats/tut/tut7.2b.html
+# resid = resid(data.brms)[, "Estimate"]
+# fit = fitted(data.brms)[, "Estimate"]
+
+resid_df <- readRDS("../results/residual_data.RDS")
+
+resid_df %>%
+  group_by(year) %>%
+  slice_sample(n = 1000) %>% # to reduce overplotting
+  ggplot(aes(x = fitteds, y = resids)) +
+    geom_point(alpha = 0.1, size = 0.5) +
+    facet_wrap(~year, scales = "free") +
+    theme_test()
+```
 
 
-```{r figure_s2, fig.height = 3, eval=F}
-library(brms)
+```
+Figure S3 legend: The joint distribution between residual and fitted values shows no common patterns across years and appears clustered around zero in each case.
+``` 
 
-marginals <- conditional_effects(
-  hifdip_gh9_fixed_fit,
-  effects = c("dollars:year"), # year, dollars, 
-  method = "fitted"
-  ) 
+<br>
 
-marginals$`dollars:year`$year <- factor(marginals$`dollars:year`$year, 
-                                        levels = c("2002", "2006", "2010", "2014", "2018"))
+Examination of the residual plots from the piecewise models of happiness confirms the residuals were evenly distributed around zero and there was little indication of heterscedascity. There was little evidence that the piecewise models of happiness were not appropriate for the data.  
 
-plot(marginals, plot=F)[[1]] +
-  xlim(c(0, 30)) +
-  ylim(c(-0.5, 1)) +
-  facet_wrap(~year, nrow=1) +
+
+<br><br>
+
+#### Non-linear fits
+
+We tested the relationship between wealth and each wellbeing variable (happiness and satisfaction) using cubic **B-spline models**. A cubic B-spline was the most complex model (more degrees of freedom), and included here because it has been recently used to describe the maximum point at which wellbeing no longer increases with wealth [i.e., "satiety", @jebb2018happiness]. Following Jebb et al [-@jebb2018happiness], we restricted the cubic B-spline model to *n* = 4, 5 and 6 knots and display wealth on a log scale.  
+
+<br>
+
+##### Figure S4. Cubic spline of household wealth on satisfaction and happiness
+```{r losat_gh9_hwnwip}
+source("../src/happyfun.r")
+happywealth <- read_rds("../data/happywealth.rds")
+
+p1 <- happywealth %>%
+  filter(hifdip_adj > 0) %>%
+  rename(Satisfaction = losat, `Household wealth` = hifdip_adj) %>% 
+  plot_inflection_cubic(Satisfaction, `Household wealth`) +
+  scale_x_continuous(trans = "log", 
+                     breaks = c(5, 10, 20, 40, 80, 160),
+                     limits = c(2.5, 170))
+
+p2 <- happywealth %>%
+  filter(hifdip_adj > 0) %>%
+  rename(Happiness = gh9, `Household wealth` = hifdip_adj) %>% 
+  plot_inflection_cubic(Happiness, `Household wealth`) +
+  scale_x_continuous(trans = "log", 
+                     breaks = c(5, 10, 20, 40, 80, 160),
+                     limits = c(2.5, 170))
+```
+```{r cubic_plot, fig.height=9, fig.width=11}
+p1 / p2
+```
+
+<br>
+
+The cubic B-spline models failed to reveal a complete satiety point (horizontal inflection) in satisfaction before the highest decile in any year. Also note that despite using a log scale, we do not observe a clear, regular logarithmic function with either wellbeing measure. Other researchers have argued that wealth represents a quantitative dimension subject to Weber's Law of perception [@kahneman2010high]. Under this view, similar proportional changes in income or wealth produce similar evaluations of satisfaction or happiness, rather than the absolute change. That is, a \$100 increase in wealth will produce a greater impact on someone earning a minimum wage than someone earning many orders of magnitude of that amount. However while it is true that wealth clearly represents a quantitative dimension, the effects of wealth observed here represent cross-sectional differences in the population rather than changes experienced by an individual over time. It is not clear the extent to which Weber's Law applies to cross-sectional or between-subject differences in quantitative dimensions such as wealth.     
+
+<br><br>
+
+##### Figure S5. Prior predictive plot
+(Not included)
+
+```{r figure_s5, eval=F}
+# prior_fit <- readRDS("../results/prior_nl_hifdip_losat_cov_2018.RDS")
+
+# Check priors. The fixed estimates should be near zero, the fixed error should
+# be ~3 respectively
+# 
+# summary(prior_fit)
+
+# Extract prior predictions
+# d <- data.frame(predict(prior_fit)) # takes a long time to run
+# prior_predictions <- bind_cols(prior_fit$data, d)
+# write_rds(prior_predictions, "../results/prior_prediction_data.RDS")
+
+prior_predictions <- read_rds("../results/prior_prediction_data.RDS")
+
+prior_predictions %>%
+  mutate(
+      dollar_bin = ntile(dollars, 10)
+      ) %>%
+    group_by(dollar_bin) %>%
+    summarize(
+      wellbeing = mean(Estimate, na.rm=T),
+      wealth = mean(dollars, na.rm=T),
+      n = n()
+    ) -> df.deciles
+
+prior_predictions %>%
+  rename(wellbeing = Estimate,
+         wealth = dollars) -> df.plot 
+
+# piecewise model
+p0 <- ggplot(df.deciles, aes(x = wealth, y = wellbeing)) +
+  geom_point() +
+  geom_smooth(data = df.plot,
+              aes(x = wealth, y = wellbeing,
+                  fill = "#C79999", color = "#8F2727"),
+              size = 0.5) +
+  coord_cartesian(xlim = c(0, max(df.deciles$wealth)),
+                  ylim = c(min(df.deciles$wellbeing), max(df.deciles$wellbeing))
+                  ) +
+  theme_test() +
+  theme(legend.position = "none")
+
+p1 <- ggplot(df.deciles, aes(x = wealth, y = wellbeing)) +
+  geom_point() +
+  geom_smooth(data = df.plot,
+              aes(x = wealth, y = wellbeing, fill = "manual"),
+              method = "lm",
+              size = 0.5) +
+  coord_cartesian(xlim = c(0, max(df.deciles$wealth)),
+                  ylim = c(min(df.deciles$wellbeing), max(df.deciles$wellbeing))
+                  ) +
   theme_test() +
   theme(legend.position = "none") +
-  labs(x = "", y = "")
+  scale_fill_manual(values = "#b3cde0")
+
+source("happyfun.R")
+
+p2 <- prior_predictions %>%
+  rownames_to_column(var = "xwaveid") %>%
+  mutate(year = 2018,
+         dollars = dollars*10000) %>%
+  rename(Wellbeing = Estimate, `Household income` = dollars) %>% 
+  plot_inflection_piecewise(Wellbeing, `Household income`, knots = 1)
+
+p3 <- prior_predictions %>%
+  rownames_to_column(var = "xwaveid") %>%
+  mutate(year = 2018,
+         dollars = dollars*10000) %>%
+  rename(Wellbeing = Estimate, `Household income` = dollars) %>% 
+  plot_inflection_cubic(Wellbeing, `Household income`)
+
+p4 <- prior_predictions %>%
+  rownames_to_column(var = "xwaveid") %>%
+  mutate(year = 2018,
+         dollars = dollars*10000) %>%
+  rename(Wellbeing = Estimate, `Household income` = dollars) %>% 
+  plot_linear(Wellbeing, `Household income`) +
+  scale_fill_manual(values = "#b3cde0") +
+  scale_color_manual(values = "#005b96")
+
+p0 + p1
+
+p2 + p3 + p4
+```
+
+<br><br><br>
+
+##### Figure S6. Marginal effect of wealth on satisfaction by year (95% CI)  
+(Not included)
+```{r figure_s6_df, eval=F}
+# Do not run
+
+library(brms)
+
+# import the fits
+nl_losat_paths <- list.files(
+  path = "../results/no_topcodes/",
+  pattern = "fit_nl_hifdip_losat_cov_*",
+  full.names = TRUE
+)
+
+list_fits = list()
+for (f in nl_losat_paths) {
+  fit <- readRDS(f)
+  list_fits[str_extract(f, "[[:digit:]]+")] <- list(fit)
+}
+
+# turn each fit into a plot dataframe (this takes a few minutes)
+plot_data <- map_dfr(.x = list_fits, 
+                     .f = function(x) conditional_effects(x)[[1]],
+                     .id = "Year")
+
+saveRDS(plot_data, "../results/nl_marginal_effects_losat.RDS")
+```
+```{r, figure_s6, eval=F}
+readRDS("../results/nl_marginal_effects_losat.RDS") %>%
+  ggplot(aes(x = dollars, y = estimate__, fill = Year)) +
+    geom_ribbon(aes(ymin = lower__, ymax = upper__), alpha = 0.25) +
+    geom_line(aes(color = Year)) +
+    facet_wrap(~Year, scale = "free") +
+    labs(y = "") +
+    theme_test() +
+    theme(legend.position = "none")
 ```
 
 <br><br>

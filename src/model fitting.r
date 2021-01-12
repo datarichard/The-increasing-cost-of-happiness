@@ -2,7 +2,7 @@
 # RW Morris, N Kettlewell, N Glozier
 # 
 # Model specification and fitting
-# Nov 21st 2020
+# Jan 8th 2021
 # 
 #### libraries ####
 library(dplyr)

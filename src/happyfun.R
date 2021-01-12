@@ -59,7 +59,7 @@ plot_linear <- function(.data, swb_col, dollars_col) {
 }
 
 
-plot_inflection_piecewise <- function(.data, swb_col, dollars_col, knots) {
+plot_inflection_piecewise <- function(.data, swb_col, dollars_col, knots = 1) {
   
   swb_colname <- rlang::enexpr(swb_col)
   dollars_colname <- rlang::enexpr(dollars_col)
@@ -103,7 +103,7 @@ plot_inflection_piecewise <- function(.data, swb_col, dollars_col, knots) {
                 aes(x = wealth, y = wellbeing,
                 fill = "manual1", color = "manual2"),
                 method = lm, 
-                formula = y ~ splines::bs(x, df = 2, degree = 1),
+                formula = y ~ splines::bs(x, df = knots+1, degree = 1),
                 size = 0.5) +
     coord_cartesian(xlim = c(0, max(df.deciles$wealth)),
                     ylim = c(min(df.deciles$wellbeing), max(df.deciles$wellbeing))) +
@@ -203,7 +203,6 @@ plot_inflection_cubic <- function(.data, swb_col, dollars_col) {
   
   .data %>%
     select(xwaveid, year, 
-           # swb = enexpr(swb_col), dollars = enexpr(dollars_col)) %>%
            swb = !!swb_colname, dollars = !!dollars_colname) %>%
     filter(swb >= 0) %>%
     filter(dollars >= 0) %>%

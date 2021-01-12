@@ -2,7 +2,7 @@
 # RW Morris, N Kettlewell, N Glozier
 # 
 # Preprocessing 
-# Nov 27th 2020
+# Jan 8th 2021
 # 
 # Libraries
 library(tidyverse)
@@ -26,6 +26,14 @@ for (pathtofile in path_to_hilda) {
 source('~/Dropbox/HILDA/src/gather_hilda.R')
 
 #### DEMOGRAPHICS ####
+# Demographic variables were selected to match the sample design of HILDA, so 
+# age, sex, employment status, marital status, and region (State) were included.
+
+state_key = c(`1` = "NSW", `2` = "VIC", `3` = "QLD", `4` = "SA", `5` = "WA", 
+              `6` = "TAS", `7` = "NT", `8` = "ACT")
+
+region_key = c(`0` = "capital", `1` = "urban", `2` = "regional", `3` = "rural")
+
 gather_hilda(hilda, c(
   "esbrd",   # employment status (broad)
   "hhda10",  # SEIFA 2001 Decile of socio-economic advantage (higher is better)
@@ -36,10 +44,18 @@ gather_hilda(hilda, c(
   # "hhrhid",  # household id (within wave)
   "mrcurr",  # current marital status (married/de facto ≤ 2)
   "edhigh1", # highest education achieved
-  "edfts"    # current fulltime student (yes = 1)
+  "edfts",   # current fulltime student (yes = 1)
+  "hhstate", # household State of residence (NSW, VIC, QLD, SA, WA, TAS, NT, ACT)
+  "hhssos",  # household section of State (major urban, other urban, boundary, rural)
+  "hhwte"    # enumarated persons cross-sectional weight (sex, broad age, 
+             # region, employment, marital status)
   )) %>%
   spread(code, val) %>%
-  mutate_if(is.double, ~ ifelse(. < 0, NA_real_, .)) -> demographic_items
+  mutate_if(is.double, ~ ifelse(. < 0, NA_real_, .)) %>%
+  mutate(hhssos = replace_na(hhssos, 3),
+         hhssos = recode(hhssos, !!!region_key),
+         hhstate = recode(hhstate, !!!state_key)
+         ) -> demographic_items
 
 demographics <- demographic_items %>%
   transmute(
@@ -70,26 +86,22 @@ demographics <- demographic_items %>%
     chronic = if_else(helth == 1, TRUE, FALSE, missing = FALSE),
     single = if_else(mrcurr == 6, TRUE, FALSE, missing = FALSE),
     coupled = if_else(mrcurr <= 2, TRUE, FALSE, missing = FALSE),
-    SEIFA = as.integer(extract_numeric(hhda10))
+    SEIFA = as.integer(extract_numeric(hhda10)),
+    region = paste(hhstate, hhssos, sep = "_"),
+    weights = hhwte
   )
 
 #### SATISFACTION ####
 satisfaction <- gather_hilda(hilda, c(
-  "losat",   # Life satisfaction
-  "hhwtrps") # sample weights for life satisfaction (RP)
-  ) %>%
+  "losat"   # Life satisfaction
+  # "hhwtrps") # sample weights for life satisfaction (RP)
+  )) %>%
   spread(code, val) %>%
-  mutate_if(is.double, ~ ifelse(. < 0, NA_real_, .)) %>%
-  transmute(
-    xwaveid,
-    wave, 
-    losat, 
-    losat_wt = losat * hhwtrps) # weight by sex, age, marital status, workforce,
-                                # State and household composition
+  mutate_if(is.double, ~ ifelse(. < 0, NA_real_, .)) 
 
 #### HAPPINESS ####
 gh9_items <- gather_hilda(hilda, c(
-  "hhwtscs", # sample weights for gh9 (SCQ)
+  # "hhwtscs", # sample weights for gh9 (SCQ)
   'gh9a',    # Vitality: feel full of life (lower is better)*
   'gh9b',    # Mental H: Been a nervous person (higher is better)
   'gh9c',    # Mental H: Felt so down in the dumps (higher is better)
@@ -123,14 +135,12 @@ happiness <- gh9_items %>%
   ungroup() %>%
   select(xwaveid, wave, gh9 = sum_imputed) %>%
   distinct() %>%
-  left_join(select(gh9_items, xwaveid, wave, hhwtscs), 
+  left_join(select(gh9_items, xwaveid, wave), 
             by = c("xwaveid", "wave")
             ) %>%
   transmute(xwaveid, 
             wave, 
-            gh9 = scales::rescale(gh9, to = c(1, 100)), 
-            gh9_wt = gh9*hhwtscs) # weight by sex, age, marital status, workforce,
-                                  # State and household composition 
+            gh9 = scales::rescale(gh9, to = c(1, 100))) 
 
 #### HOUSEHOLD INCOME ####
 # Note that regular HILDA income variables were used (not total income, which 
@@ -177,8 +187,7 @@ income <- gather_hilda(hilda, c(
   "hh0_4",
   "hh5_9",
   "hh10_14",
-  "hhadult",
-  "hhwtes")  # sample weights for hifdip (enumerated persons)
+  "hhadult")  
   ) %>%
   spread(code, val) %>%
   left_join(CPI, by = "wave") %>%
@@ -195,9 +204,8 @@ income <- gather_hilda(hilda, c(
     wave,
     top_hifdip = hifdip > hifdip_thld,
     hifdip_adj = hifdip_rl2018/sqrt(hhpers), # for backward compatibility
-    hh_disp_inc_eq = hh_disp_inc/OECD_mod, # convert to base and adjust by size
-    hh_disp_inc_eq_wt = hh_disp_inc_eq * hhwtes) # weight by sex, age, marital 
-                                                 # status, workforce, and State 
+    hh_disp_inc_eq = hh_disp_inc/OECD_mod # convert to base and adjust by size
+    ) 
 
 #### FINAL JOIN (household wealth, satisfaction, happiness) ####
 
