@@ -1,3 +1,6 @@
+#### Author: RMorris
+#### Date: Jan 12th 2021
+
 library(tidyverse)
 library(brms)
 
