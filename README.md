@@ -673,7 +673,7 @@ DSS, or any of DSS’ contractors or partners. All code and scripts used
 in the analysis are available at
 <https://github.com/datarichard/The-increasing-cost-of-happiness>
 
-[Supplementary information](supplementary.html){:target="\_blank"} is
+[Supplementary information](supplementary.html){target="_blank"} is
 available online.
 
 <br><br>

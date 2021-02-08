@@ -614,7 +614,7 @@ The authors declare no competing interests.
 This paper uses unit record data from Household, Income and Labour Dynamics in Australia Survey [HILDA](https://melbourneinstitute.unimelb.edu.au/hilda) conducted by the Australian Government Department of Social Services (DSS). The findings and views reported in this paper, however, are those of the author[s] and should not be attributed to the Australian Government, DSS, or any of DSS’ contractors or partners. All code and scripts used in the analysis are available at https://github.com/datarichard/The-increasing-cost-of-happiness  
   
 
-[Supplementary information](supplementary.html){:target="_blank"} is available online.  
+[Supplementary information](supplementary.html){target="_blank"} is available online.  
 
 <br><br>
 
