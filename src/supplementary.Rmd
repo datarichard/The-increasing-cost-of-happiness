@@ -14,6 +14,7 @@ editor_options:
 ```{r setup, include=FALSE}
 library(tidyverse)
 library(flextable)
+library(gtsummary)
 library(bayesplot)
 library(patchwork)
 
@@ -57,50 +58,83 @@ Supplementary figures:     3
 
 ## Supplementary Material
 
-#### Model Selection (2002-2018)  
+<br>
+
+
+#### Sample characteristics  
+
+The broad demographic characteristics of the sample at each fourth year wave are presented below in Table S1.  
+
+
+```{r table_1, ft.align="left"}
+happywealth <- read_rds("../data/happywealth.rds")
+
+happywealth %>%
+  filter(year %in% c(2002, 2006, 2010, 2014, 2018)) %>%
+  filter(!student, !top_hifdip, (!is.na(losat)|!is.na(gh9))) %>%
+  mutate(
+    Sex = if_else(male, "Male", "Female"),
+    Education = fct_collapse(
+      edu,
+      `High school or less` = c("None", "In school", "Highschool"),
+      Graduate = c("Grad")
+      ),
+    Workforce = case_when(
+      workforce & !unemployed ~ "Employed",
+      unemployed ~ "Unemployed",
+      TRUE ~ "Not in labour force"
+      ),
+    `Relationship status` = case_when(
+      single ~ "Single",
+      coupled ~ "Married",
+      TRUE ~ "Divorced/Widow"
+      ),
+    Workforce = fct_relevel(Workforce, "Employed", "Unemployed"),
+    `Relationship status` = fct_relevel(`Relationship status`, "Single", "Married")
+    ) %>%
+  select(
+    year, 
+    `Life satisfaction` = losat, `Happiness` = gh9,
+    Sex, `Age (years)` = age, Education, Workforce, `Relationship status`, 
+    `Chronic illness` = chronic, SEIFA, `Household size` = hhsize,
+  ) %>% 
+  tbl_summary(
+    by = year,
+    missing = "no",
+    statistic = 
+      list(all_continuous() ~ "{mean} (±{sd})",
+           all_categorical() ~ "{n} ({p}%)"),
+    digits = all_continuous() ~ 1,
+    missing_text = "(Missing)" 
+    ) %>%
+  modify_header(stat_by = "{level}\nN = {style_number(n)}") %>%
+  as_flex_table() %>%
+  set_caption(caption = "Table S1. Demographic characteristics of the sample") %>%
+  align(part = "body") %>%
+  valign(valign = "top", part = "header") %>%
+  fontsize(size = 9.5, part = "all") %>%
+  width(j = 1, width = 1.5) %>%
+  width(j = 2:6, width = 1)
+```
+
+<br>
+
+Average life satisfaction levels were very steady between 2002-2018, while average happiness score decreased slightly over the 17 years. The proportions of each sex and relationship status were stable over time, as were the average household size and SEIFA index. However age and chronic health conditions tended to increase over time, indicating a slight increase in the age of the panel over time (1.8 years) but not that of a cohort study which would be 16 years. Education levels (i.e., graduate percentage) also tended to increase over time, while changes in the workforce varied with economic circumstances.    
+
+<br><br>
+
+#### Model Selection  
+
+We compared the posterior evidence of a linear- over a nonlinear- relationship between each wellbeing variable and income (i.e., WAIC~linear~ — WAIC~piecewise~). Thus a WAIC difference greater than zero indicated evidence for a linear relationship. A WAIC difference less than zero indicated evidence for a nonlinear (piecewise) relationship.   
+
+<br>
 
 ##### Figure S1. Linear model evidence (WAIC~linear~ — WAIC~piecewise~)
+
 ```{r complete_waic}
-waic_result <- read_rds("../results/model_comparisons_waic_R2_losat.RDS")
+waic_gh9 <- read_rds("../results/model_comparisons_waic_R2_gh9.RDS")
 
-waic_result %>%
-  select(model, year, elpd_diff, se_diff) %>%
-  filter(elpd_diff != 0) %>%
-  rowwise() %>%
-  mutate(samples = list(rnorm(n = 1e5, 
-                              mean = elpd_diff * -2, # for linear advantage
-                              sd   = se_diff *  2)),
-         year = paste0("AD", year)
-         ) %>%
-  select(year, samples) %>%
-  group_by(year) %>%
-  unnest(samples) %>% 
-  mutate(sample_id = c(1:1e5)) %>%
-  pivot_wider(id_col = "sample_id", names_from = "year", values_from = "samples") %>%
-  select(-sample_id) -> d1
-
-# "fix" d1
-colnames(d1) <- rev(colnames(d1))
-
-color_scheme_set("blue")
-
-p2 <- mcmc_intervals(x = d1,
-  pars = colnames(d1),
-  prob = 0.0,
-  prob_outer = .95
-  ) +
-  scale_x_continuous(
-    limits = c(-200, 150)
-    ) +
-  geom_vline(aes(xintercept = 0), color = "grey90") +
-  theme_test() +
-  labs(
-    subtitle = "Satisfaction",
-    x = "WAIC difference (95% interval)")
-
-waic_result <- read_rds("../results/model_comparisons_waic_R2_gh9.RDS")
-
-waic_result %>%
+waic_gh9 %>%
   select(model, year, elpd_diff, se_diff) %>%
   filter(elpd_diff != 0) %>%
   rowwise() %>%
@@ -119,134 +153,228 @@ waic_result %>%
 color_scheme_set("red")
 
 p1 <- mcmc_intervals(x = d2,
-           pars = rev(colnames(d2)),
+           pars = colnames(d2),
            prob = 0.00,
            prob_outer = 0.95
            ) +
   scale_x_continuous(
     limits = c(-200, 150)
     ) +
+  scale_y_discrete(labels = as.character(2002:2018)) +
   geom_vline(aes(xintercept = 0), color = "grey90") +
   theme_test() +
   labs(
     subtitle = "Happiness")
+
+waic_losat <- read_rds("../results/model_comparisons_waic_R2_losat.RDS")
+
+waic_losat %>%
+  select(model, year, elpd_diff, se_diff) %>%
+  filter(elpd_diff != 0, year > 2001) %>%
+  rowwise() %>%
+  mutate(samples = list(rnorm(n = 1e5, 
+                              mean = elpd_diff * -2, # for linear advantage
+                              sd   = se_diff *  2)),
+         year = paste0("AD", year)
+         ) %>%
+  select(year, samples) %>%
+  group_by(year) %>%
+  unnest(samples) %>% 
+  mutate(sample_id = c(1:1e5)) %>%
+  pivot_wider(id_col = "sample_id", names_from = "year", values_from = "samples") %>%
+  select(-sample_id) -> d1
+
+color_scheme_set("blue")
+
+p2 <- mcmc_intervals(x = d1,
+  pars = rev(colnames(d1)),
+  prob = 0.0,
+  prob_outer = .95
+  ) +
+  scale_x_continuous(
+    limits = c(-200, 150)
+    ) +
+  scale_y_discrete(labels = as.character(2002:2018)) +
+  geom_vline(aes(xintercept = 0), color = "grey90") +
+  theme_test() +
+  labs(
+    subtitle = "Satisfaction",
+    x = "WAIC difference (95% CI)")
 ```
 
-```{r Figure_S1, fig.width=6.5, fig.height=7, dpi=300}
+```{r figure_s1, fig.width=6.5, fig.height=7, dpi=300}
 p1 / p2
 ```
 
 ```
-Figure S1 legend: Differences in posterior evidence (WAIC) for a linear fit over a piecewise fit for satisfaction (blue) and happiness (red). The filled circle indicates the mean of the distribution and the horizontal bars represents the 95% credible interval. A difference greater than zero is support for the linear model and a difference below zero is support for the piecewise model.
+Figure S1 legend: Differences in posterior evidence for a linear fit over a piecewise fit (WAIC) for happiness (red) and satisfaction (blue). The filled circle indicates the mean of the distribution and the horizontal bars represents the 95% credible interval. A difference greater than zero is support for the linear model and a difference below zero is support for the piecewise model.
 ```  
+
+
+<br>
+
+The posterior evidence from model selection revealed the nonlinear (piecewise) fit of _happiness_, but not _satisfaction_, was credibly superior to a linear fit in each year. Figure S1 shows the 95% credible interval of the difference in WAIC values for the linear over nonlinear fits for happiness was below zero with no overlap for each year, indicating consistent support for the nonlinear model. By contrast, the WAIC differences for the satisfaction models were generally positive, indicating the superiority of the linear fit for this dependent variable. Overall the posterior evidence suggests that happiness and satisfaction have distinct relationships with household income; satisfaction tends to increase linearly with income, while a change point exists in the relationship between happiness and household income.  
 
 <br><br>
 
-#### Parameter Estimation (2002-2018) 
+#### Model predictions (2002-2018)
 
-##### Figure S2. Posterior distributions of &omega; (95% distribution)  
-```{r gh9_omega}
+The posterior estimates of the piecewise model indicated that the relationship between happiness and income changed over time between 2002 and 2018. One implication of such a change is the disparity in happiness between income groups has increased. This will occur as more people fall below the change point over time and so are subject to the steep region of the function where income and happiness are strongly related. To directly examine the implications of our model for such inequities in happiness, we used the model to estimate or _predict_ the happiness of two different income levels: one income level which fell below the change points between 2002-2018 (\$40K/yr); and another level which always remained above the change points over the same period (\$75K/yr). Figure S2 below presents the happiness levels (in SD units/year) for each income level as well as the difference in happiness between them (∆).  
+
+<br>
+
+##### Figure S2. Happiness (SD units) at $40K/yr and $75K/yr from 2002-2018 
+```{r figure_s2, fig.width=7, fig.height=5, dpi=300, eval=T}
 path_to_gh9_fits <- list.files(
-  path = "../results",
-  pattern = '^fit_cp_hifdip_gh9_cov_.*.RDS$',
+  path = "../results/incl_topcodes/with_pweights/",
+  pattern = "^fit_nl_hifdip_gh9_4cov_pwt_.*.RDS$",
   full.names = TRUE
 )
 
-posterior_alphas <- list()
+predicted_fits <- list()
 for (pathtofile in path_to_gh9_fits) {
-  df <- read_rds(pathtofile) %>%
-    as.data.frame() %>%
-    select(b_alpha_Intercept) 
+  fit <- read_rds(pathtofile) 
   
-  colnames(df) <- paste0("param_", substring(pathtofile, 34, 37))
+  ans <- model.frame(fit) %>%
+    summarise_all(median)
   
-  posterior_alphas <- bind_cols(posterior_alphas, df)
+  newdat = data.frame(
+    dollars = c(4, ans[, "dollars"], 7.5),
+    age = rep(ans[, "age"], 3),
+    age_sq = rep(ans[, "age_sq"], 3),
+    male = as.logical(rep(ans[, "male"], 3)), 
+    grad = as.logical(rep(ans[, "grad"], 3)),
+    pweights = rep(ans[, "pweights"], 3)
+  )
+  
+  df <- fitted(fit, newdata = newdat) %>% 
+    as_tibble() %>%
+    mutate(
+      Dollars = c("$40K", "\u03bc", "$75K"),
+      year = as.numeric(
+        substring(pathtofile, nchar(pathtofile)-7, nchar(pathtofile)-4)
+        )
+      )
+  
+  predicted_fits <- bind_rows(predicted_fits, df)
 }
 
-posterior_alphas %>%
-  mutate_all(.funs = ~brms::inv_logit_scaled(., 0, 100)*10) -> posterior_omegas
+predicted_fits %>%
+  select(Estimate, Dollars, year) %>%
+  filter(Dollars %in% c("$75K", "$40K")) %>%
+  spread(Dollars, Estimate) %>%
+  mutate(`$75K - $40K (∆)` = `$75K` - `$40K`) %>%
+  gather(income, happiness, -year) %>%
+  mutate(income = fct_relevel(income, "$40K", "$75K")) %>%
+  ggplot(aes(x = year, y = happiness, color = income)) +
+  geom_point(size = 4, alpha = 0.25) +
+  geom_smooth(method = "loess", se = F, span = 3) +
+  facet_wrap(~income) +
+  labs(caption = "Source:     HILDA, University of Melbourne
+                 Predicted happiness scores (SD unit) from piecewise regression on real household income", 
+       x = "", y = "") -> p
 
-posteriors_trim <- posterior_omegas %>%
+source("ft_themes.r")
+
+p +
+  ft_theme() +
+  ggthemes::scale_colour_wsj() +
+  theme(legend.position = "none",
+        plot.title = element_text(size = 19),
+        strip.text = element_text(size = 12))
+```
+
+```{r alt_figure_s2, fig.width=7, fig.height=5, dpi = 300, eval=F}
+happywealth %>%
+  filter(!student) %>%
+  filter(!top_hifdip) %>%
+  select(year, xwaveid, gh9, income = hh_disp_inc_eq, weights) %>%
+  filter(year %in% 2002:2018) %>%
   mutate(
-    # param_2010 = (param_2010 + param_2011)/2,
-    param_2003 = (param_2002 + param_2004)/2)
-
-color_scheme_set("red")
-
-p3 <- mcmc_intervals(
-  posteriors_trim,
-  pars = rev(colnames(posteriors_trim)),
-  prob = 0.0, 
-  prob_outer = .95 
-  ) +
-  geom_vline(aes(xintercept = median(posteriors_trim$param_2002)), 
-             color = "gray", 
-             linetype = 3) +
-  theme_test() +
-  coord_cartesian(xlim = c(20, 200)) +
-  labs(
-    subtitle = "Happiness",
-    x = "")
-```
-
-```{r losat_omega}
-path_to_losat_fits <- list.files(
-  path = "../results",
-  pattern = '^fit_cp_hifdip_losat_cov_.*.RDS$',
-  full.names = TRUE
-)
-
-posterior_alphas <- list()
-for (pathtofile in path_to_losat_fits) {
-  df <- read_rds(pathtofile) %>%
-    as.data.frame() %>%
-    select(b_alpha_Intercept) 
-  
-  colnames(df) <- paste0("param_", substring(pathtofile, 36, 39))
-  
-  posterior_alphas <- bind_cols(posterior_alphas, df)
-}
-
-posterior_alphas %>%
-  mutate_all(.funs = ~brms::inv_logit_scaled(., 0, 100)*10) -> posterior_omegas
-
-posteriors_trim <- posterior_omegas %>%
+    year = paste0("param_", year),
+    income = income/1000) %>%
   mutate(
-    param_2006 = (param_2007 + param_2005)/2)
+    year = extract_numeric(year),
+    income_group = case_when(
+      income > 35 & income < 45 ~ "$40K",
+      income > 70 & income < 80 ~ "$75K"
+    )) %>%
+  group_by(year) %>%
+  mutate(
+    happiness = as.vector(scale(gh9)),
+    ) %>%
+  filter(!is.na(income_group)) %>%
+  group_by(year, income_group) %>%
+  summarise(
+    Happiness = mean(happiness, na.rm = T)
+    ) %>% 
+  ungroup() %>%
+  spread(income_group, Happiness) %>%
+  mutate(`$75K - $40K (∆)` = `$75K` - `$40K`) %>%
+  gather(key, val, `$40K`:`$75K - $40K (∆)`) %>%
+  mutate(key = fct_relevel(key, c("$40K", "$75K"))) %>%
+  ggplot(aes(x = year, y = val, color = key)) +
+    geom_point(size = 4, alpha = 0.25) +
+    geom_smooth(span = 3, se = F) +
+    facet_wrap(~key) +
+    labs(caption = "Source:     HILDA, University of Melbourne
+                 Observed happiness scores (SD unit)", 
+     x = "", y = "") -> p
 
-color_scheme_set("blue")
+p +
+  ft_theme() +
+  ggthemes::scale_colour_wsj() +
+  theme(legend.position = "none",
+        plot.title = element_text(size = 19),
+        strip.text = element_text(size = 12))
+```
+```
+Figure S2 legend: The difference (∆) in happiness between a household income of $40K per year and a household income of $75K per year has increased between 2002 and 2018.
+```  
 
-p4 <- mcmc_intervals(
-  posteriors_trim,
-  pars = rev(colnames(posteriors_trim)),
-  prob = 0.0, 
-  prob_outer = .95 
-  ) +
-  geom_vline(aes(xintercept = median(posteriors_trim$param_2002)), 
-             color = "gray", 
-             linetype = 3) +
-  theme_test() +
-  coord_cartesian(xlim = c(20, 200)) +
-  labs(
-    subtitle = "Satisfaction",
-    x = "Household income ($000s)")
+<br>
+
+Figure S2 shows the disparity in happiness between two fixed income levels, \$40K/year (below the change points) and \$75K/year (above the change points). In 2002, a household income of \$40K/year achieved a near average level of happiness relative to everyone else that year, however by 2018 happiness had declined to lower than average levels relative to the population. By contrast, a household income of \$75K/year enjoyed a higher than average level of happiness for the entire period. The difference (∆) in happiness between these two income levels doubled over the period. The increasing disparity in happiness between the rich and the poor implies that happiness has became more inequitable over the period.  
+
+
+<br><br>
+
+***
+
+##### Figure S3. Residual plots for piecewise happiness models
+```{r figure_s3, fig.height=9, fig.width=9}
+# https://www.flutterbys.com.au/stats/tut/tut7.2b.html
+# resid = resid(data.brms)[, "Estimate"]
+# fit = fitted(data.brms)[, "Estimate"]
+
+resid_df <- readRDS("../results/residual_data.RDS")
+
+resid_df %>%
+  group_by(year) %>%
+  slice_sample(n = 1000) %>% # to reduce overplotting
+  ggplot(aes(x = fitteds, y = resids)) +
+    geom_point(alpha = 0.1, size = 0.5) +
+    facet_wrap(~year, scales = "free") +
+    theme_test()
 ```
 
-```{r Figure_S2, fig.width = 6, fig.height = 7, dpi=300}
-p3 / p4
-```
 
 ```
-Figure S2 legend: Posterior distribution of the change point parameter representing the location in household income ($) for each year. Horizontal bar represents the 95% credible interval.
+Figure S3 legend: The joint distribution between residual and fitted values shows no common patterns across years and appears clustered around zero in each case.
 ``` 
 
 <br>
 
-#### Change point model parameter estimates  
+Examination of the residual plots from the piecewise models of happiness confirms the residuals were evenly distributed around zero and there was little indication of heterscedascity. Overall, there was little evidence that the piecewise models of happiness were not appropriate for the data.  
+
+
+<br><br>
+
+#### Complete parameter estimates and fit statistics 
 
 There were _df_ = 59,876 total observations. 4000 samples (post-warmup) were drawn using sampling(NUTS). For each parameter, Bulk_ESS and Tail_ESS are effective sample size (ESS) measures, and Rhat is the potential scale reduction factor on split chains. In each case the Rhat apprached 1, indicating convergance. The smallest ESS was _n_ = 472, which is greater than a conservative estimate of the sufficient _n_ for estimation (*n* > 300).  
 
-The Bayes R^2^ = 0.03964581 ±0.001497172 (0.03672371-0.04262236)  
+The Bayes R^2^ = `r round(0.0403964581, 3)` ±`r round(0.001497172, 3)` (95%CI `r round(0.03672371,3)` — `r round(0.04262236, 3)`)  
 
 <br>
 
@@ -276,7 +404,9 @@ for (pathtofile in path_to_gh9_fits) {
   fixed_summary <- fit_summary$fixed %>%
     as_tibble(rownames = "Parameter") %>%
     bind_rows(sigma_summary) %>%
-    mutate(Year = substring(pathtofile, 34, 37)) %>%
+    mutate(
+      Year = substring(pathtofile, nchar(pathtofile)-7, nchar(pathtofile)-4)
+      ) %>%
     select(Parameter, Year, everything())
   
   population_summary <- bind_rows(population_summary, fixed_summary)
@@ -285,6 +415,7 @@ for (pathtofile in path_to_gh9_fits) {
 population_summary %>%
   mutate(Parameter = str_remove(Parameter, "_Intercept")) %>%
   arrange(Parameter, desc(Year)) %>%
+  filter(Year > 2001) %>%
   flextable() %>%
   merge_v(j = 1) %>%
   valign(j = 1, valign = "top") %>%
@@ -299,7 +430,7 @@ population_summary %>%
      part = "body") %>%
   colformat_num(j = 3:6, digits= 3) %>%
   colformat_num(j = 7, digits= 1) %>%
-  set_caption("Table S1. Population-level piecewise parameter estimates for happiness") %>%
+  set_caption("Table S1. Piecewise parameter estimates for happiness") %>%
   autofit()
 ```
 
@@ -345,13 +476,19 @@ population_summary %>%
      part = "body") %>%
   colformat_num(j = 3:6, digits= 3) %>%
   colformat_num(j = 7, digits= 1) %>%
-  set_caption("Table S2. Population-level linear parameter estimates for happiness") %>%
+  set_caption("Table S2. Linear parameter estimates for happiness") %>%
   autofit()
 ```
 
 <br>
 
 ```{r losat_pw_summary, ft.align="left"}
+path_to_losat_fits <- list.files(
+  path = "../results",
+  pattern = '^fit_cp_hifdip_losat_cov_.*.RDS$',
+  full.names = TRUE
+)
+
 population_summary <- tibble()
 for (pathtofile in path_to_losat_fits) {
   fit_summary <- read_rds(pathtofile) %>%
@@ -386,7 +523,7 @@ population_summary %>%
      part = "body") %>%
   colformat_num(j = 3:6, digits= 3) %>%
   colformat_num(j = 7, digits= 1) %>%
-  set_caption("Table S3. Population-level piecewise parameter estimates for satisfaction") %>%
+  set_caption("Table S3. Piecewise parameter estimates for satisfaction") %>%
   autofit()
 ```
 
@@ -432,7 +569,7 @@ population_summary %>%
      part = "body") %>%
   colformat_num(j = 3:6, digits= 3) %>%
   colformat_num(j = 7, digits= 1) %>%
-  set_caption("Table S4. Population-level linear parameter estimates for happiness") %>%
+  set_caption("Table S4. Linear parameter estimates for happiness") %>%
   autofit()
 ```
 
@@ -440,63 +577,35 @@ population_summary %>%
 <br><br>
 
 
-##### Figure S3. Residual plots for piecewise happiness models
-```{r figure_s3, fig.height=9, fig.width=9}
-# https://www.flutterbys.com.au/stats/tut/tut7.2b.html
-# resid = resid(data.brms)[, "Estimate"]
-# fit = fitted(data.brms)[, "Estimate"]
-
-resid_df <- readRDS("../results/residual_data.RDS")
-
-resid_df %>%
-  group_by(year) %>%
-  slice_sample(n = 1000) %>% # to reduce overplotting
-  ggplot(aes(x = fitteds, y = resids)) +
-    geom_point(alpha = 0.1, size = 0.5) +
-    facet_wrap(~year, scales = "free") +
-    theme_test()
-```
-
-
-```
-Figure S3 legend: The joint distribution between residual and fitted values shows no common patterns across years and appears clustered around zero in each case.
-``` 
-
-<br>
-
-Examination of the residual plots from the piecewise models of happiness confirms the residuals were evenly distributed around zero and there was little indication of heterscedascity. There was little evidence that the piecewise models of happiness were not appropriate for the data.  
-
-
-<br><br>
-
-#### Non-linear fits
+#### Additional non-linear fits
 
 We tested the relationship between wealth and each wellbeing variable (happiness and satisfaction) using cubic **B-spline models**. A cubic B-spline was the most complex model (more degrees of freedom), and included here because it has been recently used to describe the maximum point at which wellbeing no longer increases with wealth [i.e., "satiety", @jebb2018happiness]. Following Jebb et al [-@jebb2018happiness], we restricted the cubic B-spline model to *n* = 4, 5 and 6 knots and display wealth on a log scale.  
 
 <br>
 
-##### Figure S4. Cubic spline of household wealth on satisfaction and happiness
-```{r losat_gh9_hwnwip}
+##### Figure S5. Cubic spline of household wealth on satisfaction and happiness
+```{r cubic_plot, fig.height=9, fig.width=11}
 source("../src/happyfun.r")
 happywealth <- read_rds("../data/happywealth.rds")
 
 p1 <- happywealth %>%
-  filter(hifdip_adj > 0) %>%
-  rename(Satisfaction = losat, `Household wealth` = hifdip_adj) %>% 
-  plot_inflection_cubic(Satisfaction, `Household wealth`) +
-  scale_x_continuous(trans = "log", 
-                     breaks = c(5, 10, 20, 40, 80, 160),
-                     limits = c(2.5, 170))
+  filter(!student, !top_hifdip) %>%
+  rename(Satisfaction = losat, `Household income` = hh_disp_inc_eq) %>% 
+  plot_inflection_cubic(Satisfaction, `Household income`) +
+  scale_x_continuous(
+    # trans = "log", 
+    # breaks = c(5, 10, 20, 40, 80, 160),
+    limits = c(5, 170))
 
 p2 <- happywealth %>%
-  filter(hifdip_adj > 0) %>%
-  rename(Happiness = gh9, `Household wealth` = hifdip_adj) %>% 
-  plot_inflection_cubic(Happiness, `Household wealth`) +
-  scale_x_continuous(trans = "log", 
-                     breaks = c(5, 10, 20, 40, 80, 160),
-                     limits = c(2.5, 170))
-```
-```{r cubic_plot, fig.height=9, fig.width=11}
+  filter(!student, !top_hifdip) %>%
+  rename(Happiness = gh9, `Household income` = hh_disp_inc_eq) %>% 
+  plot_inflection_cubic(Happiness, `Household income`) +
+  scale_x_continuous(
+    # trans = "log", 
+    # breaks = c(5, 10, 20, 40, 80, 160),
+    limits = c(5, 170))
+
 p1 / p2
 ```
 
@@ -506,7 +615,7 @@ The cubic B-spline models failed to reveal a complete satiety point (horizontal 
 
 <br><br>
 
-##### Figure S5. Prior predictive plot
+##### Figure S6. Prior predictive plot
 (Not included)
 
 ```{r figure_s5, eval=F}
@@ -597,7 +706,7 @@ p2 + p3 + p4
 
 <br><br><br>
 
-##### Figure S6. Marginal effect of wealth on satisfaction by year (95% CI)  
+##### Figure S7. Marginal effect of wealth on satisfaction by year (95% CI)  
 (Not included)
 ```{r figure_s6_df, eval=F}
 # Do not run
