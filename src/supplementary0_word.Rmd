@@ -1,6 +1,6 @@
 ---
 title: "Supplementary material: The increasing cost of happiness"
-author: "R.W. Morris^1,2^, N. Kettlewell^2,3,4^  & N.Glozier^1,5^"
+author: "R.W. Morris^1,2^, N. Kettlewell^2,3,4^  & N.Glozier^1,2^"
 bibliography: ../src/references.bib
 csl: ../src/elsevier-harvard.csl
 output:  
@@ -10,6 +10,7 @@ always_allow_html: yes
 editor_options: 
   chunk_output_type: console
 ---
+
 
 ```{r setup, include=FALSE}
 library(tidyverse)
@@ -33,10 +34,9 @@ source("ft_themes.r")
 \  
 
 1. Central Clinical School, Faculty of Medicine and Health, University of Sydney, NSW, Australia
-2. ARC Centre of Excellence for Children and Families over the Life Course, University of Queensland, QLD, Australia
+2. ARC Centre of Excellence for Children and Families over the Life Course
 3. School of Economics, University of Technology, NSW, Australia
 4. Institute of Labor Economics (IZA), Bonn, Germany
-5. Brain and Mind Centre, University of Sydney, NSW, Australia 
 
 \  
 
@@ -162,15 +162,9 @@ Generally, Table S1 supports the view that the HILDA sample was a relatively sta
 
 ##### Figure S1. Linear model evidence (WAIC~linear~ — WAIC~piecewise~)
 ```{r figure_s1, dpi=300}
-here <- "~/Dropbox/HILDA/The-increasing-cost-of-happiness/"
+lm_fits = read_rds("../results/lm_gh9_hhoecd_0cov.RDS")
 
-lm_fits = read_rds(
-  paste0(here, "results/fits/excl_topcodes/sd/lm_gh9_hhoecd_0cov.RDS")
-)
-
-nl_fits = read_rds(
-  paste0(here, "results/fits/excl_topcodes/sd/gh9_hhoecd_0cov_tight.RDS")
-)
+nl_fits = read_rds("../results/gh9_hhoecd_0cov_tight.RDS")
 
 # get waic results
 map2_dfr(.x = nl_fits, 
@@ -191,13 +185,9 @@ map2_dfr(.x = nl_fits,
     wellbeing = "Happiness"
   ) -> waic_happiness
 
-nl_fits_losat = read_rds(
-  paste0(here, "results/fits/excl_topcodes/sd/losat_hhoecd_0cov.RDS")
-)
+nl_fits_losat = read_rds("../results/losat_hhoecd_0cov.RDS")
 
-lm_fits_losat = read_rds(
-  paste0(here, "results/fits/excl_topcodes/sd/lm_losat_hhoecd_0cov.RDS")
-)
+lm_fits_losat = read_rds("../results/lm_losat_hhoecd_0cov.RDS")
 
 # plot waic results
 map2_dfr(.x = nl_fits_losat, 
@@ -246,21 +236,16 @@ The difference in WAIC scores for each model revealed the nonlinear (piecewise) 
 <br>
 
 ##### Figure S2. Conditional model parameters  
-```{r figure_s2, fig.height=8, dpi=300}
-here <- "~/Dropbox/HILDA/The-increasing-cost-of-happiness/"
+```{r figure_s2, fig.width = 6, fig.height = 7.5, dpi=300}
+nl_fits = read_rds("../results/gh9_hhoecd_0cov_tight.RDS")
 
-nl_fits = read_rds(
-  paste0(here, "results/fits/excl_topcodes/sd/gh9_hhoecd_0cov_tight.RDS")
-)
+nl_fits_5cov = read_rds("../results/gh9_hhoecd_5cov_tight.RDS")
 
-nl_fits_5cov = read_rds(
-  paste0(here, "results/fits/excl_topcodes/sd/gh9_hhoecd_5cov_tight.RDS")
-)
-
-income_summary <- read_rds("../results/fits/excl_topcodes/sd/gh9_hhoecd_data.RDS")
+income_params <- read_rds("../results/gh9_hhoecd_summary.RDS") %>%
+  bind_rows(.id = "fit")
 
 posteriors_5c <- map_dfr(nl_fits_5cov, as.data.frame, .id = "fit") %>%
-  left_join(bind_rows(income_summary, .id = "fit")) %>%
+  left_join(income_params) %>%
   mutate(omega_dollars = (b_omega_Intercept * sd + mean)/1000) %>%
   as_tibble()
 
@@ -287,7 +272,7 @@ posteriors_5c %>%
   mutate(model = "conditional") -> parameter_summary_5c
 
 posteriors_0c <- map_dfr(nl_fits, as.data.frame, .id = "fit") %>%
-  left_join(bind_rows(income_summary, .id = "fit")) %>%
+  left_join(income_params) %>%
   mutate(omega_dollars = (b_omega_Intercept * sd + mean)/1000) %>%
   as_tibble()
 
@@ -334,15 +319,9 @@ The parameter estimates of the conditional model (red) were adjusted for the bro
 
 ##### Figure S3. Log-linear model evidence (WAIC~log-linear~ — WAIC~piecewise~)
 ```{r, figure_s3, fig.height=3.5, dpi=300}
-here <- "~/Dropbox/HILDA/The-increasing-cost-of-happiness/"
+nl_fits = read_rds("../results/gh9_hhoecd_0cov_tight_x0.RDS")
 
-nl_fits = read_rds(
-  paste0(here, "results/fits/excl_topcodes/sd/exc_zeros/gh9_hhoecd_0cov_tight.RDS")
-)
-
-log_fits = read_rds(
-  paste0(here, "results/fits/excl_topcodes/sd/log_gh9_hhoecd_0cov.RDS")
-)
+log_fits = read_rds("../results/log_gh9_hhoecd_0cov.RDS")
 
 # get waic results
 map2_dfr(.x = nl_fits, 
@@ -370,7 +349,7 @@ map2_dfr(.x = nl_fits,
   labs(x = "deviance", y = "")
 ```
 ```
-Figure S3 legend: The joint distribution between wellbeing and income for a single year, imposed by the priors.
+Figure S3 legend: Differences in WAIC scores (deviance units) for a log-linear fit over a piecewise fit for happiness.
 ```  
 
 <br>
@@ -386,7 +365,7 @@ We used regularizing Guassian priors centred on zero, with Normal(0, 0.1) for ea
 
 ##### Figure S4. Prior predictive check  
 ```{r figure_s4, dpi=300}
-load(paste0(here, "results/prior_predictions.Rdata"))
+load("../results/prior_predictions.Rdata")
 
 prior_predictions %>%
   ggplot(aes(x = hh_disp_inc_eq/1000, y = Estimate, group = 1)) +
@@ -427,7 +406,7 @@ Examination of the residual plots from the piecewise models of happiness confirm
 # 
 # save(residual_fits, file = paste0(here, "results/residual_fits.Rdata"))
 
-load(paste0(here, "results/residual_fits.Rdata"))
+load("../results/residual_fits.Rdata")
 
 residual_fits %>%
   group_by(year) %>%
@@ -452,16 +431,22 @@ There were _N_ = 59,876 total observations. 4000 samples (post-warmup) were draw
 <br>
 
 ```{r table_s2, ft.align="left"}
+nl_fits = read_rds("../results/gh9_hhoecd_0cov_tight.RDS")
+
+income_params %>%
+  mutate(fit = str_remove(fit, "fit")) %>%
+  column_to_rownames("fit") -> income
+
 param_key = c(
   b0_Intercept = "Intercept",
   b1_Intercept = "Pre-slope",
   b2_Intercept = "Post-slope",
-  omega_Intercept = "Change-point"
+  omega_Intercept = "Change-point ($000s)"
 )
 
 map_dfr(nl_fits, 
         .f = ~{
-          fit_summary <- summary(.x) 
+          fit_summary <- summary(.x, prob = 0.95) 
           
           sigma_summary <- fit_summary$spec_pars %>%
             as_tibble(rownames = "Parameter")
@@ -475,7 +460,19 @@ map_dfr(nl_fits,
         .id = "Year") %>%
   mutate(
     Year = str_remove(Year, "fit"),
-    Parameter = recode_factor(Parameter, !!!param_key)
+    Parameter = recode_factor(Parameter, !!!param_key),
+    Estimate = if_else(str_detect(Parameter, "Change"),
+                       (Estimate * income[Year, "sd"] + income[Year, "mean"])/1000,
+                       Estimate),
+    Est.Error = if_else(str_detect(Parameter, "Change"),
+                        (Est.Error * income[Year, "sd"] + income[Year, "mean"])/1000,
+                        Est.Error),
+    `l-95% CI` = if_else(str_detect(Parameter, "Change"),
+                        (`l-95% CI` * income[Year, "sd"] + income[Year, "mean"])/1000,
+                        `l-95% CI`),
+    `u-95% CI` = if_else(str_detect(Parameter, "Change"),
+                         (`u-95% CI` * income[Year, "sd"] + income[Year, "mean"])/1000,
+                         `u-95% CI`)
     ) %>%
   flextable() %>%
   merge_v(j = 1) %>%
@@ -483,10 +480,15 @@ map_dfr(nl_fits,
   bg(i = ~Year %in% seq(2001, 2019, 2), 
      bg = "grey90", 
      part = "body") %>%
-  colformat_num(j = 3:6, digits= 3) %>%
-  colformat_num(j = 7, digits= 1) %>%
+  
+  colformat_double(j = 3:6, digits= 3) %>%
+  colformat_double(j = 7, digits= 1) %>%
   set_caption("Table S2. Piecewise parameter estimates and fit statistics for happiness") %>%
-  autofit()
+  fontsize(size = 9.5, part = "all") %>%
+  width(j = 1, width = .5) %>%
+  width(j = 2, width = 1) %>%
+  width(j = c(3:7), width = .7) %>%
+  width(j = c(8, 9), width = .8)
 ```
 
 <br>
@@ -523,9 +525,10 @@ map_dfr(lm_fits_losat,
   bg(i = ~Year %in% seq(2001, 2019, 2), 
      bg = "grey90", 
      part = "body") %>%
-  colformat_num(j = 3:6, digits= 3) %>%
-  colformat_num(j = 7, digits= 1) %>%
+  colformat_double(j = 3:6, digits= 3) %>%
+  colformat_double(j = 7, digits= 1) %>%
   set_caption("Table S3. Linear parameter estimates and fit statistics for life satisfaction") %>%
+  fontsize(size = 9.5, part = "all") %>%
   autofit()
 ```
 
@@ -540,24 +543,19 @@ The posterior estimates of the piecewise model indicated that the relationship b
 
 ##### Figure S6. Happiness (SD units) at $50K/yr and $75K/yr from 2001-2019  
 ```{r figure_s6, fig.width=7, fig.height=5, dpi=300}
-here <- "~/Dropbox/HILDA/The-increasing-cost-of-happiness/"
-
-nl_fits = read_rds(
-  paste0(here, "results/fits/excl_topcodes/sd/exc_zeros/gh9_hhoecd_0cov_tight.RDS")
-)
+nl_fits = read_rds("../results/gh9_hhoecd_0cov_tight.RDS")
 
 # Optional
 # nl_fits_5cov = read_rds(
 #   paste0(here, "results/fits/excl_topcodes/sd/gh9_hhoecd_5cov_tight.RDS")
 # )
 
-income_summary <- read_rds("../results/fits/excl_topcodes/sd/gh9_hhoecd_data.RDS")
-
-bind_rows(income_summary, .id = "fit") %>%
+fixed_income_hash <- read_rds("../results/gh9_hhoecd_summary.RDS") %>%
+  bind_rows(.id = "fit") %>%
   mutate(low = (40000 - mean)/sd,
          high = (75000 - mean)/sd) %>%
   column_to_rownames(var = "fit") %>%
-  as.matrix() -> fixed_income_hash
+  as.matrix()
 
 colnames(fixed_income_hash) <- NULL
 
@@ -682,10 +680,11 @@ bind_rows(
 ) -> model_summaries
 
 model_summaries %>%
-  select(model, year, r.squared) %>%
+  select(model, Year = year, r.squared) %>%
   spread(model, r.squared) %>%
   flextable() %>%
-  colformat_num(j = 2:7, digits = 3) %>%
+  colformat_num(j = 1, big.mark = "") %>%
+  colformat_double(j = 2:7, digits = 3) %>%
   set_caption("Table S4. In-sample fit statistics (R-squared)") %>%
   set_header_labels(
     lin = "Linear", 
@@ -695,14 +694,16 @@ model_summaries %>%
     pw = "Piecewise",
     pwc = "Piecewise\n(conditional)") %>%
   valign(i = 1, valign = "top", part = "header") %>%
-  width(j = 2:7, width = 1)
+  fontsize(size = 9.5, part = "all") %>%
+  width(j = 2:7, width = 1) %>%
+  width(j = 1, width = .5)
 ```
 
 <br>
 
 A comparison of the relative differences in R^2^ values between models indicates the piecewise model produced a slightly higher in-sample fit over the other two models, while the linear model tended to have the lowest R^2^. The log-linear fit varied between both over the 19 years. As expected, adding covariates increased the R-squared in each case, but it did not change the relative difference between models.  
 
-Three things need to be observed when interpreting the R^2^ values: 1) While the R^2^ between income and happiness is low (~2% and ~14% in the unconditional and conditional models, respectively), the aggregate effect over the wider population (e.g., 25M in Australia) will be much larger; 2) Happiness (and to a lesser extent, income) is an imperfect and noisy measure so any effect of income on happiness is likely to be larger than that measured here; 3) Finally, happiness is measured on a subjective and arbitrary Likert scale so a small change in happiness at different points in the scale may represent a large change in some other functional/real-world outcome (e.g., risk of suicide). This is all to say that quantifying the real-world impact of small changes in variation reported here is difficult and speculative without further investigation.  
+Three things need to be observed when interpreting the R^2^ values: 1) While the R^2^ between income and happiness is low (~2% and ~14% in the unconditional and conditional models, respectively), the effect over the wider population will aggregate to be much larger; 2) Happiness (and to a lesser extent, income) is an imperfect and noisy measure so any effect of income on happiness is likely to be larger than that measured here; 3) Finally, happiness is measured on a subjective and arbitrary Likert scale so a small change in happiness at different points in the scale may represent a large change in some other functional/real-world outcome (e.g., risk of suicide). This is all to say that quantifying the real-world impact of small changes in variation reported here is difficult and speculative without further investigation.  
 
 <br><br>
 
