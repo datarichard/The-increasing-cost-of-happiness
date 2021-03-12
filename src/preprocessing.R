@@ -148,29 +148,30 @@ happiness <- gh9_items %>%
 # prior to 2012. See Appendix in Wilkins (2014) 'Derived income variables in the
 # HILDA survey' for explanation
 # 
-# CPI values from https://www.pc.gov.au/research/completed/rising-inequality
+# CPI values from https://www.rba.gov.au/calculator/annualDecimal.html
 CPI = data.frame(
-  wave = letters[1:18],
-  deflator = c(1.52547554, # 2000/01
-               1.48315720, # 2001/02
-               1.43988458, # 2002/03
-               1.40607389, # 2003/04
-               1.37297463, # 2004/05
-               1.33027251, # 2005/06
-               1.29200230, # 2006/07
-               1.24993042, # 2007/08
-               1.21214575, # 2008/09
-               1.18464785, # 2009/10
-               1.14888718, # 2010/11
-               1.12303076, # 2011/12
-               1.09804401, # 2012/13
-               1.06903118, # 2013/14
-               1.05101802, # 2014/15
-               1.03670360, # 2015/16
-               1.01929187, # 2016/17
-               1)) %>% mutate(inflator = rev(deflator))
+  wave = letters[1:19],
+  deflator = c(1.542713570,
+               1.498048150,
+               1.458201390,
+               1.424814360,
+               1.387466100,
+               1.339831250,
+               1.309354560,
+               1.254768390,
+               1.232931730,
+               1.197970860,
+               1.159657520,
+               1.139569410,
+               1.112318840,
+               1.085316990,
+               1.069189690,
+               1.055708390,
+               1.035529570,
+               1.016107680,
+               1.000000000)) #%>% mutate(inflator = rev(deflator))
 
-thresholds <- read_csv("../../docs/Frequencies 180c/HILDA-thresholds-by-wave-180.csv") %>%
+thresholds <- read_csv("~/Dropbox/HILDA/data/HILDA-thresholds-by-wave-190.csv") %>%
   filter(variable %in% c("hifdip")) %>%
   gather("wave", "threshold", -variable, -label) %>%
   separate(wave, into = c("temp", "wave"), sep = "e") %>%
@@ -194,8 +195,8 @@ income <- gather_hilda(hilda, c(
   left_join(thresholds, by = "wave") %>%
   mutate_if(is.double, ~ ifelse(. < 0, NA_real_, .)) %>%
   mutate(
-    hh_disp_inc = (hifdip - hifdin) * deflator, # convert to base year 2017/18
-    hifdip_rl2018 = hifdip * deflator,
+    hh_disp_inc = (hifdip - hifdin) * deflator, # convert to base year 2019
+    hifdip_rl2019 = hifdip * deflator,
     hhchild = hh0_4 + hh5_9 + hh10_14,
     OECD_mod = 1 + ((hhadult-1)*(0.5)) + (hhchild*(0.3))
     ) %>%
@@ -203,7 +204,7 @@ income <- gather_hilda(hilda, c(
     xwaveid, 
     wave,
     top_hifdip = hifdip > hifdip_thld,
-    hifdip_adj = hifdip_rl2018/sqrt(hhpers), # for backward compatibility
+    hifdip_adj = hifdip_rl2019/sqrt(hhpers), # for backward compatibility
     hh_disp_inc_eq = hh_disp_inc/OECD_mod # convert to base and adjust by size
     ) 
 
@@ -218,6 +219,6 @@ income %>%
   group_by(wave) %>%
   mutate(year = which(letters == wave[1]) + 2000) %>%
   ungroup() %>%
-  select(xwaveid, year, everything(), -wave) -> happywealth
+  select(xwaveid, year, everything(), -wave) -> hilda_data
 
-write_rds(happywealth, "../data/happywealth.rds")
+write_rds(hilda_data, "../data/hilda_data.rds")
