@@ -142,6 +142,62 @@ happiness <- gh9_items %>%
             wave, 
             gh9 = scales::rescale(gh9, to = c(1, 100))) 
 
+# Split gh9 into positive and negative components
+positive_items <- c("gh9a", "gh9d", "gh9e", "gh9h")
+negative_items <- c("gh9b", "gh9c", "gh9f", "gh9g", "gh9i")
+
+positive_affect <- gh9_items %>%
+  select(xwaveid, wave, all_of(positive_items)) %>%
+  # Reverse score
+  mutate_at(vars(any_of(reversed_items)), list(~ 7 - .)) %>%
+  gather(code, val, -xwaveid, -wave) %>%
+  # Impute average if less than half missing (see ghmh data dictionary)
+  group_by(xwaveid, wave) %>%
+  mutate(
+    sum_na = sum(is.na(val)),
+    mean_na = mean(val, na.rm = TRUE),
+    imputed = ifelse(is.na(val) & sum_na < 2, mean_na, val),
+    sum_imputed = sum(imputed),
+    code = "gh9_sum"
+  ) %>% 
+  ungroup() %>%
+  select(xwaveid, wave, gh9 = sum_imputed) %>%
+  distinct() %>%
+  left_join(select(gh9_items, xwaveid, wave), 
+            by = c("xwaveid", "wave")
+  ) %>%
+  transmute(xwaveid, 
+            wave, 
+            gh9_positive = scales::rescale(gh9, to = c(1, 100))) 
+
+negative_affect <- gh9_items %>%
+  select(xwaveid, wave, all_of(negative_items)) %>%
+  # Reverse score
+  mutate_at(vars(any_of(reversed_items)), list(~ 7 - .)) %>%
+  gather(code, val, -xwaveid, -wave) %>%
+  # Impute average if less than half missing (see ghmh data dictionary)
+  group_by(xwaveid, wave) %>%
+  mutate(
+    sum_na = sum(is.na(val)),
+    mean_na = mean(val, na.rm = TRUE),
+    imputed = ifelse(is.na(val) & sum_na < 3, mean_na, val),
+    sum_imputed = sum(imputed),
+    code = "gh9_sum"
+  ) %>% 
+  ungroup() %>%
+  select(xwaveid, wave, gh9 = sum_imputed) %>%
+  distinct() %>%
+  left_join(select(gh9_items, xwaveid, wave), 
+            by = c("xwaveid", "wave")
+  ) %>%
+  transmute(xwaveid, 
+            wave, 
+            gh9_negative = scales::rescale(gh9, to = c(1, 100))) 
+
+# Join all gh9, positive and negative components into a single df
+happiness <- left_join(happiness, positive_affect) %>%
+  left_join(negative_affect)
+
 #### HOUSEHOLD INCOME ####
 # Note that regular HILDA income variables were used (not total income, which 
 # include irregular income) to match with the ABS, and because more consistent
