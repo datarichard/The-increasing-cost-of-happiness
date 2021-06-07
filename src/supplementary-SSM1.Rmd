@@ -331,7 +331,7 @@ bind_rows(parameter_summary_0c, parameter_summary_5c) %>%
         axis.title = element_blank())
 ```
 ```
-Figure legend: Comparison of the conditional parameter estimates (red) and unconditional parameter estimates (grey) in the change point model of income on happiness. The conditional models included covariates for age, age squared, sex, education, and illness. Horizontal bar represents the 95% credible region and the solid point indicates the expected value (median) of each distribution.
+Figure legend: Comparison of the conditional parameter estimates (red) and unconditional parameter estimates (grey) in the piecewise-linear model of income on happiness. The conditional models included covariates for age, age squared, sex, education, and illness. Horizontal bar represents the 95% credible region and the solid point indicates the expected value (median) of each distribution.
 ```  
 
 <br>
@@ -341,6 +341,85 @@ The parameter estimates of the conditional model (red) were adjusted for the bro
 The unconditional parameter values are also presented in Table S2 below (Parameter and fit summary statistics).  
 
 <br><br>
+
+**Positive and negative components of affective wellbeing**. Affective wellbeing includes both positive and negative components, and both these components are assessed by multiple quesstions in the SF-36 item 9. To determine whether the increasing change-point in income on affective wellbeing we observed was due to positive or negative affect, we fit a piecewise-linear model of income on positive and negative affect separately. The four questions dealing with positive affect (i.e., "Feel full of life", "Felt calm and peaceful", "Have a lot of energy", "Been happy") and the five negative affect questions ("Felt so down in the dumps nothing could cheer me up", "Felt worn out", "Been a nervous person", "Felt down", "Felt tired") were summed together separately to create distinct scores for positive and negative affect. The negative affect score was reversed so that higher scoes indicated less negative affect. Household income was then regressed against each score using the piecewise linear model (Equation 3), as described for the overall affective wellbeing score in the main text. Figure S3 below shows that the change-point in income increased over the period 2001-2019 for both positive (pink) and negative (blue) affect, indicating a similar trend in both components of affective wellbeing over the 19 years.   
+
+##### Figure S3. Positive and negative affect parameters  
+```{r figure_s3, fig.width=6, fig.height=8, dpi=300}
+gh9neg.fits <- read_rds("../results/fits/excl_topcodes/sd/gh9neg_hhoecd_0cov_tight.RDS")
+gh9pos.fits <- read_rds("../results/fits/excl_topcodes/sd/gh9pos_hhoecd_0cov_tight.RDS")
+
+income_params <- read_rds("../results/gh9_hhoecd_summary.RDS") %>%
+  bind_rows(.id = "fit")
+
+posteriors_pos <- map_dfr(gh9pos.fits, as.data.frame, .id = "fit") %>%
+  left_join(income_params) %>%
+  mutate(omega_dollars = (b_omega_Intercept * sd + mean)/1000) %>%
+  as_tibble()
+
+param_key = c(
+  omega_dollars = "Change point ($000s)",
+  b_b0_Intercept = paste0("Intercept (\u03b2", "0)"),
+  b_b1_Intercept = paste0("Pre-slope (\u03b2", "1)"),
+  b_b2_Intercept = paste0("Post-slope (\u03b2", "2)")
+)
+
+posteriors_pos %>%
+  select(fit, contains("b0"), contains("b1"), contains("b2"), omega_dollars) %>%
+  gather(key = "param", val = "sample", -fit) %>%
+  mutate(
+    year = extract_numeric(fit),
+    param = recode_factor(param, !!!param_key)
+  ) %>% 
+  group_by(param, year) %>%
+  summarise(
+    low = quantile(sample, probs = 0.05, na.rm=T),
+    expected = quantile(sample, probs = 0.5, na.rm=T),
+    upp = quantile(sample, probs = 0.95, na.rm=T)
+  ) %>%
+  mutate(model = "positive") -> parameter_summary_pos
+
+posteriors_neg <- map_dfr(gh9neg.fits, as.data.frame, .id = "fit") %>%
+  left_join(income_params) %>%
+  mutate(omega_dollars = (b_omega_Intercept * sd + mean)/1000) %>%
+  as_tibble()
+
+posteriors_neg %>%
+  select(fit, contains("b0"), contains("b1"), contains("b2"), omega_dollars) %>%
+  gather(key = "param", val = "sample", -fit) %>%
+  mutate(
+    year = extract_numeric(fit),
+    param = recode_factor(param, !!!param_key)
+  ) %>% 
+  group_by(param, year) %>%
+  summarise(
+    low = quantile(sample, probs = 0.05, na.rm=T),
+    expected = quantile(sample, probs = 0.5, na.rm=T),
+    upp = quantile(sample, probs = 0.95, na.rm=T)
+  ) %>%
+  mutate(model = "negative") -> parameter_summary_neg
+
+bind_rows(parameter_summary_pos, parameter_summary_neg) %>%
+  ggplot(aes(y = year, x = expected, color = model)) +
+  geom_pointrange(aes(xmin = low, xmax = upp), position = position_dodge(width = 0.75)) +
+  scale_y_continuous(breaks = c(2001, 2007, 2013, 2019)) +
+  facet_wrap(~param, scales = "free_x") +
+  ft_theme(base_size = 12) +
+  scale_color_manual(values = c("steelblue", "salmon")) +
+  theme(legend.position = "none",
+        axis.title = element_blank())
+```
+```
+Figure legend: Comparison of the parameter estimates from positive items (pink) and negative items (blue) in the piecewise-linear model of income on affective wellbeing. The positive model regressed income against a sum of positive affect questions in the SF-36, while the negative model regressed income against a sum of negative affect questions (reversed scaled to match the positive affect score). Horizontal bar represents the 95% credible region and the solid point indicates the expected value (median) of each distribution.
+```  
+
+<br>
+
+Regressing income against the positive and negative components of affective wellbeing separately did not reveal substantially different trends for each. Both showed an increase in change-point income value over the 19 years, which by 2019 was credibly different from the base values in 2001. Changes in the other slope and intercept parameters were either not substantial or not credibly different from the 2001 values according to the 95% credible intervals.  
+
+
+<br><br>  
+
 
 #### Parameter and fit summary statistics  
 
@@ -541,8 +620,8 @@ bind_rows(coefs_affective, coefs_cognitive) %>%
 
 We used regularizing Guassian priors centred on zero, with Normal(0, 0.1) for each *&beta;*, and a Normal(0, 0.5) for *&omega;*. A plot of the joint distribution between income and wellbeing imposed by the priors alone confirmed there was no apparent slope or change point implied by their regularizing effect.  
 
-##### Figure S3. Prior predictive check  
-```{r figure_s3, fig.width=6, fig.height = 6, dpi=300}
+##### Figure S4. Prior predictive check  
+```{r figure_s4, fig.width=6, fig.height = 6, dpi=300}
 load("../results/prior_predictions.Rdata")
 
 prior_predictions %>%
@@ -562,8 +641,8 @@ Examination of the residual plots from the piecewise models of happiness confirm
 
 <br>
 
-##### Figure S4. Residual plots for piecewise happiness models
-```{r figure_s4, fig.height=9, fig.width=9, dpi=600}
+##### Figure S5. Residual plots for piecewise happiness models
+```{r figure_s5, fig.height=9, fig.width=9, dpi=600}
 # https://www.flutterbys.com.au/stats/tut/tut7.2b.html
 # 
 # 
@@ -608,8 +687,8 @@ The posterior estimates of the piecewise model indicated that the relationship b
 
 <br>
 
-##### Figure S5. Happiness (SD units) at $50K/yr and $75K/yr from 2001-2019  
-```{r figure_s5, fig.width=7, fig.height=5, dpi=300}
+##### Figure S6. Happiness (SD units) at $50K/yr and $75K/yr from 2001-2019  
+```{r figure_s6, fig.width=7, fig.height=5, dpi=300}
 nl_fits = read_rds("../results/gh9_hhoecd_0cov_tight.RDS")
 
 # Optional
@@ -779,12 +858,12 @@ pw_fit_c = segmented(lm(
   seg.Z = ~dollars)
 
 model_summaries_all <- rbind(
-  broom::glance(lm_fit) %>% mutate(model = "lin", year = "All"),
-  broom::glance(lm_fit_c) %>% mutate(model = "linc", year = "All"),
-  broom::glance(log_fit) %>% mutate(model = "log", year = "All"),
-  broom::glance(log_fit_c) %>% mutate(model = "logc", year = "All"),
-  broom::glance(pw_fit) %>% mutate(model = "pw", year = "All"),
-  broom::glance(pw_fit_c) %>% mutate(model = "pwc", year = "All"),
+  broom::glance(lm_fit) %>% mutate(model = "lin", year = "Overall"),
+  broom::glance(lm_fit_c) %>% mutate(model = "linc", year = "Overall"),
+  broom::glance(log_fit) %>% mutate(model = "log", year = "Overall"),
+  broom::glance(log_fit_c) %>% mutate(model = "logc", year = "Overall"),
+  broom::glance(pw_fit) %>% mutate(model = "pw", year = "Overall"),
+  broom::glance(pw_fit_c) %>% mutate(model = "pwc", year = "Overall"),
   model_summaries
 )
 ```
@@ -854,6 +933,7 @@ left_join(lm_coef, log_coef, by = "Year") %>%
   left_join(pw_coefs, by = "Year") %>%
   mutate(Year = as.character(2000 + as.numeric(Year))) %>%
   flextable() %>%
+  fontsize(size = 9.5, part = "all") %>%
   set_caption("OLS coefficients from linear, log-linear and piecewise models") %>%
   autofit()
 ```
