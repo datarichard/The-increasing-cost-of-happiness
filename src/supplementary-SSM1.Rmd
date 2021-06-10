@@ -614,6 +614,12 @@ bind_rows(coefs_affective, coefs_cognitive) %>%
   hline_bottom(part="body", border = officer::fp_border())
 ```
 
+<br>
+
+The table of model parameters (untransformed) for each year show that the $\beta_1$ slopes for piecewise-linear, log-linear and linear model for affective wellbeing and income do not show a sustained trend ove the 19 year period. The $\beta_1$ coefficients increase in the initial 5-10 years and then decline. Despite this common pattern, the linear slope appears to show the most sustained increase while the log-linear slope shows a relatively less sustained increase. Overall, the pattern of changes among the models indicates the function between income and happiness has in fact become slightly steeper over the period. 
+
+
+
 <br><br>
 
 #### Prior and residual checks   
