@@ -32,8 +32,8 @@ source("ft_themes.r")
 \  
 
 Draft: `r format(Sys.time(), '%d %B, %Y')`  
-Supplementary tables:      4  
-Supplementary figures:     6  
+Supplementary tables:      5  
+Supplementary figures:     8  
   
 **keywords:** Subjective wellbeing, household income, HILDA  
 
@@ -128,9 +128,9 @@ hilda_data %>%
 
 <br>
 
-Household income and average life satisfaction increased between 2001-2019, while average happiness score decreased slightly over the 19 years. The proportions of each sex were stable over time, as was the proportion of people living as a couple (Couples), average household size and SEIFA index. The percentage unemployed varied with economic conditions however there was no significant positive or negative linear trend. Age and chronic health conditions tended to increase over time. The slight increase in the age of the panel over time (2.3 years) was substantially less than that of a cohort study which would be 18 years. Education levels (i.e., percentage of university graduates) also tended to increase over time.   
+Household income and average life satisfaction increased between 2001-2019, while average affective wellbeing score decreased slightly over the 19 years. The proportions of each sex were stable over time, as was the proportion of people living as a couple (Couples), average household size and SEIFA index. The percentage unemployed varied with economic conditions however there was no significant positive or negative linear trend. Age and chronic health conditions tended to increase over time. The slight increase in the age of the panel over time (2.3 years) was substantially less than that of a cohort study which would be 18 years. Education levels (i.e., percentage of university graduates) also tended to increase over time.   
 
-Generally, Table S1 supports the view that the HILDA sample was a relatively stable representation of Australian socioeconomic conditions between 2001 and 2019. The importance of the specific demographic variables with a significant linear trend (age, age^2^, education, illness) were tested in regression models of happiness as covariates (see below Figure S3).   
+Generally, Table S1 supports the view that the HILDA sample was a relatively stable representation of Australian socioeconomic conditions between 2001 and 2019. The importance of the specific demographic variables with a significant linear trend (age, age^2^, education, illness) were tested in regression models of affective wellbeing as covariates (see below Figure S2).   
 
 <br><br>
 
@@ -260,7 +260,7 @@ Figure legend: Differences in WAIC scores (deviance units) for a piecewise-linea
 
 The difference in WAIC scores for each model revealed the piecewise-linear fits of affective wellbeing, but not cognitive wellbeing, provided superior out-of-sample accuracy over a log-linear or linear fit in each year. Figure S1 shows the differences in WAIC scores clearly distinguished the advantage of the piecewise-linear fits for affective wellbeing with most 95% intervals entirely below zero for each year (exceptions occurred for the piecewise vs. log fit in 2004, 2006 and 2008, where the piecewise fit was still superior on average). By contrast, the difference in WAIC scores for the cognitive wellbeing models was not as clearly distinguished from zero for most years, since the 95% intervals of the WAIC differences with either the log-linear fit or the linear fit overlapped zero in most years. Indeed in the years between 2002 to 2010 the linear fit was superior to the piecewise-linear fit on average, with the mean WAIC difference above zero (positive). Overall the evidence suggested that affective wellbeing has a piecewise relationship with household income; implying the existence of a change point or difference in slopes at different levels of household income. Evidence of the effect of income on cognitive wellbeing, on the other hand, was more equivocal, albeit with some indication of a linear relationship in the early part of the 21st C.  
 
-**Conditional vs unconditional models of happiness.** Table S1 (above) showed the specific variables that changed over the 19 years between 2001-2019. In particular, the number of university graduates, average age and the incidence of chronic illness increased slighty over the period. Including these variables as covariates in any model (i.e,. a conditional model such that *P*( $y$ | income, age, education illness)) will improve the in-sample fit (e.g., R^2^), and also adjust the parameter estimates of interest (e.g., change point) conditional upon their common association with happiness. Given the general aim of the main paper was to describe the temporal change in functional form between happiness and income in Australia, regardless of any other variable (i.e., an unconditional model of *P*($y$| income)) or sampling differences, neither the in-sample fit nor the conditional model estimates are directly relevant. Nevertheless, the importance of these variables in mediating the changes we observed in the unconditional model are relevant, and so we calculated the estimates from conditional piecewise models including age, age^2^, sex, education  (university degree), chronic illness for each year below to confirm the pattern of temporal change was similar. Figure S2 shows the addition of these covariates did not change the trend in change point parameter estimates (red) relative to the unconditional parameter estimates (grey) over the 19 years.  
+**Conditional vs unconditional models of affective wellbeing**. Table S1 (above) showed the specific variables that changed over the 19 years between 2001-2019. In particular, the number of university graduates, average age and the incidence of chronic illness increased slighty over the period. Including these variables as covariates in any model (i.e,. a conditional model such that *P*( $y$ | income, age, education illness)) will improve the in-sample fit (e.g., R^2^), and also adjust the parameter estimates of interest (e.g., change point) conditional upon their common association with affective wellbeing. Given the general aim of the main paper was to describe the temporal change in functional form between affective wellbeing and income in Australia, regardless of any other variable (i.e., an unconditional model of *P*($y$| income)) or sampling differences, neither the in-sample fit nor the conditional model estimates are directly relevant. Nevertheless, the importance of these variables in mediating the changes we observed in the unconditional model are relevant, and so we calculated the estimates from conditional piecewise models including age, age^2^, sex, education  (university degree), chronic illness for each year below to confirm the pattern of temporal change was similar. Figure S2 shows the addition of these covariates did not change the trend in change point parameter estimates (red) relative to the unconditional parameter estimates (grey) over the 19 years.  
 
 <br>
 
@@ -331,21 +331,127 @@ bind_rows(parameter_summary_0c, parameter_summary_5c) %>%
         axis.title = element_blank())
 ```
 ```
-Figure legend: Comparison of the conditional parameter estimates (red) and unconditional parameter estimates (grey) in the piecewise-linear model of income on happiness. The conditional models included covariates for age, age squared, sex, education, and illness. Horizontal bar represents the 95% credible region and the solid point indicates the expected value (median) of each distribution.
+Figure legend: Comparison of the conditional parameter estimates (red) and unconditional parameter estimates (grey) in the piecewise-linear model of income on affective wellbeing. The conditional models included covariates for age, age squared, sex, education, and illness. Horizontal bar represents the 95% credible region and the solid point indicates the expected value (median) of each distribution.
 ```  
 
 <br>
 
-The parameter estimates of the conditional model (red) were adjusted for the broad demographic variables which tended to increase over the 19 years in our sample (age, education, illness); however the pattern of changes over time was comparable to the unconditional model (grey), indicating these temporal trends were not responsible for the evolution in the change point between income and happiness.  
+The parameter estimates of the conditional model (red) were adjusted for the broad demographic variables which tended to increase over the 19 years in our sample (age, education, illness); however the pattern of changes over time was comparable to the unconditional model (grey), indicating these temporal trends were not responsible for the evolution in the change point between income and affective wellbeing.  
 
 The unconditional parameter values are also presented in Table S2 below (Parameter and fit summary statistics).  
 
 <br><br>
 
-**Positive and negative components of affective wellbeing**. Affective wellbeing includes both positive and negative components, and both these components are assessed by multiple quesstions in the SF-36 item 9. To determine whether the increasing change-point in income on affective wellbeing we observed was due to positive or negative affect, we fit a piecewise-linear model of income on positive and negative affect separately. The four questions dealing with positive affect (i.e., "Feel full of life", "Felt calm and peaceful", "Have a lot of energy", "Been happy") and the five negative affect questions ("Felt so down in the dumps nothing could cheer me up", "Felt worn out", "Been a nervous person", "Felt down", "Felt tired") were summed together separately to create distinct scores for positive and negative affect. The negative affect score was reversed so that higher scoes indicated less negative affect. Household income was then regressed against each score using the piecewise linear model (Equation 3), as described for the overall affective wellbeing score in the main text. Figure S3 below shows that the change-point in income increased over the period 2001-2019 for both positive (pink) and negative (blue) affect, indicating a similar trend in both components of affective wellbeing over the 19 years.   
+**Including income topcodes in models of affective wellbeing**.  
 
-##### Figure S3. Positive and negative affect parameters  
-```{r figure_s3, fig.width=6, fig.height=8, dpi=300}
+Household income values for high income individuals are substituted with the average income value of all those above a certain threshold (topcoded). This is performed by the University of Melbourne to preserve anonymity, and we excluded people marked as topcoded in the main analysis (highest _n_ in any year was _n_ = 103 in 2019). Here we present the parameter estimates of the affective wellbeing models with topcodes included, and compare them with parameters from models which exclude them.  
+
+##### Figure S3. Topcoded model parameters  
+```{r figure_s3, fig.width = 6, fig.height = 8, dpi=300}
+nl_fits_topcodes = read_rds("../results/fits/inc_topcodes/gh9_hhoecd_0cov_tight.RDS")
+
+topcode_income_params <- read_rds("../results/fits/inc_topcodes/gh9_hhoecd_data.RDS") %>%
+  bind_rows(.id = "fit")
+
+posteriors_topcodes <- map_dfr(nl_fits_topcodes, as.data.frame, .id = "fit") %>%
+  left_join(topcode_income_params) %>%
+  mutate(omega_dollars = (b_omega_Intercept * sd + mean)/1000) %>%
+  as_tibble()
+
+posteriors_topcodes %>%
+  select(fit, contains("b0"), contains("b1"), contains("b2"), omega_dollars) %>%
+  gather(key = "param", val = "sample", -fit) %>%
+  mutate(
+    year = extract_numeric(fit),
+    param = recode_factor(param, !!!param_key)
+  ) %>% 
+  group_by(param, year) %>%
+  summarise(
+    low = quantile(sample, probs = 0.05, na.rm=T),
+    expected = quantile(sample, probs = 0.5, na.rm=T),
+    upp = quantile(sample, probs = 0.95, na.rm=T)
+  ) %>%
+  mutate(model = "topcodes") -> parameter_summary_topcodes
+
+parameter_summary_0c %>%
+  mutate(model = "no topcodes") -> parameter_summary_excl
+
+bind_rows(parameter_summary_excl, parameter_summary_topcodes) %>%
+  ggplot(aes(y = year, x = expected, color = model)) +
+  geom_pointrange(aes(xmin = low, xmax = upp), position = position_dodge(width = 0.75)) +
+  scale_y_continuous(breaks = c(2001, 2007, 2013, 2019)) +
+  facet_wrap(~param, scales = "free_x") +
+  ft_theme(base_size = 12) +
+  scale_color_manual(values = c("grey65", "#C79999")) +
+  theme(legend.position = "none",
+        axis.title = element_blank())
+```
+```
+Figure legend: Comparison of the topcoded parameter estimates (red) and parameter estimates excluding topcodes (grey) in the piecewise-linear model of income on affective wellbeing. The topcoded models included n = 26 to 130 extra (high income) individuals in each year. Horizontal bar represents the 95% credible region and the solid point indicates the expected value (median) of each distribution.
+```  
+
+<br>
+
+Included topcoded individuals adds some variation in the parameter estimates (e.g., 2008), but did not change the overall pattern observed over time (e.g., the changepoint continued to increase over time).  
+
+<br><br>
+
+**Unadjusted household income models of affective wellbeing**.  
+
+Household income values were adjusted for household size in the main analysis. The _maximum_ household sizes varied from 10 (2017, 2019) to as high as 17 (2016), and so adjustment accounts for larger households needing more resources to achieve the same standard of living as a smaller household, and for some ‘economies of scale’ when sharing living costs. For example, two people living alone in two separate households typically incur higher living costs in total than two people living in one household. Here we present the parameter estimates of the affective wellbeing models without adjustment for household size and with adjustment.    
+
+##### Figure S4. Model parameters unadjusted for household size  
+```{r figure_s4, fig.width = 6, fig.height = 8, dpi=300}
+nl_fits_unadjsize = read_rds("../results/fits/excl_hhsize/gh9_hifdip_0cov_tight.RDS")
+
+posteriors_unadjsize <- map_dfr(nl_fits_unadjsize, as.data.frame, .id = "fit") %>%
+  left_join(income_params) %>%
+  mutate(omega_dollars = (b_omega_Intercept * sd + mean)/1000) %>%
+  as_tibble()
+
+posteriors_unadjsize %>%
+  select(fit, contains("b0"), contains("b1"), contains("b2"), omega_dollars) %>%
+  gather(key = "param", val = "sample", -fit) %>%
+  mutate(
+    year = extract_numeric(fit),
+    param = recode_factor(param, !!!param_key)
+  ) %>% 
+  group_by(param, year) %>%
+  summarise(
+    low = quantile(sample, probs = 0.05, na.rm=T),
+    expected = quantile(sample, probs = 0.5, na.rm=T),
+    upp = quantile(sample, probs = 0.95, na.rm=T)
+  ) %>%
+  mutate(model = "unadjusted") -> parameter_summary_unadjsize
+
+parameter_summary_0c %>%
+  mutate(model = "adjusted") -> parameter_summary_adj
+
+bind_rows(parameter_summary_unadjsize, parameter_summary_adj) %>%
+  ggplot(aes(y = year, x = expected, color = model)) +
+  geom_pointrange(aes(xmin = low, xmax = upp), position = position_dodge(width = 0.75)) +
+  scale_y_continuous(breaks = c(2001, 2007, 2013, 2019)) +
+  facet_wrap(~param, scales = "free_x") +
+  ft_theme(base_size = 12) +
+  scale_color_manual(values = c("grey65", "#C79999")) +
+  theme(legend.position = "none",
+        axis.title = element_blank())
+```
+```
+Figure legend: Comparison of the parameter estimates unadjusted for household size (red) and parameter estimates adjusted for size (grey) in the piecewise-linear model of income on affective wellbeing. Horizontal bar represents the 95% credible region and the solid point indicates the expected value (median) of each distribution.
+```  
+
+<br>
+
+Omitting the adjustment for household size on household income appears to reduce the $\beta_1$ parameters in each year, but there is little systematic effect on the other parameters and the changepoint continues to increase over time.  
+
+
+<br><br>
+
+**Positive and negative components of affective wellbeing**. Affective wellbeing includes both positive and negative components, and both these components are assessed by multiple quesstions in the SF-36 item 9. To determine whether the increasing change-point in income on affective wellbeing we observed was due to positive or negative affect, we fit a piecewise-linear model of income on positive and negative affect separately. The four questions dealing with positive affect (i.e., "Feel full of life", "Felt calm and peaceful", "Have a lot of energy", "Been happy") and the five negative affect questions ("Felt so down in the dumps nothing could cheer me up", "Felt worn out", "Been a nervous person", "Felt down", "Felt tired") were summed together separately to create distinct scores for positive and negative affect. The negative affect score was reversed so that higher scoes indicated less negative affect. Household income was then regressed against each score using the piecewise linear model (Equation 3), as described for the overall affective wellbeing score in the main text. Figure S5 below shows that the change-point in income increased over the period 2001-2019 for both positive (pink) and negative (blue) affect, indicating a similar trend in both components of affective wellbeing over the 19 years.   
+
+##### Figure S5. Positive and negative affect parameters  
+```{r figure_s5, fig.width=6, fig.height=8, dpi=300}
 gh9neg.fits <- read_rds("../results/fits/excl_topcodes/sd/gh9neg_hhoecd_0cov_tight.RDS")
 gh9pos.fits <- read_rds("../results/fits/excl_topcodes/sd/gh9pos_hhoecd_0cov_tight.RDS")
 
@@ -616,7 +722,7 @@ bind_rows(coefs_affective, coefs_cognitive) %>%
 
 <br>
 
-The table of model parameters (untransformed) for each year show that the $\beta_1$ slopes for piecewise-linear, log-linear and linear model for affective wellbeing and income do not show a sustained trend ove the 19 year period. The $\beta_1$ coefficients increase in the initial 5-10 years and then decline. Despite this common pattern, the linear slope appears to show the most sustained increase while the log-linear slope shows a relatively less sustained increase. Overall, the pattern of changes among the models indicates the function between income and happiness has in fact become slightly steeper over the period. 
+The table of model parameters (untransformed) for each year show that the $\beta_1$ slopes for piecewise-linear, log-linear and linear model for affective wellbeing and income do not show a sustained trend ove the 19 year period. The $\beta_1$ coefficients increase in the initial 5-10 years and then decline. Despite this common pattern, the linear slope appears to show the most sustained increase while the log-linear slope shows a relatively less sustained increase. Overall, the pattern of changes among the models indicates the function between income and affective wellbeing has in fact become slightly steeper over the period. 
 
 
 
@@ -626,8 +732,8 @@ The table of model parameters (untransformed) for each year show that the $\beta
 
 We used regularizing Guassian priors centred on zero, with Normal(0, 0.1) for each *&beta;*, and a Normal(0, 0.5) for *&omega;*. A plot of the joint distribution between income and wellbeing imposed by the priors alone confirmed there was no apparent slope or change point implied by their regularizing effect.  
 
-##### Figure S4. Prior predictive check  
-```{r figure_s4, fig.width=6, fig.height = 6, dpi=300}
+##### Figure S6. Prior predictive check  
+```{r figure_s6, fig.width=6, fig.height = 6, dpi=300}
 load("../results/prior_predictions.Rdata")
 
 prior_predictions %>%
@@ -643,12 +749,12 @@ Figure legend: The joint distribution between wellbeing and income for a single 
 ```  
 <br><br>
 
-Examination of the residual plots from the piecewise models of happiness confirms the residuals were evenly distributed around zero and there was little indication of heteroscedascity. Overall, there was little evidence that the piecewise models of happiness were not appropriate for the data.  
+Examination of the residual plots from the piecewise models of affective wellbeing confirms the residuals were evenly distributed around zero and there was little indication of heteroscedascity. Overall, there was little evidence that the piecewise models of affective wellbeing were not appropriate for the data.  
 
 <br>
 
-##### Figure S5. Residual plots for piecewise happiness models
-```{r figure_s5, fig.height=9, fig.width=9, dpi=600}
+##### Figure S7. Residual plots for piecewise affective wellbeing models
+```{r figure_s7, fig.height=9, fig.width=9, dpi=600}
 # https://www.flutterbys.com.au/stats/tut/tut7.2b.html
 # 
 # 
@@ -689,12 +795,12 @@ Figure legend: The joint distribution between residual and fitted values for eac
 
 #### Model predictions (2001-2019)
 
-The posterior estimates of the piecewise model indicated that the relationship between happiness and income changed over time between 2001 and 2019. One implication of such a change is the disparity in happiness between income groups has increased. This will occur as more people fall below the change point over time and so are subject to the steep region of the function where income and happiness are strongly related. To directly examine the implications of our model for such inequities in happiness, we used the model to estimate or _predict_ the happiness of two different income levels: one income level which was above the change point in 2001 but fell below it by 2019 (\$50K/yr); and another level which always remained above the change points over the same period (\$75K/yr). The figure below presents the happiness levels (in SD units/year) for each income level as well as the difference in happiness between them (∆).  
+The posterior estimates of the piecewise model indicated that the relationship between affective wellbeing and income changed over time between 2001 and 2019. One implication of such a change is the disparity in affective wellbeing between income groups has increased. This will occur as more people fall below the change point over time and so are subject to the steep region of the function where income and affective wellbeing are strongly related. To directly examine the implications of our model for such inequities in affective wellbeing, we used the model to estimate or _predict_ the affective wellbeing of two different income levels: one income level which was above the change point in 2001 but fell below it by 2019 (\$50K/yr); and another level which always remained above the change points over the same period (\$75K/yr). The figure below presents the affective wellbeing levels (in SD units/year) for each income level as well as the difference in affective wellbeing between them (∆).  
 
 <br>
 
-##### Figure S6. Happiness (SD units) at $50K/yr and $75K/yr from 2001-2019  
-```{r figure_s6, fig.width=7, fig.height=5, dpi=300}
+##### Figure S8. affective wellbeing (SD units) at $50K/yr and $75K/yr from 2001-2019  
+```{r figure_s8, fig.width=7, fig.height=5, dpi=300}
 nl_fits = read_rds("../results/gh9_hhoecd_0cov_tight.RDS")
 
 # Optional
@@ -742,7 +848,7 @@ fixed_income_fit %>%
   geom_smooth(method = "loess", se = F, span = 3) +
   facet_wrap(~income) +
   labs(caption = "Source:     HILDA, University of Melbourne
-                 Predicted happiness scores (SD unit) from piecewise regression on real household income", 
+                 Predicted affective wellbeing scores (SD unit) from piecewise regression on real household income", 
        x = "", y = "") -> p
 
 
@@ -755,12 +861,12 @@ p +
 ```
 
 ```
-Figure S6 legend: The difference (∆) in happiness between a household income of $50K per year and a household income of $75K per year has increased between 2001 and 2019.
+Figure legend: The difference (∆) in affective wellbeing between a household income of $50K per year and a household income of $75K per year has increased between 2001 and 2019.
 ```  
 
 <br>
 
-Figure S6 shows the disparity in happiness between two fixed income levels, \$50K/year (traversing the change points) and \$75K/year (above the change points). In 2001, a household income of \$50K/year achieved an above average level of happiness relative to everyone else that year, however by 2019 happiness had declined to lower than average levels relative to the population. By contrast, a household income of \$75K/year enjoyed a higher than average level of happiness for the entire period. The difference (∆) in happiness between these two income levels doubled over the period. The increasing disparity in happiness between the rich and the poor implies that happiness has became more inequitable over time.  
+The figure above shows the disparity in affective wellbeing between two fixed income levels, \$50K/year (traversing the change points) and \$75K/year (above the change points). In 2001, a household income of \$50K/year achieved an above average level of affective wellbeing relative to everyone else that year, however by 2019 affective wellbeing had declined to lower than average levels relative to the population. By contrast, a household income of \$75K/year enjoyed a higher than average level of affective wellbeing for the entire period. The difference (∆) in affective wellbeing between these two income levels doubled over the period. The increasing disparity in affective wellbeing between the rich and the poor implies that affective wellbeing has became more inequitable over time.  
 
 
 <br><br>
@@ -898,10 +1004,11 @@ model_summaries_all %>%
 
 A comparison of the relative differences in adjusted R^2^ values between models indicates the piecewise model produced a slightly higher in-sample fit over the other two models, while the linear model tended to have the lowest adjusted R^2^. The log-linear fit varied between both over the 19 years. As expected, adding covariates increased the adjusted R-squared in each case, but it did not change the relative difference between models.  
 
-Three things need to be observed when interpreting the R^2^ values: 1) While the R^2^ between income and happiness is low (~2% and ~14% in the unconditional and conditional models, respectively), the effect over the wider population will aggregate to be much larger; 2) Happiness (and to a lesser extent, income) is an imperfect and noisy measure so any effect of income on happiness is likely to be larger than that measured here; 3) Finally, happiness is measured on a subjective and arbitrary Likert scale so a small change in happiness at different points in the scale may represent a large change in some other functional/real-world outcome (e.g., risk of suicide). This is all to say that quantifying the real-world impact of small changes in variation reported here is difficult and speculative without further investigation.  
+Three things need to be observed when interpreting the R^2^ values: 1) While the R^2^ between income and affective wellbeing is low (~2% and ~14% in the unconditional and conditional models, respectively), the effect over the wider population will aggregate to be much larger; 2) affective wellbeing (and to a lesser extent, income) is an imperfect and noisy measure so any effect of income on happiness is likely to be larger than that measured here; 3) Finally, affective wellbeing is measured on a subjective and arbitrary Likert scale so a small change in affective wellbeing at different points in the scale may represent a large change in some other functional/real-world outcome (e.g., risk of suicide). This is all to say that quantifying the real-world impact of small changes in variation reported here is difficult and speculative without further investigation.  
 
 <br><br>
 
+##### Table S5. OLS coefficients from linear, log-linear and piecewise models  
 ```{r table_s5}
 lm_coef <- map_dfr(nested_models$lin_fit, broom::tidy, .id = "Year") %>%
   filter(term == "dollars") %>%
@@ -940,7 +1047,6 @@ left_join(lm_coef, log_coef, by = "Year") %>%
   mutate(Year = as.character(2000 + as.numeric(Year))) %>%
   flextable() %>%
   fontsize(size = 9.5, part = "all") %>%
-  set_caption("OLS coefficients from linear, log-linear and piecewise models") %>%
   autofit()
 ```
 
