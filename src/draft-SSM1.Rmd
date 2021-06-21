@@ -217,12 +217,9 @@ hilda_data %>%
     `Household income` > 0
   ) -> figure1_data
 
-log_breaks <- c(log(12000), log(25000), log(50000), log(100000))
-
 p1 <- figure1_data %>%
   rename(`Affective 1-100` = gh9) %>% 
-  plot_log2(`Affective 1-100`, `Household income`) +
-  scale_x_continuous(breaks = log_breaks, labels = c(12, 25, 50, 100)) +
+  plot_log(`Affective 1-100`, `Household income`) +
   scale_fill_manual(values = "#C79999") +
   scale_color_manual(values = "#8F2727")
 
@@ -235,8 +232,7 @@ p2 <- figure1_data %>%
 
 p3 <- figure1_data %>%
   rename(`Cognitive 0-10` = losat) %>% 
-  plot_log2(`Cognitive 0-10`, `Household income`) +
-  scale_x_continuous(breaks = log_breaks, labels = c(12, 25, 50, 100)) +
+  plot_log(`Cognitive 0-10`, `Household income`) +
   scale_fill_manual(values = "#b3cde0") +
   scale_color_manual(values = "#005b96")
 
