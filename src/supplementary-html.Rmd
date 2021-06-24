@@ -1,0 +1,1060 @@
+---
+title: "Supplementary material: The increasing cost of happiness"
+bibliography: ../src/references.bib
+csl: ../src/elsevier-harvard.csl
+output:  
+  html_document:
+    toc: true
+    toc_depth: 4
+    toc_float:
+      collapsed: false
+always_allow_html: yes
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(brms)
+library(flextable)
+library(gtsummary)
+library(patchwork)
+
+library(bayesplot)
+
+knitr::opts_chunk$set(eval = TRUE,
+                      echo = FALSE,
+                      warning = FALSE,
+                      message = FALSE,
+                      fig.path = "../figures/",
+                      ft.align="left")
+
+source("ft_themes.r")
+```
+\  
+\  
+
+Draft: `r format(Sys.time(), '%d %B, %Y')`  
+Supplementary tables:      5  
+Supplementary figures:     8  
+  
+**keywords:** Subjective wellbeing, household income, HILDA  
+
+\  
+
+***
+
+
+## Supplementary Material
+
+<br>
+
+
+#### Sample characteristics  
+
+The broad demographic characteristics of the sample at each sixth year wave are presented below in Table S1. The linear trend as a function of time was estimated for each variable (linear regression of time for continuous variables and Cochrane-Armitage test in the case of binary variables), and Bon-Ferroni adjusted p-values for multiple comparisons are presented (k = 11).    
+
+##### Table S1. Sample characteristics  
+```{r table_s1}
+prop_trend_test <- function(data, variable, by, ...) {
+  
+  data %>%
+    select(x = {{variable}}, y = {{by}}) %>%
+    dplyr::filter(complete.cases(.)) %>%
+    dplyr::group_by(y) %>%
+    dplyr::summarise(
+      xsum = sum(x, na.rm = T),
+      n = n()
+    ) %>%
+    {prop.trend.test(x = .$xsum, n = .$n)} %>%
+    broom::tidy() %>%
+    mutate(method = "Cochrane-Armitage test",
+           p.value = p.value * 11,
+           p.value = if_else(p.value > 1, 1, p.value))
+}
+
+linear_trend_test <- function(data, variable, by, ...) {
+  
+  data %>%
+    select(y = {{variable}}, x = {{by}}) %>%
+    dplyr::filter(complete.cases(.)) %>%
+    {lm(formula = y ~ ordered(x), data = .)} %>%
+    broom::tidy() %>%
+    filter(str_detect(term, ".L")) %>%
+    mutate(method = "linear trend analysis (parametric)",
+           p.value = p.value * 11,
+           p.value = if_else(p.value > 1, 1, p.value))
+  
+}
+
+hilda_data <- read_rds("../data/hilda_data.rds")
+
+hilda_data %>%
+  filter(year %in% c(2001, 2007, 2013, 2019)) %>%
+  filter(!student, !top_hifdip, (!is.na(losat)|!is.na(gh9))) %>%
+  mutate(
+    `University Graduates` = edu == "Grad",
+    ) %>%
+  select(
+    year, `Household income ($)` = hh_disp_inc_eq,
+    `Life satisfaction` = losat, `Happiness` = gh9, 
+    Males = male, `Age (years)` = age, `University Graduates`, #Workforce,
+    Unemployed = unemployed, Couples = coupled, #`Relationship status`, 
+    `Chronic illness` = chronic, SEIFA, 
+    `Household size` = hhsize,
+  ) %>% 
+  tbl_summary(
+    by = year,
+    missing = "no",
+    statistic = 
+      list(all_continuous() ~ "{mean} ({sd})",
+           all_categorical() ~ "{n} ({p}%)"),
+    digits = 
+      list(all_continuous() ~ 1,
+           `Household income ($)` ~ 0),
+    missing_text = "(Missing)" 
+    ) %>%
+  add_p(
+    test = list(
+      all_continuous() ~ "linear_trend_test",
+      all_dichotomous() ~ "prop_trend_test"
+    )
+  ) %>%
+  modify_header(stat_by = "{level}\nN = {style_number(n)}") %>%
+  as_flex_table() %>%
+  align(part = "body") %>%
+  valign(valign = "top", part = "header") %>%
+  fontsize(size = 9.5, part = "all") %>%
+  width(j = 1, width = 1.5) %>%
+  width(j = 2:5, width = 1.1) %>%
+  width(j = 6, width = .6)
+```
+
+<br>
+
+Household income and average life satisfaction increased between 2001-2019, while average affective wellbeing score decreased slightly over the 19 years. The proportions of each sex were stable over time, as was the proportion of people living as a couple (Couples), average household size and SEIFA index. The percentage unemployed varied with economic conditions however there was no significant positive or negative linear trend. Age and chronic health conditions tended to increase over time. The slight increase in the age of the panel over time (2.3 years) was substantially less than that of a cohort study which would be 18 years. Education levels (i.e., percentage of university graduates) also tended to increase over time.   
+
+Generally, Table S1 supports the view that the HILDA sample was a relatively stable representation of Australian socioeconomic conditions between 2001 and 2019. The importance of the specific demographic variables with a significant linear trend (age, age^2^, education, illness) were tested in regression models of affective wellbeing as covariates (see below Figure S2).   
+
+<br><br>
+
+#### Model Comparisons  
+
+We compared the out-of-sample evidence for the piecewise-linear models with the log-linear and linear models of income on wellbeing in each year, using the difference in WAIC deviance scores (i.e., WAIC~piecewise~ — WAIC~log~, WAIC~piecewise~ — WAIC~linear~). Since smaller deviance scores indicate better fit, a difference in deviance scores less than zero (i.e., negative) indicated evidence for the piecewise-linear model; a difference greater than zero (i.e., positive) indicated evidence for the other model (log-linear or linear).   
+
+<br>
+
+##### Figure S1. Model comparisons (WAIC~piecewise~ vs WAIC~linear~, WAIC~log~)
+```{r figure_s1, fig.width=6, fig.height = 4, dpi=300}
+lm_fits = read_rds("../results/lm_gh9_hhoecd_0cov.RDS")
+nl_fits = read_rds("../results/gh9_hhoecd_0cov_tight.RDS")
+
+# get waic results
+map2_dfr(.x = nl_fits, 
+         .y = lm_fits, 
+         .f = ~{
+           loo_compare(.x, .y, criterion = "waic") %>%
+             as.data.frame() %>%
+             rownames_to_column("model") %>%
+             as_tibble()
+         },
+         .id = "year") %>%
+  filter(elpd_diff != 0) %>%
+  mutate(
+    year = extract_numeric(year),
+    model = if_else(model == ".x", "nl", "piecewise vs. linear"),
+    waic_diff = 2 * elpd_diff, # lm disadvantage
+    se = 2 * se_diff,
+    wellbeing = "Affective wellbeing"
+  ) -> waic_happiness_lm
+
+
+nl_fits_x0 = read_rds("../results/gh9_hhoecd_0cov_tight_x0.RDS")
+log_fits = read_rds("../results/log_gh9_hhoecd_0cov.RDS")
+
+# get waic results
+map2_dfr(.x = nl_fits_x0, 
+         .y = log_fits, 
+         .f = ~{
+           loo_compare(.x, .y, criterion = "waic") %>%
+             as.data.frame() %>%
+             rownames_to_column("model") %>%
+             as_tibble()
+         },
+         .id = "year") %>%
+  filter(elpd_diff != 0) %>%
+  mutate(
+    year = extract_numeric(year),
+    model = if_else(model == ".x", "nl", "piecewise vs. log"),
+    waic_diff = 2 * elpd_diff, # lm disadvantage
+    se = 2 * se_diff,
+    wellbeing = "Affective wellbeing"
+  ) -> waic_happiness_log
+
+nl_fits_losat = read_rds("../results/losat_hhoecd_0cov.RDS")
+lm_fits_losat = read_rds("../results/lm_losat_hhoecd_0cov.RDS")
+
+map2_dfr(.x = nl_fits_losat, 
+         .y = lm_fits_losat, 
+         .f = ~{
+           loo_compare(.x, .y, criterion = "waic") %>%
+             as.data.frame() %>%
+             rownames_to_column("model") %>%
+             as_tibble()
+         },
+         .id = "year") %>%
+  filter(elpd_diff != 0) %>%
+  mutate(
+    year = extract_numeric(year),
+    model = if_else(model == ".x", "nl", "linear"),
+    waic_diff = if_else(model == "linear", 
+                        2 * elpd_diff,   # nl advantage
+                        -2 * elpd_diff), # nl advantage
+    se = 2 * se_diff,
+    wellbeing = "Cognitive wellbeing"
+  ) %>%
+  mutate(model = "piecewise vs. linear") -> waic_satisfaction_lm
+
+log_fits_losat = read_rds("../results/fits/excl_topcodes/sd/exc_zeros/log_losat_hhoecd_0cov_x0.RDS")
+nl_fits_losat_x0 = read_rds("../results/fits/excl_topcodes/sd/exc_zeros/losat_hhoecd_0cov_tight_x0.RDS")
+
+map2_dfr(.x = nl_fits_losat_x0, 
+         .y = log_fits_losat, 
+         .f = ~{
+           loo_compare(.x, .y, criterion = "waic") %>%
+             as.data.frame() %>%
+             rownames_to_column("model") %>%
+             as_tibble()
+         },
+         .id = "year") %>%
+  filter(elpd_diff != 0) %>%
+  mutate(
+    year = extract_numeric(year),
+    model = if_else(model == ".x", "nl", "piecewise vs. log"),
+    waic_diff = if_else(model == "piecewise vs. log", 
+                        2 * elpd_diff,   # nl advantage
+                        -2 * elpd_diff), # nl advantage
+    se = 2 * se_diff,
+    wellbeing = "Cognitive wellbeing"
+  ) -> waic_satisfaction_log
+
+bind_rows(waic_happiness_lm, 
+          waic_happiness_log,
+          waic_satisfaction_lm, 
+          waic_satisfaction_log) %>%
+  ggplot(aes(x = waic_diff, y = year, color = model)) +
+    geom_vline(aes(xintercept = 0), color = "grey90") +
+    geom_pointrange(aes(xmin = waic_diff - se*1.96, xmax = waic_diff + se*1.96),
+                    position = position_dodge(width = .5)) +
+    facet_wrap(~wellbeing) +
+    scale_y_continuous(breaks = c(2001, 2007, 2013, 2019)) +
+    scale_color_manual(values = c("#ffcc80", "#8F2727")) + # "#005b96"
+    ft_theme(base_size = 12) +
+    theme(legend.title = element_blank(),
+          legend.position = "bottom") +
+    labs(x = "deviance", y = "")
+```
+
+```
+Figure legend: Differences in WAIC scores (deviance units) for a piecewise-linear fit over a log-linear fit (red) or over a linear fit (yellow). The filled circle indicates the mean of the difference and the horizontal bars represents the 95% interval. A difference below zero (grey vertical line) represents support for the piecewise model, and a difference above zero is support for the other model.
+```  
+
+
+<br>
+
+The difference in WAIC scores for each model revealed the piecewise-linear fits of affective wellbeing, but not cognitive wellbeing, provided superior out-of-sample accuracy over a log-linear or linear fit in each year. Figure S1 shows the differences in WAIC scores clearly distinguished the advantage of the piecewise-linear fits for affective wellbeing with most 95% intervals entirely below zero for each year (exceptions occurred for the piecewise vs. log fit in 2004, 2006 and 2008, where the piecewise fit was still superior on average). By contrast, the difference in WAIC scores for the cognitive wellbeing models was not as clearly distinguished from zero for most years, since the 95% intervals of the WAIC differences with either the log-linear fit or the linear fit overlapped zero in most years. Indeed in the years between 2002 to 2010 the linear fit was superior to the piecewise-linear fit on average, with the mean WAIC difference above zero (positive). Overall the evidence suggested that affective wellbeing has a piecewise relationship with household income; implying the existence of a change point or difference in slopes at different levels of household income. Evidence of the effect of income on cognitive wellbeing, on the other hand, was more equivocal, albeit with some indication of a linear relationship in the early part of the 21st C.  
+
+**Conditional vs unconditional models of affective wellbeing**. Table S1 (above) showed the specific variables that changed over the 19 years between 2001-2019. In particular, the number of university graduates, average age and the incidence of chronic illness increased slighty over the period. Including these variables as covariates in any model (i.e,. a conditional model such that *P*( $y$ | income, age, education illness)) will improve the in-sample fit (e.g., R^2^), and also adjust the parameter estimates of interest (e.g., change point) conditional upon their common association with affective wellbeing. Given the general aim of the main paper was to describe the temporal change in functional form between affective wellbeing and income in Australia, regardless of any other variable (i.e., an unconditional model of *P*($y$| income)) or sampling differences, neither the in-sample fit nor the conditional model estimates are directly relevant. Nevertheless, the importance of these variables in mediating the changes we observed in the unconditional model are relevant, and so we calculated the estimates from conditional piecewise models including age, age^2^, sex, education  (university degree), chronic illness for each year below to confirm the pattern of temporal change was similar. Figure S2 shows the addition of these covariates did not change the trend in change point parameter estimates (red) relative to the unconditional parameter estimates (grey) over the 19 years.  
+
+<br>
+
+##### Figure S2. Conditional model parameters  
+```{r figure_s2, fig.width = 6, fig.height = 8, dpi=300}
+nl_fits = read_rds("../results/gh9_hhoecd_0cov_tight.RDS")
+
+nl_fits_5cov = read_rds("../results/gh9_hhoecd_5cov_tight.RDS")
+
+income_params <- read_rds("../results/gh9_hhoecd_summary.RDS") %>%
+  bind_rows(.id = "fit")
+
+posteriors_5c <- map_dfr(nl_fits_5cov, as.data.frame, .id = "fit") %>%
+  left_join(income_params) %>%
+  mutate(omega_dollars = (b_omega_Intercept * sd + mean)/1000) %>%
+  as_tibble()
+
+param_key = c(
+  omega_dollars = "Change point ($000s)",
+  b_b0_Intercept = paste0("Intercept (\u03b2", "0)"),
+  b_b1_Intercept = paste0("Pre-slope (\u03b2", "1)"),
+  b_b2_Intercept = paste0("Post-slope (\u03b2", "2)")
+)
+
+posteriors_5c %>%
+  select(fit, contains("b0"), contains("b1"), contains("b2"), omega_dollars) %>%
+  gather(key = "param", val = "sample", -fit) %>%
+  mutate(
+    year = extract_numeric(fit),
+    param = recode_factor(param, !!!param_key)
+  ) %>% 
+  group_by(param, year) %>%
+  summarise(
+    low = quantile(sample, probs = 0.05, na.rm=T),
+    expected = quantile(sample, probs = 0.5, na.rm=T),
+    upp = quantile(sample, probs = 0.95, na.rm=T)
+  ) %>%
+  mutate(model = "conditional") -> parameter_summary_5c
+
+posteriors_0c <- map_dfr(nl_fits, as.data.frame, .id = "fit") %>%
+  left_join(income_params) %>%
+  mutate(omega_dollars = (b_omega_Intercept * sd + mean)/1000) %>%
+  as_tibble()
+
+posteriors_0c %>%
+  select(fit, contains("b0"), contains("b1"), contains("b2"), omega_dollars) %>%
+  gather(key = "param", val = "sample", -fit) %>%
+  mutate(
+    year = extract_numeric(fit),
+    param = recode_factor(param, !!!param_key)
+  ) %>% 
+  group_by(param, year) %>%
+  summarise(
+    low = quantile(sample, probs = 0.05, na.rm=T),
+    expected = quantile(sample, probs = 0.5, na.rm=T),
+    upp = quantile(sample, probs = 0.95, na.rm=T)
+  ) %>%
+  mutate(model = "unconditional") -> parameter_summary_0c
+
+bind_rows(parameter_summary_0c, parameter_summary_5c) %>%
+  ggplot(aes(y = year, x = expected, color = model)) +
+  geom_pointrange(aes(xmin = low, xmax = upp), position = position_dodge(width = 0.75)) +
+  scale_y_continuous(breaks = c(2001, 2007, 2013, 2019)) +
+  facet_wrap(~param, scales = "free_x") +
+  ft_theme(base_size = 12) +
+  scale_color_manual(values = c("#C79999", "grey65")) +
+  theme(legend.position = "none",
+        axis.title = element_blank())
+```
+```
+Figure legend: Comparison of the conditional parameter estimates (red) and unconditional parameter estimates (grey) in the piecewise-linear model of income on affective wellbeing. The conditional models included covariates for age, age squared, sex, education, and illness. Horizontal bar represents the 95% credible region and the solid point indicates the expected value (median) of each distribution.
+```  
+
+<br>
+
+The parameter estimates of the conditional model (red) were adjusted for the broad demographic variables which tended to increase over the 19 years in our sample (age, education, illness); however the pattern of changes over time was comparable to the unconditional model (grey), indicating these temporal trends were not responsible for the evolution in the change point between income and affective wellbeing.  
+
+The unconditional parameter values are also presented in Table S2 below (Parameter and fit summary statistics).  
+
+<br><br>
+
+**Including income topcodes in models of affective wellbeing**.  
+
+Household income values for high income individuals are substituted with the average income value of all those above a certain threshold (topcoded). This is performed by the University of Melbourne to preserve anonymity, and we excluded people marked as topcoded in the main analysis (highest _n_ in any year was _n_ = 103 in 2019). Here we present the parameter estimates of the affective wellbeing models with topcodes included, and compare them with parameters from models which exclude them.  
+
+##### Figure S3. Topcoded model parameters  
+```{r figure_s3, fig.width = 6, fig.height = 8, dpi=300}
+nl_fits_topcodes = read_rds("../results/fits/inc_topcodes/gh9_hhoecd_0cov_tight.RDS")
+
+topcode_income_params <- read_rds("../results/fits/inc_topcodes/gh9_hhoecd_data.RDS") %>%
+  bind_rows(.id = "fit")
+
+posteriors_topcodes <- map_dfr(nl_fits_topcodes, as.data.frame, .id = "fit") %>%
+  left_join(topcode_income_params) %>%
+  mutate(omega_dollars = (b_omega_Intercept * sd + mean)/1000) %>%
+  as_tibble()
+
+posteriors_topcodes %>%
+  select(fit, contains("b0"), contains("b1"), contains("b2"), omega_dollars) %>%
+  gather(key = "param", val = "sample", -fit) %>%
+  mutate(
+    year = extract_numeric(fit),
+    param = recode_factor(param, !!!param_key)
+  ) %>% 
+  group_by(param, year) %>%
+  summarise(
+    low = quantile(sample, probs = 0.05, na.rm=T),
+    expected = quantile(sample, probs = 0.5, na.rm=T),
+    upp = quantile(sample, probs = 0.95, na.rm=T)
+  ) %>%
+  mutate(model = "topcodes") -> parameter_summary_topcodes
+
+parameter_summary_0c %>%
+  mutate(model = "no topcodes") -> parameter_summary_excl
+
+bind_rows(parameter_summary_excl, parameter_summary_topcodes) %>%
+  ggplot(aes(y = year, x = expected, color = model)) +
+  geom_pointrange(aes(xmin = low, xmax = upp), position = position_dodge(width = 0.75)) +
+  scale_y_continuous(breaks = c(2001, 2007, 2013, 2019)) +
+  facet_wrap(~param, scales = "free_x") +
+  ft_theme(base_size = 12) +
+  scale_color_manual(values = c("grey65", "#C79999")) +
+  theme(legend.position = "none",
+        axis.title = element_blank())
+```
+```
+Figure legend: Comparison of the topcoded parameter estimates (red) and parameter estimates excluding topcodes (grey) in the piecewise-linear model of income on affective wellbeing. The topcoded models included n = 26 to 130 extra (high income) individuals in each year. Horizontal bar represents the 95% credible region and the solid point indicates the expected value (median) of each distribution.
+```  
+
+<br>
+
+Included topcoded individuals adds some variation in the parameter estimates (e.g., 2008), but did not change the overall pattern observed over time (e.g., the changepoint continued to increase over time).  
+
+<br><br>
+
+**Unadjusted household income models of affective wellbeing**.  
+
+Household income values were adjusted for household size in the main analysis. The _maximum_ household sizes varied from 10 (2017, 2019) to as high as 17 (2016), and so adjustment accounts for larger households needing more resources to achieve the same standard of living as a smaller household, and for some ‘economies of scale’ when sharing living costs. For example, two people living alone in two separate households typically incur higher living costs in total than two people living in one household. Here we present the parameter estimates of the affective wellbeing models without adjustment for household size and with adjustment.    
+
+##### Figure S4. Model parameters unadjusted for household size  
+```{r figure_s4, fig.width = 6, fig.height = 8, dpi=300}
+nl_fits_unadjsize = read_rds("../results/fits/excl_hhsize/gh9_hifdip_0cov_tight.RDS")
+
+posteriors_unadjsize <- map_dfr(nl_fits_unadjsize, as.data.frame, .id = "fit") %>%
+  left_join(income_params) %>%
+  mutate(omega_dollars = (b_omega_Intercept * sd + mean)/1000) %>%
+  as_tibble()
+
+posteriors_unadjsize %>%
+  select(fit, contains("b0"), contains("b1"), contains("b2"), omega_dollars) %>%
+  gather(key = "param", val = "sample", -fit) %>%
+  mutate(
+    year = extract_numeric(fit),
+    param = recode_factor(param, !!!param_key)
+  ) %>% 
+  group_by(param, year) %>%
+  summarise(
+    low = quantile(sample, probs = 0.05, na.rm=T),
+    expected = quantile(sample, probs = 0.5, na.rm=T),
+    upp = quantile(sample, probs = 0.95, na.rm=T)
+  ) %>%
+  mutate(model = "unadjusted") -> parameter_summary_unadjsize
+
+parameter_summary_0c %>%
+  mutate(model = "adjusted") -> parameter_summary_adj
+
+bind_rows(parameter_summary_unadjsize, parameter_summary_adj) %>%
+  ggplot(aes(y = year, x = expected, color = model)) +
+  geom_pointrange(aes(xmin = low, xmax = upp), position = position_dodge(width = 0.75)) +
+  scale_y_continuous(breaks = c(2001, 2007, 2013, 2019)) +
+  facet_wrap(~param, scales = "free_x") +
+  ft_theme(base_size = 12) +
+  scale_color_manual(values = c("grey65", "#C79999")) +
+  theme(legend.position = "none",
+        axis.title = element_blank())
+```
+```
+Figure legend: Comparison of the parameter estimates unadjusted for household size (red) and parameter estimates adjusted for size (grey) in the piecewise-linear model of income on affective wellbeing. Horizontal bar represents the 95% credible region and the solid point indicates the expected value (median) of each distribution.
+```  
+
+<br>
+
+Omitting the adjustment for household size on household income appears to reduce the $\beta_1$ parameters in each year, but there is little systematic effect on the other parameters and the changepoint continues to increase over time.  
+
+
+<br><br>
+
+**Positive and negative components of affective wellbeing**. Affective wellbeing includes both positive and negative components, and both these components are assessed by multiple quesstions in the SF-36 item 9. To determine whether the increasing change-point in income on affective wellbeing we observed was due to positive or negative affect, we fit a piecewise-linear model of income on positive and negative affect separately. The four questions dealing with positive affect (i.e., "Feel full of life", "Felt calm and peaceful", "Have a lot of energy", "Been happy") and the five negative affect questions ("Felt so down in the dumps nothing could cheer me up", "Felt worn out", "Been a nervous person", "Felt down", "Felt tired") were summed together separately to create distinct scores for positive and negative affect. The negative affect score was reversed so that higher scoes indicated less negative affect. Household income was then regressed against each score using the piecewise linear model (Equation 3), as described for the overall affective wellbeing score in the main text. Figure S5 below shows that the change-point in income increased over the period 2001-2019 for both positive (pink) and negative (blue) affect, indicating a similar trend in both components of affective wellbeing over the 19 years.   
+
+##### Figure S5. Positive and negative affect parameters  
+```{r figure_s5, fig.width=6, fig.height=8, dpi=300}
+gh9neg.fits <- read_rds("../results/fits/excl_topcodes/sd/gh9neg_hhoecd_0cov_tight.RDS")
+gh9pos.fits <- read_rds("../results/fits/excl_topcodes/sd/gh9pos_hhoecd_0cov_tight.RDS")
+
+income_params <- read_rds("../results/gh9_hhoecd_summary.RDS") %>%
+  bind_rows(.id = "fit")
+
+posteriors_pos <- map_dfr(gh9pos.fits, as.data.frame, .id = "fit") %>%
+  left_join(income_params) %>%
+  mutate(omega_dollars = (b_omega_Intercept * sd + mean)/1000) %>%
+  as_tibble()
+
+param_key = c(
+  omega_dollars = "Change point ($000s)",
+  b_b0_Intercept = paste0("Intercept (\u03b2", "0)"),
+  b_b1_Intercept = paste0("Pre-slope (\u03b2", "1)"),
+  b_b2_Intercept = paste0("Post-slope (\u03b2", "2)")
+)
+
+posteriors_pos %>%
+  select(fit, contains("b0"), contains("b1"), contains("b2"), omega_dollars) %>%
+  gather(key = "param", val = "sample", -fit) %>%
+  mutate(
+    year = extract_numeric(fit),
+    param = recode_factor(param, !!!param_key)
+  ) %>% 
+  group_by(param, year) %>%
+  summarise(
+    low = quantile(sample, probs = 0.05, na.rm=T),
+    expected = quantile(sample, probs = 0.5, na.rm=T),
+    upp = quantile(sample, probs = 0.95, na.rm=T)
+  ) %>%
+  mutate(model = "positive") -> parameter_summary_pos
+
+posteriors_neg <- map_dfr(gh9neg.fits, as.data.frame, .id = "fit") %>%
+  left_join(income_params) %>%
+  mutate(omega_dollars = (b_omega_Intercept * sd + mean)/1000) %>%
+  as_tibble()
+
+posteriors_neg %>%
+  select(fit, contains("b0"), contains("b1"), contains("b2"), omega_dollars) %>%
+  gather(key = "param", val = "sample", -fit) %>%
+  mutate(
+    year = extract_numeric(fit),
+    param = recode_factor(param, !!!param_key)
+  ) %>% 
+  group_by(param, year) %>%
+  summarise(
+    low = quantile(sample, probs = 0.05, na.rm=T),
+    expected = quantile(sample, probs = 0.5, na.rm=T),
+    upp = quantile(sample, probs = 0.95, na.rm=T)
+  ) %>%
+  mutate(model = "negative") -> parameter_summary_neg
+
+bind_rows(parameter_summary_pos, parameter_summary_neg) %>%
+  ggplot(aes(y = year, x = expected, color = model)) +
+  geom_pointrange(aes(xmin = low, xmax = upp), position = position_dodge(width = 0.75)) +
+  scale_y_continuous(breaks = c(2001, 2007, 2013, 2019)) +
+  facet_wrap(~param, scales = "free_x") +
+  ft_theme(base_size = 12) +
+  scale_color_manual(values = c("steelblue", "salmon")) +
+  theme(legend.position = "none",
+        axis.title = element_blank())
+```
+```
+Figure legend: Comparison of the parameter estimates from positive items (pink) and negative items (blue) in the piecewise-linear model of income on affective wellbeing. The positive model regressed income against a sum of positive affect questions in the SF-36, while the negative model regressed income against a sum of negative affect questions (reversed scaled to match the positive affect score). Horizontal bar represents the 95% credible region and the solid point indicates the expected value (median) of each distribution.
+```  
+
+<br>
+
+Regressing income against the positive and negative components of affective wellbeing separately did not reveal substantially different trends for each. Both showed an increase in change-point income value over the 19 years, which by 2019 was credibly different from the base values in 2001. Changes in the other slope and intercept parameters were either not substantial or not credibly different from the 2001 values according to the 95% credible intervals.  
+
+
+<br><br>  
+
+
+#### Parameter and fit summary statistics  
+
+Model fitting was performed in RStan (v2.21.2) using the brms (v2.14.4) package [@burkner2017; @rstan2019]. There were _N_ = 59,876 total observations. For each Bayesian model presented in this report, 4000 samples (post-warmup) were drawn using sampling(NUTS).   
+
+For all models estimated with RStan presented in this report we confirmed the absence of divergent transitions; the $\hat{R}$ approached 1 indicating convergance; and the effective sample size (ESS) for each parameter was _n_ > 300, which is a conservative threshold for estimation.  
+
+Table S2 below shows the fit and summary statistics for each piecewise-linear model fit of affective wellbeing and income in each year. Estimates for the intercept, pre-slope and post-slope are in year-wise SD units while the change-point is presented in real 2019 dollars.    
+
+##### Table S2. Parameter estimates and fit statistics for piecewise-linear fit of affective wellbeing and income
+```{r table_s2, ft.align="left"}
+nl_fits = read_rds("../results/gh9_hhoecd_0cov_tight.RDS")
+
+income_params %>%
+  mutate(fit = str_remove(fit, "fit")) %>%
+  column_to_rownames("fit") -> income
+
+param_key = c(
+  omega_Intercept = "Change point ($000s)",
+  b0_Intercept = paste0("Intercept (\u03b2", "0)"),
+  b1_Intercept = paste0("Pre-slope (\u03b2", "1)"),
+  b2_Intercept = paste0("Post-slope (\u03b2", "2)")
+)
+
+# param_key = c(
+#   b0_Intercept = "Intercept",
+#   b1_Intercept = "Pre-slope",
+#   b2_Intercept = "Post-slope",
+#   omega_Intercept = "Change-point ($000s)"
+# )
+
+map_dfr(nl_fits, 
+        .f = ~{
+          fit_summary <- summary(.x, prob = 0.95) 
+          
+          sigma_summary <- fit_summary$spec_pars %>%
+            as_tibble(rownames = "Parameter")
+          
+          fit_summary$fixed %>%
+            as_tibble(rownames = "Parameter") %>%
+            bind_rows(sigma_summary) %>%
+            select(Parameter, everything())
+          
+          },
+        .id = "Year") %>%
+  mutate(
+    Year = str_remove(Year, "fit"),
+    Parameter = recode_factor(Parameter, !!!param_key),
+    Estimate = if_else(str_detect(Parameter, "Change"),
+                       (Estimate * income[Year, "sd"] + income[Year, "mean"])/1000,
+                       Estimate),
+    Est.Error = if_else(str_detect(Parameter, "Change"),
+                        (Est.Error * income[Year, "sd"])/1000,
+                        Est.Error),
+    `l-95% CI` = if_else(str_detect(Parameter, "Change"),
+                        (`l-95% CI` * income[Year, "sd"] + income[Year, "mean"])/1000,
+                        `l-95% CI`),
+    `u-95% CI` = if_else(str_detect(Parameter, "Change"),
+                         (`u-95% CI` * income[Year, "sd"] + income[Year, "mean"])/1000,
+                         `u-95% CI`)
+    ) %>%
+  flextable() %>%
+  merge_v(j = 1) %>%
+  valign(j = 1, valign = "top") %>%
+  bg(i = ~Year %in% seq(2001, 2019, 2), 
+     bg = "grey90", 
+     part = "body") %>%
+  colformat_double(j = 3:6, digits= 3) %>%
+  colformat_double(j = 7, digits= 1) %>%
+  footnote(i = 1, j = 7,
+           value = as_paragraph(
+             c("Rhat is the potential scale reduction factor on split chains")),
+           ref_symbols = c("a"),
+           part = "header") %>%
+  footnote(i = 1, j = c(8:9),
+           value = as_paragraph(
+             c("Bulk_ESS and Tail_ESS are effective sample size (ESS) measures")),
+           ref_symbols = c("b"),
+           part = "header") %>%
+  fontsize(size = 9, part = "all") %>%
+  width(j = 1, width = .5) %>%
+  width(j = 2, width = 1) %>%
+  width(j = c(3:7), width = .7) %>%
+  width(j = c(8, 9), width = .8)
+```
+
+<br><br>
+
+The coeficients (in SD units) for the piecewise-linear, log-linear and linear Bayesian models are shown in the table below.  
+
+##### Table S3. Bayesian coefficients from linear, log-linear and piecewise-linear models  
+```{r table_s3}
+map_df(log_fits, .f = ~{
+  fixef(.x) %>%
+    as_tibble(rownames = "terms") %>%
+    transmute(terms, coef = paste0(round(Estimate, 2), " (", round(Est.Error, 3), ")")) %>%
+    spread(terms, coef)},
+  .id = "Year"
+  ) %>%
+  rename("b0_log" = 2, "b1_log" = 3) -> coefs_gh9_log
+
+map_df(lm_fits, .f = ~{
+  fixef(.x) %>%
+    as_tibble(rownames = "terms") %>%
+    transmute(terms, coef = paste0(round(Estimate, 2), " (", round(Est.Error, 3), ")")) %>%
+    spread(terms, coef)},
+  .id = "Year"
+  ) %>%
+  select(Year, "b0_lin" = 3, "b1_lin" = 2) -> coefs_gh9_lm
+
+map_df(nl_fits, .f = ~{
+  fixef(.x) %>%
+    as_tibble(rownames = "terms") %>%
+    transmute(terms, coef = paste0(round(Estimate, 2), " (", round(Est.Error, 3), ")")) %>%
+    spread(terms, coef)},
+  .id = "Year"
+  ) %>%
+  rename("b0_pw" = 2, "b1_pw" = 3, 
+         "b2_pw" = 4, "Omega" = 5) -> coefs_gh9_pw
+
+coefs_affective <- left_join(coefs_gh9_pw, coefs_gh9_log) %>%
+  left_join(coefs_gh9_lm) %>%
+  mutate(Year = str_remove(Year, "fit"),
+         Wellbeing = "Affective")
+
+map_df(log_fits_losat, .f = ~{
+  fixef(.x) %>%
+    as_tibble(rownames = "terms") %>%
+    transmute(terms, coef = paste0(round(Estimate, 2), " (", round(Est.Error, 3), ")")) %>%
+    spread(terms, coef)},
+  .id = "Year"
+) %>%
+  rename("b0_log" = 2, "b1_log" = 3) -> coefs_losat_log
+
+map_df(lm_fits_losat, .f = ~{
+  fixef(.x) %>%
+    as_tibble(rownames = "terms") %>%
+    transmute(terms, coef = paste0(round(Estimate, 2), " (", round(Est.Error, 3), ")")) %>%
+    spread(terms, coef)},
+  .id = "Year"
+) %>%
+  select(Year, "b0_lin" = 3, "b1_lin" = 2) -> coefs_losat_lm
+
+map_df(nl_fits_losat, .f = ~{
+  fixef(.x) %>%
+    as_tibble(rownames = "terms") %>%
+    transmute(terms, coef = paste0(round(Estimate, 2), " (", round(Est.Error, 3), ")")) %>%
+    spread(terms, coef)},
+  .id = "Year"
+) %>%
+  rename("b0_pw" = 2, "b1_pw" = 3, 
+         "b2_pw" = 4, "Omega" = 5) -> coefs_losat_pw
+
+coefs_cognitive <- left_join(coefs_losat_pw, coefs_losat_log) %>%
+  left_join(coefs_losat_lm) %>%
+  mutate(Year = str_remove(Year, "fit"),
+         Wellbeing = "Cognitive")
+
+
+bind_rows(coefs_affective, coefs_cognitive) %>%
+  select(Wellbeing, everything()) %>%
+  flextable() %>%
+  merge_v(j = 1) %>%
+  set_header_labels(values = c(b0_pw = paste0("\u03b2", "0"),
+                               b1_pw = paste0("\u03b2", "1"),
+                               b2_pw = paste0("\u03b2", "2"),
+                               Omega = "\u03C9",
+                               b0_log = paste0("\u03b2", "0"),
+                               b1_log = paste0("\u03b2", "1"),
+                               b0_lin = paste0("\u03b2", "0"),
+                               b1_lin = paste0("\u03b2", "1"))) %>%
+  add_header(top = TRUE,
+             values = c(b0_pw = "Piecewise-linear (se)",
+                        b1_pw = "Piecewise-linear (se)",
+                        b2_pw = "Piecewise-linear (se)",
+                        Omega = "Piecewise-linear (se)",
+                        b0_log = "Log-linear (se)",
+                        b1_log = "Log-linear (se)",
+                        b0_lin = "Linear (se)",
+                        b1_lin = "Linear (se)")) %>%
+  merge_h(part = "header") %>%
+  width(j = 1:2, width = c(0.75, 0.5)) %>%
+  width(j = 3:10, width = 0.65) %>%
+  fontsize(size = 9, part = "all") %>%
+  # flextable::theme_vanilla() %>% # theme_vanilla() 
+  valign(valign = "top") %>%
+  valign(valign = "bottom", part = "header") %>%
+  border_remove() %>%
+  hline_top(part="header", border = officer::fp_border()) %>%
+  hline_bottom(part="header", border = officer::fp_border()) %>%
+  hline(i = 19, border = officer::fp_border()) %>%
+  hline_bottom(part="body", border = officer::fp_border())
+```
+
+<br>
+
+The table of model parameters (untransformed) for each year show that the $\beta_1$ slopes for piecewise-linear, log-linear and linear model for affective wellbeing and income do not show a sustained trend ove the 19 year period. The $\beta_1$ coefficients increase in the initial 5-10 years and then decline. Despite this common pattern, the linear slope appears to show the most sustained increase while the log-linear slope shows a relatively less sustained increase. Overall, the pattern of changes among the models indicates the function between income and affective wellbeing has in fact become slightly steeper over the period. 
+
+
+
+<br><br>
+
+#### Prior and residual checks   
+
+We used regularizing Guassian priors centred on zero, with Normal(0, 0.1) for each *&beta;*, and a Normal(0, 0.5) for *&omega;*. A plot of the joint distribution between income and wellbeing imposed by the priors alone confirmed there was no apparent slope or change point implied by their regularizing effect.  
+
+##### Figure S6. Prior predictive check  
+```{r figure_s6, fig.width=6, fig.height = 6, dpi=300}
+load("../results/prior_predictions.Rdata")
+
+prior_predictions %>%
+  ggplot(aes(x = hh_disp_inc_eq/1000, y = Estimate, group = 1)) +
+  geom_point(size = 0.1, alpha = 0.1) +
+  stat_smooth(color = "#8F2727", size = 0.5, se = F) +
+  xlim(c(0, 300)) +
+  labs(y = "Wellbeing estimate (SD units)", x = "Household income ($000s)") +
+  theme_test()
+```
+```
+Figure legend: The joint distribution between wellbeing and income for a single year, imposed by the priors. The solid blue line indicates a smoothed average (loess).
+```  
+<br><br>
+
+Examination of the residual plots from the piecewise models of affective wellbeing confirms the residuals were evenly distributed around zero and there was little indication of heteroscedascity. Overall, there was little evidence that the piecewise models of affective wellbeing were not appropriate for the data.  
+
+<br>
+
+##### Figure S7. Residual plots for piecewise affective wellbeing models
+```{r figure_s7, fig.height=9, fig.width=9, dpi=600}
+# https://www.flutterbys.com.au/stats/tut/tut7.2b.html
+# 
+# 
+# residual_fits <- map_dfr(nl_fits, ~{
+#   
+#   d0 <- resid(.x) %>%
+#     as_tibble() %>%
+#     select(resids = Estimate)
+#   
+#   d1 <- fitted(.x) %>%
+#     as_tibble() %>%
+#     select(fitteds = Estimate)
+#   
+#   bind_cols(d0, d1)
+#   
+#   }, .id = "fit") %>%
+#   mutate(year = extract_numeric(fit))
+# 
+# save(residual_fits, file = paste0(here, "results/residual_fits.Rdata"))
+
+load("../results/residual_fits.Rdata")
+
+residual_fits %>%
+  group_by(year) %>%
+  slice_sample(n = 1000) %>% # to reduce overplotting
+  ggplot(aes(x = fitteds, y = resids)) +
+    geom_point(alpha = 0.1, size = 0.1) +
+    facet_wrap(~year, scales = "free") +
+    theme_test()
+```
+
+
+```
+Figure legend: The joint distribution between residual and fitted values for each year.
+``` 
+
+<br><br>
+
+#### Model predictions (2001-2019)
+
+The posterior estimates of the piecewise model indicated that the relationship between affective wellbeing and income changed over time between 2001 and 2019. One implication of such a change is the disparity in affective wellbeing between income groups has increased. This will occur as more people fall below the change point over time and so are subject to the steep region of the function where income and affective wellbeing are strongly related. To directly examine the implications of our model for such inequities in affective wellbeing, we used the model to estimate or _predict_ the affective wellbeing of two different income levels: one income level which was above the change point in 2001 but fell below it by 2019 (\$50K/yr); and another level which always remained above the change points over the same period (\$75K/yr). The figure below presents the affective wellbeing levels (in SD units/year) for each income level as well as the difference in affective wellbeing between them (∆).  
+
+<br>
+
+##### Figure S8. affective wellbeing (SD units) at $50K/yr and $75K/yr from 2001-2019  
+```{r figure_s8, fig.width=7, fig.height=5, dpi=300}
+nl_fits = read_rds("../results/gh9_hhoecd_0cov_tight.RDS")
+
+# Optional
+# nl_fits_5cov = read_rds(
+#   paste0(here, "results/fits/excl_topcodes/sd/gh9_hhoecd_5cov_tight.RDS")
+# )
+
+fixed_income_hash <- read_rds("../results/gh9_hhoecd_summary.RDS") %>%
+  bind_rows(.id = "fit") %>%
+  mutate(low = (40000 - mean)/sd,
+         high = (75000 - mean)/sd) %>%
+  column_to_rownames(var = "fit") %>%
+  as.matrix()
+
+colnames(fixed_income_hash) <- NULL
+
+fixed_income_fit <- tibble()
+
+for (name in names(nl_fits)) {
+  
+  newdat = data.frame(
+    dollars = fixed_income_hash[name, 3:4]
+  )
+  
+  df <- fitted(nl_fits[[name]], newdata = newdat) %>% 
+    as_tibble() %>%
+    mutate(Dollars = c("$50K", "$75K"),
+           
+           fit = name)
+  
+  fixed_income_fit <- bind_rows(fixed_income_fit, df)
+  
+}
+
+fixed_income_fit %>%
+  mutate(year = extract_numeric(fit)) %>%
+  select(Estimate, Dollars, year) %>%
+  filter(Dollars %in% c("$75K", "$50K")) %>%
+  spread(Dollars, Estimate) %>%
+  mutate(`$75K - $50K (∆)` = `$75K` - `$50K`) %>%
+  gather(income, happiness, -year) %>%
+  mutate(income = fct_relevel(income, "$50K", "$75K")) %>%
+  ggplot(aes(x = year, y = happiness, color = income)) +
+  geom_point(size = 4, alpha = 0.25) +
+  geom_smooth(method = "loess", se = F, span = 3) +
+  facet_wrap(~income) +
+  labs(caption = "Source:     HILDA, University of Melbourne
+                 Predicted affective wellbeing scores (SD unit) from piecewise regression on real household income", 
+       x = "", y = "") -> p
+
+
+p +
+  ft_theme() +
+  ggthemes::scale_colour_wsj() +
+  theme(legend.position = "none",
+        plot.title = element_text(size = 19),
+        strip.text = element_text(size = 12))
+```
+
+```
+Figure legend: The difference (∆) in affective wellbeing between a household income of $50K per year and a household income of $75K per year has increased between 2001 and 2019.
+```  
+
+<br>
+
+The figure above shows the disparity in affective wellbeing between two fixed income levels, \$50K/year (traversing the change points) and \$75K/year (above the change points). In 2001, a household income of \$50K/year achieved an above average level of affective wellbeing relative to everyone else that year, however by 2019 affective wellbeing had declined to lower than average levels relative to the population. By contrast, a household income of \$75K/year enjoyed a higher than average level of affective wellbeing for the entire period. The difference (∆) in affective wellbeing between these two income levels doubled over the period. The increasing disparity in affective wellbeing between the rich and the poor implies that affective wellbeing has became more inequitable over time.  
+
+
+<br><br>
+
+
+## Appendix  
+
+#### OLS Insample fit statistics
+
+Our primary objective was to understand the relationships between the parameters of our model, and so in-sample fit statistics such as R^2^ are irrelevant for this objective. Moreover, our use of regularized priors will bias such in-sample estimates towards zero as regularization deliberately sacrifices in-sample variance for out-of-sample accuracy, which obviously hinders interpretation of the in-sample values. Nevertheless, some readers may find it useful to compare the in-sample fit statistics between the three different model types employed here: piecewise, linear and log-linear, as well as between the conditional and unconditional models. Because the usual fit statistics such as R^2^ present a problem for Bayesian fits, as the variance of the predicted values can be larger than the variance of the data results in R^2^ values greater than 1, we present the in-sample statistics from OLS model fits (without regularization or penalized likelihoods).   
+
+```{r model_summaries_yearly}
+library(segmented)
+
+hilda_data %>%
+  filter(
+    !student,
+    !top_hifdip
+  ) %>%
+  filter(hh_disp_inc_eq > 0) %>%
+  group_by(year) %>%
+  transmute(
+    y = as.vector(scale(gh9)),
+    dollars = hh_disp_inc_eq/10000,
+    male = male,
+    age = as.vector(scale(age)),
+    age_sq = age^2,
+    grad = edu %in% c("Grad", "Postgrad"),
+    illness = chronic,
+    weights = as.vector(scale(weights))
+  ) %>%
+  na.omit() %>%
+  nest() -> nested_data
+
+nested_data %>%
+  mutate(
+    pw_fit = map(data, ~segmented(lm(
+      formula = y ~ dollars, 
+      data = .x),
+      seg.Z = ~dollars)),
+    pw_fit_c = map(data, ~segmented(lm(
+      formula = y ~ dollars + male + age + age_sq + grad + illness + weights, 
+      data = .x),
+      seg.Z = ~dollars)),
+    lin_fit = map(data, ~lm(
+      formula = y ~ dollars, 
+      data = .x)),
+    lin_fit_c = map(data, ~lm(
+      formula = y ~ dollars + male + age + age_sq + grad + illness + weights, 
+      data = .x)),
+    log_fit = map(data, ~lm(
+      formula = y ~ log(dollars), 
+      data = .x)),
+    log_fit_c = map(data, ~lm(
+      formula = y ~ log(dollars) + male + age + age_sq + grad + illness + weights, 
+      data = .x))
+    ) -> nested_models
+
+bind_rows(
+  map_dfr(nested_models$log_fit, broom::glance) %>%
+    mutate(model = "log", year = 2001:2019),
+  map_dfr(nested_models$lin_fit, broom::glance) %>%
+    mutate(model = "lin", year = 2001:2019),
+  map_dfr(nested_models$pw_fit, broom::glance) %>%
+    mutate(model = "pw", year = 2001:2019),
+  map_dfr(nested_models$log_fit_c, broom::glance) %>%
+    mutate(model = "logc", year = 2001:2019),
+  map_dfr(nested_models$lin_fit_c, broom::glance) %>%
+    mutate(model = "linc", year = 2001:2019),
+  map_dfr(nested_models$pw_fit_c, broom::glance) %>%
+    mutate(model = "pwc", year = 2001:2019)
+) -> model_summaries
+```
+```{r model_summaries_allyears}
+df <- unnest(nested_data, cols = c(data)) %>% ungroup()
+
+#### Testing log-linear vs piecewise all years ####
+lm_fit = lm(formula = y ~ dollars, 
+             data = df)
+
+lm_fit_c = lm(
+  formula = y ~ dollars + male + age + age_sq + grad + illness + weights,
+  data = df)
+
+
+log_fit = lm(formula = y ~ log(dollars), 
+             data = df)
+
+log_fit_c = lm(
+  formula = y ~ log(dollars) + male + age + age_sq + grad + illness + weights,
+  data = df)
+
+
+pw_fit = segmented(lm(formula = y ~ dollars,
+                      data = df),
+                   seg.Z = ~dollars)
+
+pw_fit_c = segmented(lm(
+  formula = y ~ dollars + male + age + age_sq + grad + illness + weights, 
+  data = df),
+  seg.Z = ~dollars)
+
+model_summaries_all <- rbind(
+  broom::glance(lm_fit) %>% mutate(model = "lin", year = "Overall"),
+  broom::glance(lm_fit_c) %>% mutate(model = "linc", year = "Overall"),
+  broom::glance(log_fit) %>% mutate(model = "log", year = "Overall"),
+  broom::glance(log_fit_c) %>% mutate(model = "logc", year = "Overall"),
+  broom::glance(pw_fit) %>% mutate(model = "pw", year = "Overall"),
+  broom::glance(pw_fit_c) %>% mutate(model = "pwc", year = "Overall"),
+  model_summaries
+)
+```
+
+##### Table S4. In-sample fit statistics (adj. R-squared) for affective wellbeing and income 
+```{r table_s4}
+model_summaries_all %>%
+  select(model, Year = year, adj.r.squared) %>%
+  spread(model, adj.r.squared) %>%
+  flextable() %>%
+  colformat_double(j = 2:7, digits = 3) %>%
+  set_header_labels(
+    lin = "Linear", 
+    linc = "Linear\n(conditional)",
+    log = "Log-linear",
+    logc = "Log-linear\n(conditional)",
+    pw = "Piecewise",
+    pwc = "Piecewise\n(conditional)") %>%
+  valign(i = 1, valign = "top", part = "header") %>%
+  fontsize(size = 9.5, part = "all") %>%
+  width(j = 2:7, width = 1) %>%
+  width(j = 1, width = .5)
+```
+
+<br>
+
+A comparison of the relative differences in adjusted R^2^ values between models indicates the piecewise model produced a slightly higher in-sample fit over the other two models, while the linear model tended to have the lowest adjusted R^2^. The log-linear fit varied between both over the 19 years. As expected, adding covariates increased the adjusted R-squared in each case, but it did not change the relative difference between models.  
+
+Three things need to be observed when interpreting the R^2^ values: 1) While the R^2^ between income and affective wellbeing is low (~2% and ~14% in the unconditional and conditional models, respectively), the effect over the wider population will aggregate to be much larger; 2) affective wellbeing (and to a lesser extent, income) is an imperfect and noisy measure so any effect of income on happiness is likely to be larger than that measured here; 3) Finally, affective wellbeing is measured on a subjective and arbitrary Likert scale so a small change in affective wellbeing at different points in the scale may represent a large change in some other functional/real-world outcome (e.g., risk of suicide). This is all to say that quantifying the real-world impact of small changes in variation reported here is difficult and speculative without further investigation.  
+
+<br><br>
+
+##### Table S5. OLS coefficients from linear, log-linear and piecewise models  
+```{r table_s5}
+lm_coef <- map_dfr(nested_models$lin_fit, broom::tidy, .id = "Year") %>%
+  filter(term == "dollars") %>%
+  mutate(coefficient = paste0(round(estimate, 3), " (", round(std.error, 3), ")")) %>%
+  select(Year, `linear (se)` = coefficient)
+  
+
+log_coef <- map_dfr(nested_models$log_fit, broom::tidy, .id = "Year") %>%
+  filter(term == "log(dollars)") %>%
+  mutate(coefficient = paste0(round(estimate, 3), " (", round(std.error, 3), ")")) %>%
+  select(Year, `log-linear (se)` = coefficient)
+
+pw_coefs <- map_dfr(nested_models$pw_fit, broom::tidy, .id = "Year") %>%
+  filter(term %in% c("dollars", "U1.dollars")) %>%
+  select(Year, term, estimate, std.error) %>%
+  pivot_wider(id_cols = Year, 
+              names_from = term, 
+              values_from = estimate:std.error) %>%
+  mutate(
+    estimate_post = estimate_U1.dollars + estimate_dollars,
+    `pre-slope (se)` = paste0(
+      round(estimate_dollars, 3), " ±", round(std.error_dollars, 3)),
+    `post-slope (se)` = paste0(
+      round(estimate_post, 3), " ±", round(std.error_U1.dollars, 3))
+    ) %>%
+  select(Year, `pre-slope (se)`, `post-slope (se)`)
+
+pw_coefs <- map_dfr(nested_models$pw_fit, ~as_tibble(.x$psi), .id = "Year") %>%
+  mutate(term = "psi.dollars") %>%
+  mutate(coefficient = paste0(round(`Est.`, 2)*10, " (", round(`St.Err`, 2)*10, ")")) %>%
+  select(Year, `change point ($000s ±se)` = coefficient) %>%
+  left_join(pw_coefs)
+
+left_join(lm_coef, log_coef, by = "Year") %>%
+  left_join(pw_coefs, by = "Year") %>%
+  mutate(Year = as.character(2000 + as.numeric(Year))) %>%
+  flextable() %>%
+  fontsize(size = 9.5, part = "all") %>%
+  autofit()
+```
+
+<br><br>
+
+## References
+
