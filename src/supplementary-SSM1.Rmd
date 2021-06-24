@@ -104,7 +104,7 @@ hilda_data %>%
     by = year,
     missing = "no",
     statistic = 
-      list(all_continuous() ~ "{mean} (±{sd})",
+      list(all_continuous() ~ "{mean} ({sd})",
            all_categorical() ~ "{n} ({p}%)"),
     digits = 
       list(all_continuous() ~ 1,
@@ -123,7 +123,8 @@ hilda_data %>%
   valign(valign = "top", part = "header") %>%
   fontsize(size = 9.5, part = "all") %>%
   width(j = 1, width = 1.5) %>%
-  width(j = 2:6, width = 1)
+  width(j = 2:5, width = 1.1) %>%
+  width(j = 6, width = .6)
 ```
 
 <br>
@@ -578,7 +579,7 @@ map_dfr(nl_fits,
                        (Estimate * income[Year, "sd"] + income[Year, "mean"])/1000,
                        Estimate),
     Est.Error = if_else(str_detect(Parameter, "Change"),
-                        (Est.Error * income[Year, "sd"] + income[Year, "mean"])/1000,
+                        (Est.Error * income[Year, "sd"])/1000,
                         Est.Error),
     `l-95% CI` = if_else(str_detect(Parameter, "Change"),
                         (`l-95% CI` * income[Year, "sd"] + income[Year, "mean"])/1000,
@@ -621,7 +622,7 @@ The coeficients (in SD units) for the piecewise-linear, log-linear and linear Ba
 map_df(log_fits, .f = ~{
   fixef(.x) %>%
     as_tibble(rownames = "terms") %>%
-    transmute(terms, coef = paste0(round(Estimate, 2), " (±", round(Est.Error, 3), ")")) %>%
+    transmute(terms, coef = paste0(round(Estimate, 2), " (", round(Est.Error, 3), ")")) %>%
     spread(terms, coef)},
   .id = "Year"
   ) %>%
@@ -630,7 +631,7 @@ map_df(log_fits, .f = ~{
 map_df(lm_fits, .f = ~{
   fixef(.x) %>%
     as_tibble(rownames = "terms") %>%
-    transmute(terms, coef = paste0(round(Estimate, 2), " (±", round(Est.Error, 3), ")")) %>%
+    transmute(terms, coef = paste0(round(Estimate, 2), " (", round(Est.Error, 3), ")")) %>%
     spread(terms, coef)},
   .id = "Year"
   ) %>%
@@ -639,7 +640,7 @@ map_df(lm_fits, .f = ~{
 map_df(nl_fits, .f = ~{
   fixef(.x) %>%
     as_tibble(rownames = "terms") %>%
-    transmute(terms, coef = paste0(round(Estimate, 2), " (±", round(Est.Error, 3), ")")) %>%
+    transmute(terms, coef = paste0(round(Estimate, 2), " (", round(Est.Error, 3), ")")) %>%
     spread(terms, coef)},
   .id = "Year"
   ) %>%
@@ -654,7 +655,7 @@ coefs_affective <- left_join(coefs_gh9_pw, coefs_gh9_log) %>%
 map_df(log_fits_losat, .f = ~{
   fixef(.x) %>%
     as_tibble(rownames = "terms") %>%
-    transmute(terms, coef = paste0(round(Estimate, 2), " (±", round(Est.Error, 3), ")")) %>%
+    transmute(terms, coef = paste0(round(Estimate, 2), " (", round(Est.Error, 3), ")")) %>%
     spread(terms, coef)},
   .id = "Year"
 ) %>%
@@ -663,7 +664,7 @@ map_df(log_fits_losat, .f = ~{
 map_df(lm_fits_losat, .f = ~{
   fixef(.x) %>%
     as_tibble(rownames = "terms") %>%
-    transmute(terms, coef = paste0(round(Estimate, 2), " (±", round(Est.Error, 3), ")")) %>%
+    transmute(terms, coef = paste0(round(Estimate, 2), " (", round(Est.Error, 3), ")")) %>%
     spread(terms, coef)},
   .id = "Year"
 ) %>%
@@ -672,7 +673,7 @@ map_df(lm_fits_losat, .f = ~{
 map_df(nl_fits_losat, .f = ~{
   fixef(.x) %>%
     as_tibble(rownames = "terms") %>%
-    transmute(terms, coef = paste0(round(Estimate, 2), " (±", round(Est.Error, 3), ")")) %>%
+    transmute(terms, coef = paste0(round(Estimate, 2), " (", round(Est.Error, 3), ")")) %>%
     spread(terms, coef)},
   .id = "Year"
 ) %>%
@@ -698,14 +699,14 @@ bind_rows(coefs_affective, coefs_cognitive) %>%
                                b0_lin = paste0("\u03b2", "0"),
                                b1_lin = paste0("\u03b2", "1"))) %>%
   add_header(top = TRUE,
-             values = c(b0_pw = "Piecewise-linear (±se)",
-                        b1_pw = "Piecewise-linear (±se)",
-                        b2_pw = "Piecewise-linear (±se)",
-                        Omega = "Piecewise-linear (±se)",
-                        b0_log = "Log-linear (±se)",
-                        b1_log = "Log-linear (±se)",
-                        b0_lin = "Linear (±se)",
-                        b1_lin = "Linear (±se)")) %>%
+             values = c(b0_pw = "Piecewise-linear (se)",
+                        b1_pw = "Piecewise-linear (se)",
+                        b2_pw = "Piecewise-linear (se)",
+                        Omega = "Piecewise-linear (se)",
+                        b0_log = "Log-linear (se)",
+                        b1_log = "Log-linear (se)",
+                        b0_lin = "Linear (se)",
+                        b1_lin = "Linear (se)")) %>%
   merge_h(part = "header") %>%
   width(j = 1:2, width = c(0.75, 0.5)) %>%
   width(j = 3:10, width = 0.65) %>%
@@ -1012,14 +1013,14 @@ Three things need to be observed when interpreting the R^2^ values: 1) While the
 ```{r table_s5}
 lm_coef <- map_dfr(nested_models$lin_fit, broom::tidy, .id = "Year") %>%
   filter(term == "dollars") %>%
-  mutate(coefficient = paste0(round(estimate, 3), " (±", round(std.error, 3), ")")) %>%
-  select(Year, `linear (±se)` = coefficient)
+  mutate(coefficient = paste0(round(estimate, 3), " (", round(std.error, 3), ")")) %>%
+  select(Year, `linear (se)` = coefficient)
   
 
 log_coef <- map_dfr(nested_models$log_fit, broom::tidy, .id = "Year") %>%
   filter(term == "log(dollars)") %>%
-  mutate(coefficient = paste0(round(estimate, 3), " (±", round(std.error, 3), ")")) %>%
-  select(Year, `log-linear (±se)` = coefficient)
+  mutate(coefficient = paste0(round(estimate, 3), " (", round(std.error, 3), ")")) %>%
+  select(Year, `log-linear (se)` = coefficient)
 
 pw_coefs <- map_dfr(nested_models$pw_fit, broom::tidy, .id = "Year") %>%
   filter(term %in% c("dollars", "U1.dollars")) %>%
@@ -1029,16 +1030,16 @@ pw_coefs <- map_dfr(nested_models$pw_fit, broom::tidy, .id = "Year") %>%
               values_from = estimate:std.error) %>%
   mutate(
     estimate_post = estimate_U1.dollars + estimate_dollars,
-    `pre-slope (±se)` = paste0(
+    `pre-slope (se)` = paste0(
       round(estimate_dollars, 3), " ±", round(std.error_dollars, 3)),
-    `post-slope (±se)` = paste0(
+    `post-slope (se)` = paste0(
       round(estimate_post, 3), " ±", round(std.error_U1.dollars, 3))
     ) %>%
-  select(Year, `pre-slope (±se)`, `post-slope (±se)`)
+  select(Year, `pre-slope (se)`, `post-slope (se)`)
 
 pw_coefs <- map_dfr(nested_models$pw_fit, ~as_tibble(.x$psi), .id = "Year") %>%
   mutate(term = "psi.dollars") %>%
-  mutate(coefficient = paste0(round(`Est.`, 2)*10, " (±", round(`St.Err`, 2)*10, ")")) %>%
+  mutate(coefficient = paste0(round(`Est.`, 2)*10, " (", round(`St.Err`, 2)*10, ")")) %>%
   select(Year, `change point ($000s ±se)` = coefficient) %>%
   left_join(pw_coefs)
 
