@@ -91,7 +91,7 @@ An online version of this paper is available
 
 <br>
 
-Supplementary information is available
+Supplementary information is also available
 [online](https://datarichard.github.io/The-increasing-cost-of-happiness/supplementary.html).
 
 <br><br>
