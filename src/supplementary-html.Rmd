@@ -266,63 +266,92 @@ The difference in WAIC scores for each model revealed the piecewise-linear fits 
 
 **Conditional vs unconditional models of affective wellbeing**. Table S1 (above) showed the specific variables that changed over the 19 years between 2001-2019. In particular, the number of university graduates, average age and the incidence of chronic illness increased slighty over the period. Including these variables as covariates in any model (i.e,. a conditional model such that *P*( $y$ | income, age, education illness)) will improve the in-sample fit (e.g., R^2^), and also adjust the parameter estimates of interest (e.g., change point) conditional upon their common association with affective wellbeing. Given the general aim of the main paper was to describe the temporal change in functional form between affective wellbeing and income in Australia, regardless of any other variable (i.e., an unconditional model of *P*($y$| income)) or sampling differences, neither the in-sample fit nor the conditional model estimates are directly relevant. Nevertheless, the importance of these variables in mediating the changes we observed in the unconditional model are relevant, and so we calculated the estimates from conditional piecewise models including age, age^2^, sex, education  (university degree), chronic illness for each year below to confirm the pattern of temporal change was similar. Figure S2 shows the addition of these covariates did not change the trend in change point parameter estimates (red) relative to the unconditional parameter estimates (grey) over the 19 years.  
 
-<br>
+<br><br>
+
+#### Sensitivity tests of model parameters
+
+```{r std_params}
+std_params <- list()
+
+for (i in c(2001:2019)) {
+  
+  hilda_data %>%
+    filter(
+      year == i,
+      !student,
+      hh_disp_inc_eq >= 0,
+      !top_hifdip
+    ) %>%
+    transmute(
+      sgh9 = scale(gh9),
+      shh_disp_inc_eq = scale(hh_disp_inc_eq),
+    ) %>% 
+    na.omit() -> df
+  
+  income_sd_year <- attr(df$shh_disp_inc_eq, "scaled:scale")
+  income_m_year <- attr(df$shh_disp_inc_eq, "scaled:center")
+  gh9_sd_year <- attr(df$sgh9, "scaled:scale")
+  gh9_m_year <- attr(df$sgh9, "scaled:center")
+  
+  std_params[[paste0("fit", i)]] <- c(`mean_income` = income_m_year, 
+                       `sd_income` = income_sd_year,
+                       `mean_gh9` = gh9_m_year,
+                       `sd_gh9` = gh9_sd_year)
+  
+}
+
+std_params <- bind_rows(std_params, .id = "fit")
+```
 
 ##### Figure S2. Conditional model parameters  
 ```{r figure_s2, fig.width = 6, fig.height = 8, dpi=300}
 nl_fits = read_rds("../results/gh9_hhoecd_0cov_tight.RDS")
-
 nl_fits_5cov = read_rds("../results/gh9_hhoecd_5cov_tight.RDS")
 
-income_params <- read_rds("../results/gh9_hhoecd_summary.RDS") %>%
-  bind_rows(.id = "fit")
+summarise_posteriors <- function(.fits, .params = std_params, .model = NULL) {
+  
+  posteriors <- map_dfr(.fits, as.data.frame, .id = "fit") %>%
+    left_join(.params, by = "fit") %>%
+    transmute(
+      fit,
+      omega_dollars = (b_omega_Intercept * sd_income + mean_income)/1000,
+      b0 = b_b0_Intercept * sd_gh9 + mean_gh9,
+      b1 = (b_b1_Intercept * sd_gh9)/10, # change per $1000
+      b2 = (b_b2_Intercept * sd_gh9)/10  # change per $1000
+    ) %>%
+    as_tibble()
+  
+  param_key = c(
+    omega_dollars = "Change point ($000s)",
+    b0 = paste0("Intercept (\u03b2", "0)"),
+    b1 = paste0("Pre-slope (\u03b2", "1)"),
+    b2 = paste0("Post-slope (\u03b2", "2)")
+  )
+  
+  posteriors %>%
+    gather(key = "param", val = "sample", -fit) %>%
+    mutate(
+      year = extract_numeric(fit),
+      param = recode_factor(param, !!!param_key)
+    ) %>% 
+    group_by(param, year) %>%
+    summarise(
+      low = quantile(sample, probs = 0.05, na.rm=T),
+      expected = quantile(sample, probs = 0.5, na.rm=T),
+      upp = quantile(sample, probs = 0.95, na.rm=T)
+    ) %>%
+    mutate(model = .model) -> parameter_summary
+  
+  return(parameter_summary)
+  
+}
 
-posteriors_5c <- map_dfr(nl_fits_5cov, as.data.frame, .id = "fit") %>%
-  left_join(income_params) %>%
-  mutate(omega_dollars = (b_omega_Intercept * sd + mean)/1000) %>%
-  as_tibble()
+parameter_summary_5c <- summarise_posteriors(.fits = nl_fits_5cov, 
+                                             .model = "conditional")
 
-param_key = c(
-  omega_dollars = "Change point ($000s)",
-  b_b0_Intercept = paste0("Intercept (\u03b2", "0)"),
-  b_b1_Intercept = paste0("Pre-slope (\u03b2", "1)"),
-  b_b2_Intercept = paste0("Post-slope (\u03b2", "2)")
-)
-
-posteriors_5c %>%
-  select(fit, contains("b0"), contains("b1"), contains("b2"), omega_dollars) %>%
-  gather(key = "param", val = "sample", -fit) %>%
-  mutate(
-    year = extract_numeric(fit),
-    param = recode_factor(param, !!!param_key)
-  ) %>% 
-  group_by(param, year) %>%
-  summarise(
-    low = quantile(sample, probs = 0.05, na.rm=T),
-    expected = quantile(sample, probs = 0.5, na.rm=T),
-    upp = quantile(sample, probs = 0.95, na.rm=T)
-  ) %>%
-  mutate(model = "conditional") -> parameter_summary_5c
-
-posteriors_0c <- map_dfr(nl_fits, as.data.frame, .id = "fit") %>%
-  left_join(income_params) %>%
-  mutate(omega_dollars = (b_omega_Intercept * sd + mean)/1000) %>%
-  as_tibble()
-
-posteriors_0c %>%
-  select(fit, contains("b0"), contains("b1"), contains("b2"), omega_dollars) %>%
-  gather(key = "param", val = "sample", -fit) %>%
-  mutate(
-    year = extract_numeric(fit),
-    param = recode_factor(param, !!!param_key)
-  ) %>% 
-  group_by(param, year) %>%
-  summarise(
-    low = quantile(sample, probs = 0.05, na.rm=T),
-    expected = quantile(sample, probs = 0.5, na.rm=T),
-    upp = quantile(sample, probs = 0.95, na.rm=T)
-  ) %>%
-  mutate(model = "unconditional") -> parameter_summary_0c
+parameter_summary_0c <- summarise_posteriors(.fits = nl_fits,
+                                             .model = "unconditional")
+  
 
 bind_rows(parameter_summary_0c, parameter_summary_5c) %>%
   ggplot(aes(y = year, x = expected, color = model)) +
@@ -330,7 +359,7 @@ bind_rows(parameter_summary_0c, parameter_summary_5c) %>%
   scale_y_continuous(breaks = c(2001, 2007, 2013, 2019)) +
   facet_wrap(~param, scales = "free_x") +
   ft_theme(base_size = 12) +
-  scale_color_manual(values = c("#C79999", "grey65")) +
+  scale_color_manual(values = c("#A25050", "grey65")) +
   theme(legend.position = "none",
         axis.title = element_blank())
 ```
@@ -348,37 +377,50 @@ The unconditional parameter values are also presented in Table S2 below (Paramet
 
 **Including income topcodes in models of affective wellbeing**.  
 
-Household income values for high income individuals are substituted with the average income value of all those above a certain threshold (topcoded). This is performed by the University of Melbourne to preserve anonymity, and we excluded people marked as topcoded in the main analysis (highest _n_ in any year was _n_ = 103 in 2019). Here we present the parameter estimates of the affective wellbeing models with topcodes included, and compare them with parameters from models which exclude them.  
+Household income values for high income individuals are substituted with the average income value of all those above a certain threshold (topcoded). This is performed by the University of Melbourne to preserve anonymity, and we excluded people marked as topcoded in the main analysis (highest _n_ in any year was _n_ = 103 in 2019). Here we present the parameter estimates of the affective wellbeing models with topcodes included, and compare them with parameters from models which exclude them (as in the main text).  
 
-##### Figure S3. Topcoded model parameters  
+##### Figure S3. Model parameters including topcoded individuals 
 ```{r figure_s3, fig.width = 6, fig.height = 8, dpi=300}
 nl_fits_topcodes = read_rds("../results/fits/inc_topcodes/gh9_hhoecd_0cov_tight.RDS")
 
-topcode_income_params <- read_rds("../results/fits/inc_topcodes/gh9_hhoecd_data.RDS") %>%
-  bind_rows(.id = "fit")
+# topcode_income_params <- read_rds("../results/fits/inc_topcodes/gh9_hhoecd_data.RDS") %>%
+#   bind_rows(.id = "fit")
 
-posteriors_topcodes <- map_dfr(nl_fits_topcodes, as.data.frame, .id = "fit") %>%
-  left_join(topcode_income_params) %>%
-  mutate(omega_dollars = (b_omega_Intercept * sd + mean)/1000) %>%
-  as_tibble()
+topcode_params <- list()
 
-posteriors_topcodes %>%
-  select(fit, contains("b0"), contains("b1"), contains("b2"), omega_dollars) %>%
-  gather(key = "param", val = "sample", -fit) %>%
-  mutate(
-    year = extract_numeric(fit),
-    param = recode_factor(param, !!!param_key)
-  ) %>% 
-  group_by(param, year) %>%
-  summarise(
-    low = quantile(sample, probs = 0.05, na.rm=T),
-    expected = quantile(sample, probs = 0.5, na.rm=T),
-    upp = quantile(sample, probs = 0.95, na.rm=T)
-  ) %>%
-  mutate(model = "topcodes") -> parameter_summary_topcodes
+for (i in c(2001:2019)) {
+  
+  hilda_data %>%
+    filter(
+      year == i,
+      !student,
+      hh_disp_inc_eq >= 0
+    ) %>%
+    transmute(
+      sgh9 = scale(gh9),
+      shh_disp_inc_eq = scale(hh_disp_inc_eq),
+    ) %>% 
+    na.omit() -> df
+  
+  income_sd_year <- attr(df$shh_disp_inc_eq, "scaled:scale")
+  income_m_year <- attr(df$shh_disp_inc_eq, "scaled:center")
+  gh9_sd_year <- attr(df$sgh9, "scaled:scale")
+  gh9_m_year <- attr(df$sgh9, "scaled:center")
+  
+  topcode_params[[paste0("fit", i)]] <- c(`mean_income` = income_m_year, 
+                       `sd_income` = income_sd_year,
+                       `mean_gh9` = gh9_m_year,
+                       `sd_gh9` = gh9_sd_year)
+  
+}
 
-parameter_summary_0c %>%
-  mutate(model = "no topcodes") -> parameter_summary_excl
+topcode_params <- bind_rows(topcode_params, .id = "fit")
+
+parameter_summary_topcodes <- summarise_posteriors(nl_fits_topcodes,
+                                                   .params = topcode_params,
+                                                   .model = "topcodes")
+
+parameter_summary_excl <- parameter_summary_0c %>% mutate(model = "no topcodes")
 
 bind_rows(parameter_summary_excl, parameter_summary_topcodes) %>%
   ggplot(aes(y = year, x = expected, color = model)) +
@@ -386,7 +428,7 @@ bind_rows(parameter_summary_excl, parameter_summary_topcodes) %>%
   scale_y_continuous(breaks = c(2001, 2007, 2013, 2019)) +
   facet_wrap(~param, scales = "free_x") +
   ft_theme(base_size = 12) +
-  scale_color_manual(values = c("grey65", "#C79999")) +
+  scale_color_manual(values = c("grey65", "#A25050")) +
   theme(legend.position = "none",
         axis.title = element_blank())
 ```
@@ -402,31 +444,14 @@ Included topcoded individuals adds some variation in the parameter estimates (e.
 
 **Unadjusted household income models of affective wellbeing**.  
 
-Household income values were adjusted for household size in the main analysis. The _maximum_ household sizes varied from 10 (2017, 2019) to as high as 17 (2016), and so adjustment accounts for larger households needing more resources to achieve the same standard of living as a smaller household, and for some ‘economies of scale’ when sharing living costs. For example, two people living alone in two separate households typically incur higher living costs in total than two people living in one household. Here we present the parameter estimates of the affective wellbeing models without adjustment for household size and with adjustment.    
+Household income values were adjusted for household size in the main analysis. The _maximum_ household sizes varied from 10 (2017, 2019) to as high as 17 (2016), and so adjustment accounts for larger households needing more resources to achieve the same standard of living as a smaller household, and for some ‘economies of scale’ when sharing living costs. For example, two people living alone in two separate households typically incur higher living costs in total than two people living in one household. Here we present the parameter estimates of the affective wellbeing models without adjustment for household size, and with adjustment (as in the main text).    
 
 ##### Figure S4. Model parameters unadjusted for household size  
 ```{r figure_s4, fig.width = 6, fig.height = 8, dpi=300}
 nl_fits_unadjsize = read_rds("../results/fits/excl_hhsize/gh9_hifdip_0cov_tight.RDS")
 
-posteriors_unadjsize <- map_dfr(nl_fits_unadjsize, as.data.frame, .id = "fit") %>%
-  left_join(income_params) %>%
-  mutate(omega_dollars = (b_omega_Intercept * sd + mean)/1000) %>%
-  as_tibble()
-
-posteriors_unadjsize %>%
-  select(fit, contains("b0"), contains("b1"), contains("b2"), omega_dollars) %>%
-  gather(key = "param", val = "sample", -fit) %>%
-  mutate(
-    year = extract_numeric(fit),
-    param = recode_factor(param, !!!param_key)
-  ) %>% 
-  group_by(param, year) %>%
-  summarise(
-    low = quantile(sample, probs = 0.05, na.rm=T),
-    expected = quantile(sample, probs = 0.5, na.rm=T),
-    upp = quantile(sample, probs = 0.95, na.rm=T)
-  ) %>%
-  mutate(model = "unadjusted") -> parameter_summary_unadjsize
+parameter_summary_unadjsize <- summarise_posteriors(nl_fits_unadjsize, 
+                                                    .model = "unadjusted")
 
 parameter_summary_0c %>%
   mutate(model = "adjusted") -> parameter_summary_adj
@@ -437,7 +462,7 @@ bind_rows(parameter_summary_unadjsize, parameter_summary_adj) %>%
   scale_y_continuous(breaks = c(2001, 2007, 2013, 2019)) +
   facet_wrap(~param, scales = "free_x") +
   ft_theme(base_size = 12) +
-  scale_color_manual(values = c("grey65", "#C79999")) +
+  scale_color_manual(values = c("grey65", "#A25050")) +
   theme(legend.position = "none",
         axis.title = element_blank())
 ```
@@ -459,55 +484,8 @@ Omitting the adjustment for household size on household income appears to reduce
 gh9neg.fits <- read_rds("../results/fits/excl_topcodes/sd/gh9neg_hhoecd_0cov_tight.RDS")
 gh9pos.fits <- read_rds("../results/fits/excl_topcodes/sd/gh9pos_hhoecd_0cov_tight.RDS")
 
-income_params <- read_rds("../results/gh9_hhoecd_summary.RDS") %>%
-  bind_rows(.id = "fit")
-
-posteriors_pos <- map_dfr(gh9pos.fits, as.data.frame, .id = "fit") %>%
-  left_join(income_params) %>%
-  mutate(omega_dollars = (b_omega_Intercept * sd + mean)/1000) %>%
-  as_tibble()
-
-param_key = c(
-  omega_dollars = "Change point ($000s)",
-  b_b0_Intercept = paste0("Intercept (\u03b2", "0)"),
-  b_b1_Intercept = paste0("Pre-slope (\u03b2", "1)"),
-  b_b2_Intercept = paste0("Post-slope (\u03b2", "2)")
-)
-
-posteriors_pos %>%
-  select(fit, contains("b0"), contains("b1"), contains("b2"), omega_dollars) %>%
-  gather(key = "param", val = "sample", -fit) %>%
-  mutate(
-    year = extract_numeric(fit),
-    param = recode_factor(param, !!!param_key)
-  ) %>% 
-  group_by(param, year) %>%
-  summarise(
-    low = quantile(sample, probs = 0.05, na.rm=T),
-    expected = quantile(sample, probs = 0.5, na.rm=T),
-    upp = quantile(sample, probs = 0.95, na.rm=T)
-  ) %>%
-  mutate(model = "positive") -> parameter_summary_pos
-
-posteriors_neg <- map_dfr(gh9neg.fits, as.data.frame, .id = "fit") %>%
-  left_join(income_params) %>%
-  mutate(omega_dollars = (b_omega_Intercept * sd + mean)/1000) %>%
-  as_tibble()
-
-posteriors_neg %>%
-  select(fit, contains("b0"), contains("b1"), contains("b2"), omega_dollars) %>%
-  gather(key = "param", val = "sample", -fit) %>%
-  mutate(
-    year = extract_numeric(fit),
-    param = recode_factor(param, !!!param_key)
-  ) %>% 
-  group_by(param, year) %>%
-  summarise(
-    low = quantile(sample, probs = 0.05, na.rm=T),
-    expected = quantile(sample, probs = 0.5, na.rm=T),
-    upp = quantile(sample, probs = 0.95, na.rm=T)
-  ) %>%
-  mutate(model = "negative") -> parameter_summary_neg
+parameter_summary_pos <- summarise_posteriors(gh9pos.fits, .model = "positive")
+parameter_summary_neg <- summarise_posteriors(gh9neg.fits, .model = "negative")
 
 bind_rows(parameter_summary_pos, parameter_summary_neg) %>%
   ggplot(aes(y = year, x = expected, color = model)) +
@@ -531,39 +509,27 @@ Regressing income against the positive and negative components of affective well
 <br><br>  
 
 
-#### Parameter and fit summary statistics  
+#### Sampling and fit statistics  
+
+Below we provide sampling statistics (e.g., $\hat{R}$), as well as prior predictions and residual plots.  
 
 Model fitting was performed in RStan (v2.21.2) using the brms (v2.14.4) package [@burkner2017; @rstan2019]. There were _N_ = 59,876 total observations. For each Bayesian model presented in this report, 4000 samples (post-warmup) were drawn using sampling(NUTS).   
 
-For all models estimated with RStan presented in this report we confirmed the absence of divergent transitions; the $\hat{R}$ approached 1 indicating convergance; and the effective sample size (ESS) for each parameter was _n_ > 300, which is a conservative threshold for estimation.  
+For all models estimated with RStan presented in this report we confirmed the absence of divergent transitions; the $\hat{R}$ for each parameter approached 1 indicating convergance; and the effective sample size (ESS) for each parameter was _n_ > 300, which is a conservative minimum threshold for estimation.  
 
-Table S2 below shows the fit and summary statistics for each piecewise-linear model fit of affective wellbeing and income in each year. Estimates for the intercept, pre-slope and post-slope are in year-wise SD units while the change-point is presented in real 2019 dollars.    
+Table S2 below shows the sampling statistics for each piecewise-linear model fit of affective wellbeing and income in each year.     
 
-##### Table S2. Parameter estimates and fit statistics for piecewise-linear fit of affective wellbeing and income
+##### Table S2. Sampling statistics for piecewise-linear fit of affective wellbeing and income
 ```{r table_s2, ft.align="left"}
 nl_fits = read_rds("../results/gh9_hhoecd_0cov_tight.RDS")
 
-income_params %>%
+params_df <- std_params %>% 
   mutate(fit = str_remove(fit, "fit")) %>%
-  column_to_rownames("fit") -> income
-
-param_key = c(
-  omega_Intercept = "Change point ($000s)",
-  b0_Intercept = paste0("Intercept (\u03b2", "0)"),
-  b1_Intercept = paste0("Pre-slope (\u03b2", "1)"),
-  b2_Intercept = paste0("Post-slope (\u03b2", "2)")
-)
-
-# param_key = c(
-#   b0_Intercept = "Intercept",
-#   b1_Intercept = "Pre-slope",
-#   b2_Intercept = "Post-slope",
-#   omega_Intercept = "Change-point ($000s)"
-# )
+  column_to_rownames("fit")
 
 map_dfr(nl_fits, 
         .f = ~{
-          fit_summary <- summary(.x, prob = 0.95) 
+          fit_summary <- summary(.x) 
           
           sigma_summary <- fit_summary$spec_pars %>%
             as_tibble(rownames = "Parameter")
@@ -571,168 +537,45 @@ map_dfr(nl_fits,
           fit_summary$fixed %>%
             as_tibble(rownames = "Parameter") %>%
             bind_rows(sigma_summary) %>%
-            select(Parameter, everything())
+            select(Parameter, Bulk_ESS, Tail_ESS)
           
           },
         .id = "Year") %>%
   mutate(
     Year = str_remove(Year, "fit"),
-    Parameter = recode_factor(Parameter, !!!param_key),
-    Estimate = if_else(str_detect(Parameter, "Change"),
-                       (Estimate * income[Year, "sd"] + income[Year, "mean"])/1000,
-                       Estimate),
-    Est.Error = if_else(str_detect(Parameter, "Change"),
-                        (Est.Error * income[Year, "sd"])/1000,
-                        Est.Error),
-    `l-95% CI` = if_else(str_detect(Parameter, "Change"),
-                        (`l-95% CI` * income[Year, "sd"] + income[Year, "mean"])/1000,
-                        `l-95% CI`),
-    `u-95% CI` = if_else(str_detect(Parameter, "Change"),
-                         (`u-95% CI` * income[Year, "sd"] + income[Year, "mean"])/1000,
-                         `u-95% CI`)
+  ) %>%
+  pivot_wider(names_from = Parameter, 
+              values_from = c(Bulk_ESS, Tail_ESS)
+  ) %>% 
+  select(-one_of(c("Bulk_ESS_sigma", "Tail_ESS_sigma"))) %>%
+  flextable() %>%
+  set_header_labels(
+    values = c(Bulk_ESS_b0_Intercept = paste0("\u03b2", "0"),
+               Bulk_ESS_b1_Intercept = paste0("\u03b2", "1"),
+               Bulk_ESS_b2_Intercept = paste0("\u03b2", "2"),
+               Bulk_ESS_omega_Intercept = "\u03C9",
+               Tail_ESS_b0_Intercept = paste0("\u03b2", "0"),
+               Tail_ESS_b1_Intercept = paste0("\u03b2", "1"),
+               Tail_ESS_b2_Intercept = paste0("\u03b2", "2"),
+               Tail_ESS_omega_Intercept = "\u03C9")
     ) %>%
-  flextable() %>%
-  merge_v(j = 1) %>%
-  valign(j = 1, valign = "top") %>%
-  bg(i = ~Year %in% seq(2001, 2019, 2), 
-     bg = "grey90", 
-     part = "body") %>%
-  colformat_double(j = 3:6, digits= 3) %>%
-  colformat_double(j = 7, digits= 1) %>%
-  footnote(i = 1, j = 7,
-           value = as_paragraph(
-             c("Rhat is the potential scale reduction factor on split chains")),
-           ref_symbols = c("a"),
-           part = "header") %>%
-  footnote(i = 1, j = c(8:9),
-           value = as_paragraph(
-             c("Bulk_ESS and Tail_ESS are effective sample size (ESS) measures")),
-           ref_symbols = c("b"),
-           part = "header") %>%
-  fontsize(size = 9, part = "all") %>%
-  width(j = 1, width = .5) %>%
-  width(j = 2, width = 1) %>%
-  width(j = c(3:7), width = .7) %>%
-  width(j = c(8, 9), width = .8)
-```
-
-<br><br>
-
-The coeficients (in SD units) for the piecewise-linear, log-linear and linear Bayesian models are shown in the table below.  
-
-##### Table S3. Bayesian coefficients from linear, log-linear and piecewise-linear models  
-```{r table_s3}
-map_df(log_fits, .f = ~{
-  fixef(.x) %>%
-    as_tibble(rownames = "terms") %>%
-    transmute(terms, coef = paste0(round(Estimate, 2), " (", round(Est.Error, 3), ")")) %>%
-    spread(terms, coef)},
-  .id = "Year"
-  ) %>%
-  rename("b0_log" = 2, "b1_log" = 3) -> coefs_gh9_log
-
-map_df(lm_fits, .f = ~{
-  fixef(.x) %>%
-    as_tibble(rownames = "terms") %>%
-    transmute(terms, coef = paste0(round(Estimate, 2), " (", round(Est.Error, 3), ")")) %>%
-    spread(terms, coef)},
-  .id = "Year"
-  ) %>%
-  select(Year, "b0_lin" = 3, "b1_lin" = 2) -> coefs_gh9_lm
-
-map_df(nl_fits, .f = ~{
-  fixef(.x) %>%
-    as_tibble(rownames = "terms") %>%
-    transmute(terms, coef = paste0(round(Estimate, 2), " (", round(Est.Error, 3), ")")) %>%
-    spread(terms, coef)},
-  .id = "Year"
-  ) %>%
-  rename("b0_pw" = 2, "b1_pw" = 3, 
-         "b2_pw" = 4, "Omega" = 5) -> coefs_gh9_pw
-
-coefs_affective <- left_join(coefs_gh9_pw, coefs_gh9_log) %>%
-  left_join(coefs_gh9_lm) %>%
-  mutate(Year = str_remove(Year, "fit"),
-         Wellbeing = "Affective")
-
-map_df(log_fits_losat, .f = ~{
-  fixef(.x) %>%
-    as_tibble(rownames = "terms") %>%
-    transmute(terms, coef = paste0(round(Estimate, 2), " (", round(Est.Error, 3), ")")) %>%
-    spread(terms, coef)},
-  .id = "Year"
-) %>%
-  rename("b0_log" = 2, "b1_log" = 3) -> coefs_losat_log
-
-map_df(lm_fits_losat, .f = ~{
-  fixef(.x) %>%
-    as_tibble(rownames = "terms") %>%
-    transmute(terms, coef = paste0(round(Estimate, 2), " (", round(Est.Error, 3), ")")) %>%
-    spread(terms, coef)},
-  .id = "Year"
-) %>%
-  select(Year, "b0_lin" = 3, "b1_lin" = 2) -> coefs_losat_lm
-
-map_df(nl_fits_losat, .f = ~{
-  fixef(.x) %>%
-    as_tibble(rownames = "terms") %>%
-    transmute(terms, coef = paste0(round(Estimate, 2), " (", round(Est.Error, 3), ")")) %>%
-    spread(terms, coef)},
-  .id = "Year"
-) %>%
-  rename("b0_pw" = 2, "b1_pw" = 3, 
-         "b2_pw" = 4, "Omega" = 5) -> coefs_losat_pw
-
-coefs_cognitive <- left_join(coefs_losat_pw, coefs_losat_log) %>%
-  left_join(coefs_losat_lm) %>%
-  mutate(Year = str_remove(Year, "fit"),
-         Wellbeing = "Cognitive")
-
-
-bind_rows(coefs_affective, coefs_cognitive) %>%
-  select(Wellbeing, everything()) %>%
-  flextable() %>%
-  merge_v(j = 1) %>%
-  set_header_labels(values = c(b0_pw = paste0("\u03b2", "0"),
-                               b1_pw = paste0("\u03b2", "1"),
-                               b2_pw = paste0("\u03b2", "2"),
-                               Omega = "\u03C9",
-                               b0_log = paste0("\u03b2", "0"),
-                               b1_log = paste0("\u03b2", "1"),
-                               b0_lin = paste0("\u03b2", "0"),
-                               b1_lin = paste0("\u03b2", "1"))) %>%
-  add_header(top = TRUE,
-             values = c(b0_pw = "Piecewise-linear (se)",
-                        b1_pw = "Piecewise-linear (se)",
-                        b2_pw = "Piecewise-linear (se)",
-                        Omega = "Piecewise-linear (se)",
-                        b0_log = "Log-linear (se)",
-                        b1_log = "Log-linear (se)",
-                        b0_lin = "Linear (se)",
-                        b1_lin = "Linear (se)")) %>%
+  add_header(
+    top = TRUE,
+    values = c(Bulk_ESS_b2_Intercept = "Bulk ESS",
+               Tail_ESS_b2_Intercept = "Tail ESS")) %>%
   merge_h(part = "header") %>%
-  width(j = 1:2, width = c(0.75, 0.5)) %>%
-  width(j = 3:10, width = 0.65) %>%
+  width(j = 1, width = 0.5) %>%
+  width(j = 2:9, width = 0.625) %>%
   fontsize(size = 9, part = "all") %>%
-  # flextable::theme_vanilla() %>% # theme_vanilla() 
   valign(valign = "top") %>%
   valign(valign = "bottom", part = "header") %>%
   border_remove() %>%
   hline_top(part="header", border = officer::fp_border()) %>%
   hline_bottom(part="header", border = officer::fp_border()) %>%
-  hline(i = 19, border = officer::fp_border()) %>%
   hline_bottom(part="body", border = officer::fp_border())
 ```
 
-<br>
-
-The table of model parameters (untransformed) for each year show that the $\beta_1$ slopes for piecewise-linear, log-linear and linear model for affective wellbeing and income do not show a sustained trend ove the 19 year period. The $\beta_1$ coefficients increase in the initial 5-10 years and then decline. Despite this common pattern, the linear slope appears to show the most sustained increase while the log-linear slope shows a relatively less sustained increase. Overall, the pattern of changes among the models indicates the function between income and affective wellbeing has in fact become slightly steeper over the period. 
-
-
-
 <br><br>
-
-#### Prior and residual checks   
 
 We used regularizing Guassian priors centred on zero, with Normal(0, 0.1) for each *&beta;*, and a Normal(0, 0.5) for *&omega;*. A plot of the joint distribution between income and wellbeing imposed by the priors alone confirmed there was no apparent slope or change point implied by their regularizing effect.  
 
@@ -799,23 +642,18 @@ Figure legend: The joint distribution between residual and fitted values for eac
 
 #### Model predictions (2001-2019)
 
-The posterior estimates of the piecewise model indicated that the relationship between affective wellbeing and income changed over time between 2001 and 2019. One implication of such a change is the disparity in affective wellbeing between income groups has increased. This will occur as more people fall below the change point over time and so are subject to the steep region of the function where income and affective wellbeing are strongly related. To directly examine the implications of our model for such inequities in affective wellbeing, we used the model to estimate or _predict_ the affective wellbeing of two different income levels: one income level which was above the change point in 2001 but fell below it by 2019 (\$50K/yr); and another level which always remained above the change points over the same period (\$75K/yr). The figure below presents the affective wellbeing levels (in SD units/year) for each income level as well as the difference in affective wellbeing between them (∆).  
+The posterior estimates of the piecewise model indicated that the relationship between affective wellbeing and income changed over time between 2001 and 2019. One implication of such a change is the disparity in affective wellbeing between income groups has increased. This will occur as more people fall below the change point over time and so are subject to the steep region of the function where income and affective wellbeing are strongly related. To directly examine the implications of our model for such inequities in affective wellbeing, we used the model to estimate or _predict_ the affective wellbeing of two different income levels: one income level which was above the change point in 2001 but fell below it by 2019 (\$50K/yr); and another level which always remained above the change points over the same period (\$75K/yr). The figure below presents the affective wellbeing levels for each income level as well as the difference in affective wellbeing between them (∆).  
 
 <br>
 
-##### Figure S8. affective wellbeing (SD units) at $50K/yr and $75K/yr from 2001-2019  
+##### Figure S8. Affective wellbeing at $50K/yr and $75K/yr from 2001-2019  
 ```{r figure_s8, fig.width=7, fig.height=5, dpi=300}
 nl_fits = read_rds("../results/gh9_hhoecd_0cov_tight.RDS")
-
-# Optional
-# nl_fits_5cov = read_rds(
-#   paste0(here, "results/fits/excl_topcodes/sd/gh9_hhoecd_5cov_tight.RDS")
-# )
 
 fixed_income_hash <- read_rds("../results/gh9_hhoecd_summary.RDS") %>%
   bind_rows(.id = "fit") %>%
   mutate(low = (40000 - mean)/sd,
-         high = (75000 - mean)/sd) %>%
+         high = (80000 - mean)/sd) %>%
   column_to_rownames(var = "fit") %>%
   as.matrix()
 
@@ -840,28 +678,45 @@ for (name in names(nl_fits)) {
 }
 
 fixed_income_fit %>%
-  mutate(year = extract_numeric(fit)) %>%
-  select(Estimate, Dollars, year) %>%
-  filter(Dollars %in% c("$75K", "$50K")) %>%
-  spread(Dollars, Estimate) %>%
-  mutate(`$75K - $50K (∆)` = `$75K` - `$50K`) %>%
+  mutate(year = str_remove(fit, "fit"),
+         Happiness = Estimate * params_df[year, "sd_gh9"] + params_df[year, "mean_gh9"]) %>%
+  select(Happiness, Dollars, year) %>%
+  spread(Dollars, Happiness) %>%
+  mutate(`$75K - $50K (∆)` = (`$75K` - `$50K`)) %>%
   gather(income, happiness, -year) %>%
-  mutate(income = fct_relevel(income, "$50K", "$75K")) %>%
+  mutate(
+    income = fct_relevel(income, "$50K", "$75K"),
+    year = as.numeric(year)
+    ) -> d1
+
+d1 %>%
+  filter(income %in% c("$75K", "$50K")) %>%
+  ggplot(aes(x = year, y = happiness, color = income)) +
+    geom_point(size = 4, alpha = 0.25) +
+    geom_smooth(method = "loess", se = F, span = 3) +
+    facet_wrap(~income) +
+    labs(x = "", y = "") +
+    ft_theme() +
+    ggthemes::scale_colour_wsj() +
+    theme(legend.position = "none",
+          plot.title = element_text(size = 19),
+          strip.text = element_text(size = 12)) -> p1
+
+d1 %>%
+  filter(!income %in% c("$75K", "$50K")) %>%
   ggplot(aes(x = year, y = happiness, color = income)) +
   geom_point(size = 4, alpha = 0.25) +
   geom_smooth(method = "loess", se = F, span = 3) +
   facet_wrap(~income) +
-  labs(caption = "Source:     HILDA, University of Melbourne
-                 Predicted affective wellbeing scores (SD unit) from piecewise regression on real household income", 
-       x = "", y = "") -> p
-
-
-p +
+  labs(x = "", y = "") +
   ft_theme() +
-  ggthemes::scale_colour_wsj() +
+  scale_colour_manual(values = "#be9c2e") +
   theme(legend.position = "none",
         plot.title = element_text(size = 19),
-        strip.text = element_text(size = 12))
+        strip.text = element_text(size = 12)) -> p2
+
+library(patchwork)
+p1 + p2 + plot_layout(widths = c(2, 1))
 ```
 
 ```
@@ -870,7 +725,7 @@ Figure legend: The difference (∆) in affective wellbeing between a household i
 
 <br>
 
-The figure above shows the disparity in affective wellbeing between two fixed income levels, \$50K/year (traversing the change points) and \$75K/year (above the change points). In 2001, a household income of \$50K/year achieved an above average level of affective wellbeing relative to everyone else that year, however by 2019 affective wellbeing had declined to lower than average levels relative to the population. By contrast, a household income of \$75K/year enjoyed a higher than average level of affective wellbeing for the entire period. The difference (∆) in affective wellbeing between these two income levels doubled over the period. The increasing disparity in affective wellbeing between the rich and the poor implies that affective wellbeing has became more inequitable over time.  
+The figure above shows the disparity in affective wellbeing between two fixed income levels, \$50K/year (traversing the change points) and \$75K/year (above the change points). In 2001, a household income of \$50K/year achieved an above average level of affective wellbeing relative to everyone else that year, however by 2019 affective wellbeing had declined to lower than average levels relative to the population. By comparison, a household income of \$75K/year enjoyed a higher level of affective wellbeing which decreased more slowly over the same period. The difference (∆) in affective wellbeing between these two income levels doubled over this period. The increasing disparity in affective wellbeing between the rich and the poor implies that affective wellbeing has became more inequitable over time.  
 
 
 <br><br>
@@ -878,10 +733,140 @@ The figure above shows the disparity in affective wellbeing between two fixed in
 
 ## Appendix  
 
-#### OLS Insample fit statistics
+<br>
 
-Our primary objective was to understand the relationships between the parameters of our model, and so in-sample fit statistics such as R^2^ are irrelevant for this objective. Moreover, our use of regularized priors will bias such in-sample estimates towards zero as regularization deliberately sacrifices in-sample variance for out-of-sample accuracy, which obviously hinders interpretation of the in-sample values. Nevertheless, some readers may find it useful to compare the in-sample fit statistics between the three different model types employed here: piecewise, linear and log-linear, as well as between the conditional and unconditional models. Because the usual fit statistics such as R^2^ present a problem for Bayesian fits, as the variance of the predicted values can be larger than the variance of the data results in R^2^ values greater than 1, we present the in-sample statistics from OLS model fits (without regularization or penalized likelihoods).   
+#### Bayesian linear, log-linear and piecewise-linear models  
 
+The mean and standard deviation (±se) values of the posterior distributions for each coeficient from the piecewise-linear, log-linear and linear Bayesian models are shown in the table below.  
+
+##### Table S3. Bayesian coefficients  
+```{r table_s3}
+map_df(log_fits, .f = ~{
+  fixef(.x) %>%
+    as_tibble(rownames = "terms") %>%
+    select(terms, Estimate, Est.Error)},
+  .id = "Year"
+) %>%
+  mutate(Year = str_remove(Year, "fit"),
+         Estimate = if_else(
+           str_detect(terms, "Intercept"),
+           (Estimate * sqrt(params_df[Year, "sd_gh9"]) + params_df[Year, "mean_gh9"]),
+           Estimate * params_df[Year, "sd_gh9"]/10),
+         Est.Error = if_else(
+           str_detect(terms, "Intercept"), 
+           Est.Error * sqrt(params_df[Year, "sd_gh9"]),
+           Est.Error * params_df[Year, "sd_gh9"]/10)
+  ) %>%
+  transmute(
+    Year,
+    terms, 
+    coef = paste0(round(Estimate, 2), "\n(", round(Est.Error, 3), ")")
+  ) %>%
+  spread(terms, coef) %>%
+  select(Year, "b0_log" = 2, "b1_log" = 3) -> coefs_gh9_log
+
+map_df(lm_fits, .f = ~{
+  fixef(.x) %>%
+    as_tibble(rownames = "terms") %>%
+    select(terms, Estimate, Est.Error)},
+  .id = "Year"
+  ) %>%
+  mutate(Year = str_remove(Year, "fit"),
+         Estimate = if_else(
+           str_detect(terms, "Intercept"),
+           (Estimate * params_df[Year, "sd_gh9"] + params_df[Year, "mean_gh9"]),
+           Estimate * params_df[Year, "sd_gh9"]/10),
+         Est.Error = if_else(
+           str_detect(terms, "Intercept"), 
+           Est.Error * params_df[Year, "sd_gh9"],
+           Est.Error * params_df[Year, "sd_gh9"]/10)
+  ) %>%
+  transmute(
+    Year,
+    terms, 
+    coef = paste0(round(Estimate, 2), "\n(", round(Est.Error, 3), ")")
+  ) %>%
+  spread(terms, coef) %>%
+  select(Year, "b0_lin" = 3, "b1_lin" = 2) -> coefs_gh9_lm
+
+coefs_gh9_pw <- map_df(nl_fits, .f = ~{
+  fixef(.x) %>%
+    as_tibble(rownames = "terms") 
+    }, 
+  .id = "Year") %>%
+  select(Year, terms, Estimate, Est.Error) %>%
+  mutate(
+    Year = str_remove(Year,"fit"),
+    terms = str_remove(terms, "_Intercept")) %>%
+  pivot_wider(names_from = terms, 
+              values_from = c(Estimate, Est.Error),
+              names_glue = "{terms}_{.value}") %>%
+  mutate(
+    b0_Estimate = b0_Estimate * params_df[Year, "sd_gh9"] + 
+      params_df[Year, "mean_gh9"],
+    omega_Estimate = (omega_Estimate * params_df[Year, "sd_income"] + 
+                        params_df[Year, "mean_income"])/1000,
+    omega_Est.Error = omega_Est.Error * params_df[Year, "sd_income"]/1000,
+    across(c(b1_Estimate, b2_Estimate, b0_Est.Error, b1_Est.Error, b2_Est.Error),
+           ~ {.x * params_df[Year, "sd_gh9"]/10})
+    ) %>%
+  transmute(
+    Year,
+    b0_pw = paste0(round(b0_Estimate, 2), "\n(", round(b0_Est.Error, 3), ")"),
+    b1_pw = paste0(round(b1_Estimate, 2), "\n(", round(b1_Est.Error, 3), ")"),
+    b2_pw = paste0(round(b2_Estimate, 2), "\n(", round(b2_Est.Error, 3), ")"),
+    Omega = paste0(round(omega_Estimate, 2), "\n(", round(omega_Est.Error, 3), ")"))
+
+
+coefs_affective <- left_join(coefs_gh9_pw, coefs_gh9_log) %>%
+  left_join(coefs_gh9_lm) 
+
+coefs_affective %>%
+  flextable(
+    col_keys = c("Year", "b0_pw", "b1_pw", "b2_pw", "Omega", "break1", "b0_log", 
+                 "b1_log", "break2", "b0_lin", "b1_lin") # 11 columns
+  ) %>%
+  merge_v(j = 1) %>%
+  set_header_labels(values = c(b0_pw = paste0("\u03b2", "0"),
+                               b1_pw = paste0("\u03b2", "1"),
+                               b2_pw = paste0("\u03b2", "2"),
+                               Omega = "\u03C9",
+                               b0_log = paste0("\u03b2", "0"),
+                               b1_log = paste0("\u03b2", "1"),
+                               b0_lin = paste0("\u03b2", "0"),
+                               b1_lin = paste0("\u03b2", "1"))) %>%
+  add_header(top = TRUE,
+             values = c(b0_pw = "Piecewise-linear (±se)",
+                        b1_pw = "Piecewise-linear (±se)",
+                        b2_pw = "Piecewise-linear (±se)",
+                        Omega = "Piecewise-linear (±se)",
+                        b0_log = "Log-linear (±se)",
+                        b1_log = "Log-linear (±se)",
+                        b0_lin = "Linear (±se)",
+                        b1_lin = "Linear (±se)")) %>%
+  merge_h(part = "header") %>%
+  width(j = 1, width = 0.5) %>%
+  width(j = 2:11, width = 0.625) %>%
+  width(j = c(6, 9), width = 0.1) %>%
+  fontsize(size = 9, part = "all") %>%
+  # flextable::theme_vanilla() %>% # theme_vanilla()
+  valign(valign = "top") %>%
+  valign(valign = "bottom", part = "header") %>%
+  border_remove() %>%
+  hline_top(part="header", border = officer::fp_border()) %>%
+  hline_bottom(part="header", border = officer::fp_border()) %>%
+  hline_bottom(part="body", border = officer::fp_border())
+```
+
+<br>
+
+The table of model parameters for each year show that the $\beta_1$ slopes for piecewise-linear, log-linear and linear model for affective wellbeing and income do not show a sustained trend over the 19 year period. The $\beta_1$ coefficients increase in the initial 5-10 years and then decline. Despite this common pattern, the linear slope appears to show the most sustained increase while the log-linear slope shows a relatively less sustained increase. Overall, the pattern of changes among the models indicates the function between income and affective wellbeing has in fact become slightly steeper over the period. 
+
+<br><br>
+
+#### OLS linear, log-linear and piecewise-linear models  
+
+The temporal trends in coefficients from OLS models were largely consistent with those observed in the Bayesian models above. The change point (in real income) increased between 2001 and 2019, however there were few other trends over time.   
 ```{r model_summaries_yearly}
 library(segmented)
 
@@ -893,7 +878,8 @@ hilda_data %>%
   filter(hh_disp_inc_eq > 0) %>%
   group_by(year) %>%
   transmute(
-    y = as.vector(scale(gh9)),
+    # y = as.vector(scale(gh9)),
+    y = gh9,
     dollars = hh_disp_inc_eq/10000,
     male = male,
     age = as.vector(scale(age)),
@@ -944,6 +930,100 @@ bind_rows(
     mutate(model = "pwc", year = 2001:2019)
 ) -> model_summaries
 ```
+
+
+##### Table S4. MLE coefficients from piecewise-linear, linear, log-linear OLS models   
+```{r table_s4}
+lm_coef <- map_dfr(nested_models$lin_fit, broom::tidy, .id = "Year") %>%
+  mutate(
+    coefficient = paste0(round(estimate, 2), "\n(", round(std.error, 2), ")")
+    ) %>%
+  select(Year, term, coefficient) %>%
+  spread(term, coefficient) %>%
+  rename("b0_lin" = 2, "b1_lin" = 3)
+  
+
+log_coef <- map_dfr(nested_models$log_fit, broom::tidy, .id = "Year") %>%
+  mutate(
+    estimate = ifelse(str_detect(term, "log"), estimate/10, estimate),
+    std.error = ifelse(str_detect(term, "log"), std.error/10, std.error),
+    coefficient = paste0(round(estimate, 2), "\n(", round(std.error, 2), ")")
+    ) %>%
+  select(Year, term, coefficient) %>%
+  spread(term, coefficient) %>%
+  rename("b0_log" = 2, "b1_log" = 3)
+
+pw_coefs <- map_dfr(nested_models$pw_fit, broom::tidy, .id = "Year") %>%
+  filter(term %in% c("(Intercept)", "dollars", "U1.dollars")) %>%
+  select(Year, term, estimate, std.error) %>%
+  pivot_wider(id_cols = Year, 
+              names_from = term, 
+              values_from = estimate:std.error) %>%
+  mutate(
+    b0_pw = paste0(
+      round(`estimate_(Intercept)`, 2), "\n(", round(`std.error_(Intercept)`, 2), ")"),
+    estimate_post = estimate_U1.dollars + estimate_dollars,
+    b1_pw = paste0(
+      round(estimate_dollars, 2), "\n(", round(std.error_dollars, 2), ")"),
+    b2_pw = paste0(
+      round(estimate_post, 2), "\n(", round(std.error_U1.dollars, 2), ")")
+    ) %>%
+  select(Year, b0_pw, b1_pw, b2_pw)
+
+pw_coefs <- map_dfr(nested_models$pw_fit, ~as_tibble(.x$psi), .id = "Year") %>%
+  mutate(term = "psi.dollars") %>%
+  mutate(Omega = paste0(round(`Est.`, 3)*10, "\n(", round(`St.Err`, 3)*10, ")")) %>%
+  select(Year, Omega) %>%
+  left_join(pw_coefs)
+
+left_join(lm_coef, log_coef, by = "Year") %>%
+  left_join(pw_coefs, by = "Year") %>%
+  mutate(Year = as.character(2000 + as.numeric(Year))) %>%
+  arrange(Year) %>%
+  flextable(
+    col_keys = c("Year", "b0_pw", "b1_pw", "b2_pw", "Omega", "break1", "b0_log", 
+                 "b1_log", "break2", "b0_lin", "b1_lin") # 11 columns
+  ) %>%
+  merge_v(j = 1) %>%
+  set_header_labels(values = c(b0_pw = paste0("\u03b2", "0"),
+                               b1_pw = paste0("\u03b2", "1"),
+                               b2_pw = paste0("\u03b2", "2"),
+                               Omega = "\u03C9",
+                               b0_log = paste0("\u03b2", "0"),
+                               b1_log = paste0("\u03b2", "1"),
+                               b0_lin = paste0("\u03b2", "0"),
+                               b1_lin = paste0("\u03b2", "1"))) %>%
+  add_header(top = TRUE,
+             values = c(b0_pw = "Piecewise-linear (±se)",
+                        b1_pw = "Piecewise-linear (±se)",
+                        b2_pw = "Piecewise-linear (±se)",
+                        Omega = "Piecewise-linear (±se)",
+                        b0_log = "Log-linear (±se)",
+                        b1_log = "Log-linear (±se)",
+                        b0_lin = "Linear (±se)",
+                        b1_lin = "Linear (±se)")) %>%
+  merge_h(part = "header") %>%
+  width(j = 1, width = 0.5) %>%
+  width(j = 2:11, width = 0.625) %>%
+  width(j = c(6, 9), width = 0.1) %>%
+  fontsize(size = 9, part = "all") %>%
+  # flextable::theme_vanilla() %>% # theme_vanilla()
+  valign(valign = "top") %>%
+  valign(valign = "bottom", part = "header") %>%
+  border_remove() %>%
+  hline_top(part="header", border = officer::fp_border()) %>%
+  hline_bottom(part="header", border = officer::fp_border()) %>%
+  hline_bottom(part="body", border = officer::fp_border())
+```
+
+
+
+<br><br>
+
+**In-sample fit statistics**. Our primary objective was to understand the relationships between the parameters of our model, and so in-sample fit statistics such as R^2^ are irrelevant for this objective. Moreover, our use of regularized priors will bias such in-sample estimates towards zero as regularization deliberately sacrifices in-sample variance for out-of-sample accuracy, which obviously hinders interpretation of the in-sample values. Nevertheless, some readers may find it useful to compare the in-sample fit statistics between the three different model types employed here: piecewise, linear and log-linear, as well as between the conditional and unconditional models. Because the usual fit statistics such as R^2^ present a problem for Bayesian fits, as the variance of the predicted values can be larger than the variance of the data results in R^2^ values greater than 1, we present the in-sample statistics from OLS model fits (without regularization or penalized likelihoods).
+
+
+##### Table S5. Adjusted R-squared for affective wellbeing and income
 ```{r model_summaries_allyears}
 df <- unnest(nested_data, cols = c(data)) %>% ungroup()
 
@@ -983,9 +1063,7 @@ model_summaries_all <- rbind(
   model_summaries
 )
 ```
-
-##### Table S4. In-sample fit statistics (adj. R-squared) for affective wellbeing and income 
-```{r table_s4}
+```{r table_s5}
 model_summaries_all %>%
   select(model, Year = year, adj.r.squared) %>%
   spread(model, adj.r.squared) %>%
@@ -1009,50 +1087,6 @@ model_summaries_all %>%
 A comparison of the relative differences in adjusted R^2^ values between models indicates the piecewise model produced a slightly higher in-sample fit over the other two models, while the linear model tended to have the lowest adjusted R^2^. The log-linear fit varied between both over the 19 years. As expected, adding covariates increased the adjusted R-squared in each case, but it did not change the relative difference between models.  
 
 Three things need to be observed when interpreting the R^2^ values: 1) While the R^2^ between income and affective wellbeing is low (~2% and ~14% in the unconditional and conditional models, respectively), the effect over the wider population will aggregate to be much larger; 2) affective wellbeing (and to a lesser extent, income) is an imperfect and noisy measure so any effect of income on happiness is likely to be larger than that measured here; 3) Finally, affective wellbeing is measured on a subjective and arbitrary Likert scale so a small change in affective wellbeing at different points in the scale may represent a large change in some other functional/real-world outcome (e.g., risk of suicide). This is all to say that quantifying the real-world impact of small changes in variation reported here is difficult and speculative without further investigation.  
-
-<br><br>
-
-##### Table S5. OLS coefficients from linear, log-linear and piecewise models  
-```{r table_s5}
-lm_coef <- map_dfr(nested_models$lin_fit, broom::tidy, .id = "Year") %>%
-  filter(term == "dollars") %>%
-  mutate(coefficient = paste0(round(estimate, 3), " (", round(std.error, 3), ")")) %>%
-  select(Year, `linear (se)` = coefficient)
-  
-
-log_coef <- map_dfr(nested_models$log_fit, broom::tidy, .id = "Year") %>%
-  filter(term == "log(dollars)") %>%
-  mutate(coefficient = paste0(round(estimate, 3), " (", round(std.error, 3), ")")) %>%
-  select(Year, `log-linear (se)` = coefficient)
-
-pw_coefs <- map_dfr(nested_models$pw_fit, broom::tidy, .id = "Year") %>%
-  filter(term %in% c("dollars", "U1.dollars")) %>%
-  select(Year, term, estimate, std.error) %>%
-  pivot_wider(id_cols = Year, 
-              names_from = term, 
-              values_from = estimate:std.error) %>%
-  mutate(
-    estimate_post = estimate_U1.dollars + estimate_dollars,
-    `pre-slope (se)` = paste0(
-      round(estimate_dollars, 3), " ±", round(std.error_dollars, 3)),
-    `post-slope (se)` = paste0(
-      round(estimate_post, 3), " ±", round(std.error_U1.dollars, 3))
-    ) %>%
-  select(Year, `pre-slope (se)`, `post-slope (se)`)
-
-pw_coefs <- map_dfr(nested_models$pw_fit, ~as_tibble(.x$psi), .id = "Year") %>%
-  mutate(term = "psi.dollars") %>%
-  mutate(coefficient = paste0(round(`Est.`, 2)*10, " (", round(`St.Err`, 2)*10, ")")) %>%
-  select(Year, `change point ($000s ±se)` = coefficient) %>%
-  left_join(pw_coefs)
-
-left_join(lm_coef, log_coef, by = "Year") %>%
-  left_join(pw_coefs, by = "Year") %>%
-  mutate(Year = as.character(2000 + as.numeric(Year))) %>%
-  flextable() %>%
-  fontsize(size = 9.5, part = "all") %>%
-  autofit()
-```
 
 <br><br>
 
