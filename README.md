@@ -9,7 +9,8 @@ N.Glozier<sup>1,5</sup>
     of Sydney, NSW, Australia
 2.  ARC Centre of Excellence for Children and Families over the Life
     Course
-3.  School of Economics, University of Technology, NSW, Australia
+3.  Economic Discipline Group, University of Technology Sydney, NSW,
+    Australia
 4.  Institute of Labor Economics (IZA), Bonn, Germany
 
  
@@ -25,12 +26,12 @@ N.Glozier<sup>1,5</sup>
 
  
 
-|         |               |
-| ------- | ------------- |
-| Draft   | 24 June, 2021 |
-| Words   | 4704          |
-| Tables  | 0             |
-| Figures | 4             |
+|         |                  |
+|---------|------------------|
+| Draft   | 27 October, 2021 |
+| Words   | 4688             |
+| Tables  | 0                |
+| Figures | 4                |
 
    
 
@@ -43,32 +44,22 @@ N.Glozier<sup>1,5</sup>
 # Abstract
 
 A fundamental question for society is how much happiness does a dollar
-buy? The accepted view among economists and psychologists is that money
-and happiness increase together up to a point, after which there is
-little further gain from increasing income. The location of this change
-point was reportedly USD$75K in 2008, which was substantially more than
-the median income in the same year (USD$52K), indicating the happiness
-or wellbeing of the poorest majority of the population was tied to
-marginal changes in income while the wellbeing of a richer minority was
-not. Thus the location of the change point has implications for the
-distribution of wellbeing between the rich and poor. Inequalities in
-wellbeing are increasingly relevant due to the growing recognition that
-increasing income does not neccesarily lead to equal changes in
-wellbeing. In this paper we estimate the relationship between income and
-subjective wellbeing over a 19-year period focusing on whether this
-change point has shifted over time, and explore its implications for
-inequalities in wellbeing. To date there has been no investigation as to
-whether the change point has increased or decreased over time so we
-formally tested for the presence of a change point as well temporal
-changes in the relationship between income and affective wellbeing
-(happiness), and income and cognitive wellbeing (life satisfaction),
-using household economic data from Australia between 2001-2019. The
-results revealed the change point between affective wellbeing and income
-has increased over those 19 years faster than inflation (i.e., cost of
-living). This suggests that inequalities in income may be driving
-increasing *inequities* in happiness between the rich and the poor, with
-implications for health and recent government policy-goals to monitor
-and improve wellbeing.
+buy? The accepted view among economists and psychologists is that income
+has diminishing marginal returns on happiness: money and happiness
+increase together up to a point after which there is relatively little
+further gain. In this paper we estimate the relationship between income
+and subjective wellbeing over a 19-year period focusing on where the
+greatest change in the marginal return on income occurs and whether this
+change point has shifted over time. We formally test for the presence of
+a change point as well temporal changes in the relationship between
+income and affective wellbeing (happiness), and income and cognitive
+wellbeing (life satisfaction), using household economic data from
+Australia between 2001-2019. The results indicate that the change point
+between affective wellbeing and income has increased over those 19 years
+faster than inflation (i.e., cost of living). This suggests that
+inequalities in income may be driving increasing *inequities* in
+happiness between the rich and the poor, with implications for health
+and recent government policy-goals to monitor and improve wellbeing.
 
 <br><br>
 
